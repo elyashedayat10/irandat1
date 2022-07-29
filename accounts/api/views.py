@@ -22,14 +22,14 @@ class SendOtpApiView(GenericAPIView):
             phone_number = serializer.validated_data["phone_number"]
             password = serializer.validated_data['password']
             random_number = randint(111111, 999999)
-            OtpCode.objects.create(
-                phone_number=phone_number, code=random_number
-            )
-            send_otp(phone_number, random_number)
             try:
                 user_obj = user.objects.create_user(phone_number=phone_number, password=password)
                 user_obj.is_active = False
                 user_obj.save()
+                OtpCode.objects.create(
+                    phone_number=phone_number, code=random_number
+                )
+                send_otp(phone_number, random_number)
                 return Response(data={
                     "message": "code sent",
                 }, status=status.HTTP_200_OK)
