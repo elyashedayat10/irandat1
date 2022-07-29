@@ -28,7 +28,7 @@ class SendOtpApiView(GenericAPIView):
             send_otp(phone_number, random_number)
             user_obj = user.objects.create_user(phone_number=phone_number, password=password)
             user_obj.is_active = False
-            user.save()
+            user_obj.save()
             return Response(data={
                 "message": "کد برای کاربر ارسال شد",
             }, status=status.HTTP_200_OK)
