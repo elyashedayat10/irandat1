@@ -26,12 +26,17 @@ class SendOtpApiView(GenericAPIView):
                 phone_number=phone_number, code=random_number
             )
             send_otp(phone_number, random_number)
-            user_obj = user.objects.create_user(phone_number=phone_number, password=password)
-            user_obj.is_active = False
-            user_obj.save()
-            return Response(data={
-                "message": "کد برای کاربر ارسال شد",
-            }, status=status.HTTP_200_OK)
+            try:
+                user_obj = user.objects.create_user(phone_number=phone_number, password=password)
+                user_obj.is_active = False
+                user_obj.save()
+                return Response(data={
+                    "message": "code sent",
+                }, status=status.HTTP_200_OK)
+            except Exception:
+                return Response(data={
+                    "message": "user  already exists",
+                }, status=status.HTTP_200_OK)
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
