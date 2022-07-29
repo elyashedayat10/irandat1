@@ -2,7 +2,7 @@ from rest_framework.generics import (CreateAPIView, DestroyAPIView,
                                      ListAPIView, UpdateAPIView)
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-
+from rest_framework.permissions import IsAdminUser
 from ..models import Category
 from .serializers import CategorySerializer
 
@@ -23,6 +23,7 @@ class CategoryListApiView(ListAPIView):
 class CategoryCreateAPIView(CreateAPIView):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
+    permission_classes = [IsAdminUser, ]
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
@@ -35,11 +36,11 @@ class CategoryCreateAPIView(CreateAPIView):
 class CategoryUpdateApiView(UpdateAPIView):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
+    permission_classes = [IsAdminUser, ]
 
     def update(self, request, *args, **kwargs):
         response = super().update(request, *args, **kwargs)
         return Response({
-            'status': 200,
             'message': 'item updated',
             'data': response.data
         })
@@ -48,6 +49,7 @@ class CategoryUpdateApiView(UpdateAPIView):
 class CategoryDeleteApiView(DestroyAPIView):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
+    permission_classes = [IsAdminUser, ]
 
     def delete(self, request, *args, **kwargs):
         super().delete(request, *args, **kwargs)
