@@ -13,4 +13,4 @@ class VerifySerializer(serializers.Serializer):
 
 class LoginSerializer(serializers.Serializer):
     phone_number = serializers.CharField(max_length=11)
-    code = serializers.CharField()
+    password = serializers.CharField()
