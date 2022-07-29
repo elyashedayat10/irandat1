@@ -76,9 +76,9 @@ class LoginApiView(GenericAPIView):
             if user is not None:
                 token, create = Token.objects.get_or_create(user_id=user_obj.id)
                 context = {
-                    "message": "کاربر با موفقیت ساخته شد",
+                    "message": "user login in successfully",
                     "data": token.key,
                 }
                 return Response(data=context, status=status.HTTP_200_OK)
-            return Response(data={'message': 'کاربر با مسخصان وارد شدع وجود ندارد'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={'message': 'user dose not exist'}, status=status.HTTP_400_BAD_REQUEST)
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
