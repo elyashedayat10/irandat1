@@ -1,4 +1,3 @@
-from rest_framework import status
 from rest_framework.generics import (CreateAPIView, DestroyAPIView,
                                      ListAPIView, UpdateAPIView)
 from rest_framework.permissions import AllowAny
@@ -16,7 +15,6 @@ class CategoryListApiView(ListAPIView):
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
         return Response({
-            'status': 200,
             'message': 'category list',
             'data': response.data
         })
@@ -29,7 +27,6 @@ class CategoryCreateAPIView(CreateAPIView):
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
         return Response({
-            'status': 201,
             'message': 'item created',
             'data': response.data
         })
@@ -55,7 +52,6 @@ class CategoryDeleteApiView(DestroyAPIView):
     def delete(self, request, *args, **kwargs):
         super().delete(request, *args, **kwargs)
         return Response({
-            'status': 200,
             'message': 'item deleted',
         })
 
