@@ -69,7 +69,7 @@ class LoginApiView(GenericAPIView):
     serializer_class = VerifySerializer
 
     def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(request.data)
+        serializer = self.serializer_class(data=request.data)
         if serializer.is_valid(raise_exception=True):
             user_obj = authenticate(request, phone_number=serializer.validated_data['phone_number'],
                                     password=serializer.validated_data['password'])
