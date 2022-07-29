@@ -1,5 +1,7 @@
 from rest_framework import serializers
+
 from comment.api.serializers import CommentSerializer
+
 from ..models import LegalArticle
 
 

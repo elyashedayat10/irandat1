@@ -1,4 +1,5 @@
-from django.urls import path, include
+from django.urls import include, path
+
 from comment.api.urls import urlpatterns
 
 app_name = 'comment'

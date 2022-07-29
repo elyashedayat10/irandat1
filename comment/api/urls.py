@@ -1,9 +1,7 @@
 from django.urls import path
-from .views import (
-    CommentCreateApiView,
-    CommentUpdateApiView,
-    CommentDeleteApiView
-)
+
+from .views import (CommentCreateApiView, CommentDeleteApiView,
+                    CommentUpdateApiView)
 
 urlpatterns = [
     path('create/', CommentCreateApiView.as_view()),

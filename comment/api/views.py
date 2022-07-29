@@ -1,10 +1,11 @@
 from requests import Response
-
-from .serializers import CommentSerializer
-from ..models import Comment
-from rest_framework.generics import CreateAPIView, UpdateAPIView, DestroyAPIView
-from .permissions import OwnerPermission
+from rest_framework.generics import (CreateAPIView, DestroyAPIView,
+                                     UpdateAPIView)
 from rest_framework.permissions import IsAuthenticated
+
+from ..models import Comment
+from .permissions import OwnerPermission
+from .serializers import CommentSerializer
 
 
 class CommentCreateApiView(CreateAPIView):
