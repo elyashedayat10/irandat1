@@ -4,9 +4,11 @@ from .serializers import CommentSerializer
 from ..models import Comment
 from rest_framework.generics import CreateAPIView, UpdateAPIView, DestroyAPIView
 from .permissions import OwnerPermission
+from rest_framework.permissions import IsAuthenticated
 
 
 class CommentCreateApiView(CreateAPIView):
+    permission_classes = [IsAuthenticated, ]
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
