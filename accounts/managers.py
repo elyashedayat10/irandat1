@@ -7,7 +7,7 @@ class UserManager(BaseUserManager):
             raise ValueError("this field is required")
 
         user = self.model(phone_number=phone_number,password=password)
-        user.set_password()
+        user.set_password(password)
         user.save(using=self._db)
         return user
 
