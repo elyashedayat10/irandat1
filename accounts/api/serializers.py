@@ -7,4 +7,3 @@ class PhoneSerializer(serializers.Serializer):
 
 class VerifySerializer(PhoneSerializer):
     code = serializers.CharField(max_length=6)
-    fcm_token = serializers.CharField(max_length=1000)
