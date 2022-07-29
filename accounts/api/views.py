@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, get_user_model
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.generics import GenericAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from ..models import OtpCode
@@ -82,3 +83,18 @@ class LoginApiView(GenericAPIView):
                 return Response(data=context, status=status.HTTP_200_OK)
             return Response(data={'message': 'user dose not exist'}, status=status.HTTP_400_BAD_REQUEST)
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class LogoutApiView(GenericAPIView):
+    permission_classes = [IsAuthenticated, ]
+
+    def get(self, request, format=None):
+        """
+        Remove all auth tokens owned by request.user.
+        """
+        tokens = Token.objects.filter(user=request.user)
+        for token in tokens:
+            token.delete()
+        content = {'success': 'User logged out.'}
+        return Response(content, status=status.HTTP_200_OK)
