@@ -9,7 +9,7 @@ from rest_framework.response import Response
 
 from ..models import OtpCode
 from ..utils import send_otp
-from .serializers import PhoneSerializer, VerifySerializer, LoginSerializer
+from .serializers import PhoneSerializer, VerifySerializer, LoginSerializer, PasswordChangeSerializer
 
 user = get_user_model()
 
@@ -85,7 +85,6 @@ class LoginApiView(GenericAPIView):
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 class LogoutApiView(GenericAPIView):
     permission_classes = [IsAuthenticated, ]
 
@@ -98,3 +97,25 @@ class LogoutApiView(GenericAPIView):
             token.delete()
         content = {'success': 'User logged out.'}
         return Response(content, status=status.HTTP_200_OK)
+
+
+class PasswordChange(GenericAPIView):
+    permission_classes = [IsAuthenticated, ]
+    serializer_class = PasswordChangeSerializer
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            new_password = serializer.data['new_password']
+            old_password = serializer.data['old_password']
+
+            if request.user.check_password(old_password):
+                request.user.set_password(new_password)
+                request.user.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+
+            content = {'detail': 'your old password is not valid'}
+            return Response(content, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -17,7 +17,6 @@ class LegaArticleApiView(ListAPIView):
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
         return Response({
-            'status': 201,
             'message': 'legal list',
             'data': response.data
         })
@@ -30,7 +29,6 @@ class LegaArticleCreateApiView(CreateAPIView):
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
         return Response({
-            "status": 201,
             'message': 'legal created',
             'data': response.data
         })
@@ -43,7 +41,6 @@ class LegaArticleUpdateApiView(UpdateAPIView):
     def update(self, request, *args, **kwargs):
         response = super().update(request, *args, **kwargs)
         return Response({
-            "status": 200,
             'message': 'legal updated',
             'data': response.data
         })
@@ -56,6 +53,5 @@ class LegaArticleDestroyApiView(DestroyAPIView):
     def delete(self, request, *args, **kwargs):
         super().delete(request, *args, **kwargs)
         return Response({
-            "status": 200,
             'message': 'legal deleted',
         })
