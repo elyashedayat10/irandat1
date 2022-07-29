@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+    <main class="main-content">
+        <div class="container">
+
+            <!-- begin::page-header -->
+            <div class="page-header">
+                <h1 class="text-center">لیست دسته بندی ها</h1>
+            </div>
+            <!-- end::page-header -->
+
+            <div class="row">
+                <div class="col-md-12">
+
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">دسته بندی ها</h6>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">عنوان</th>
+                                        <th scope="col">تعداد قوانین</th>
+                                        <th scope="col">مشاهده زیر دسته ها</th>
+                                        <th scope="col">ویرایش</th>
+                                        <th scope="col">حذف</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for category in category_list %}
+                                        <tr>
+                                        <th scope="row">{{ forloop.counter }}</th>
+                                        <td>{{ category.title }}</td>
+                                        <td>{{ category.children_count }}</td>
+                                        <td><a class="btn  btn-info" href="{{ category.get_absolute_url }}">مشاهده</a>
+                                        </td>
+                                        <td><a class="btn  btn-warning" href="{% url "category:update" category.pk %}">ویرایش</a>
+                                        </td>
+                                        <td><a class="btn  btn-danger" href="{% url "category:delete" category.pk %}">حذف</a>
+                                        </td>
+                                    {% empty %}
+                                        <h1 class="text-center text-danger">تا کنون دسته بندی ثبت نشده</h1>
+                                    {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+{% endblock content %}
+
+

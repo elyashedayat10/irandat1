@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+    <main class="main-content">
+        <div class="container">
+
+            <!-- begin::page-header -->
+            <div class="page-header">
+                <h1 class="text-center text-success">لیست قوانین</h1>
+            </div>
+            <!-- end::page-header -->
+
+            <div class="row">
+                <div class="col-md-12">
+
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="card-title text-success">مجموع فوانین ثبت شده:{{ law_count }}</h2>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">عنوان</th>
+                                        <th scope="col">تعداد ماده</th>
+                                        <th scope="col">دسته بندی</th>
+                                        <th scope="col">مشاهده</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for law in law_list %}
+                                        <tr>
+                                        <th scope="row">{{ forloop.counter }}</th>
+                                        <td>{{ law.title }}</td>
+                                        <td>{{ law.get_articles_count }}</td>
+                                        <td>{{ law.category }}</td>
+                                        <td><a class="btn  btn-info" href="{{ law.get_absolute_url }}">مشاهده</a>
+                                        </td>
+                                    {% empty %}
+                                        <h1 class="text-center text-danger">تا کنون قانونی ثبت نشده</h1>
+                                    {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+{% endblock content %}
+
+
