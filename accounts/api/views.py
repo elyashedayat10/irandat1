@@ -8,7 +8,7 @@ from rest_framework.response import Response
 
 from ..models import OtpCode
 from ..utils import send_otp
-from .serializers import PhoneSerializer, VerifySerializer
+from .serializers import PhoneSerializer, VerifySerializer, LoginSerializer
 
 user = get_user_model()
 
@@ -66,7 +66,7 @@ class VerifyApiView(GenericAPIView):
 
 
 class LoginApiView(GenericAPIView):
-    serializer_class = VerifySerializer
+    serializer_class = LoginSerializer
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
