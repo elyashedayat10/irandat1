@@ -141,7 +141,6 @@ class PasswordReset(GenericAPIView):
                 send_otp(user_obj.phone_number, random_number)
                 content = {'success': 'otp sent.'}
                 return Response(content, status=status.HTTP_200_OK)
-
             except user.DoesNotExist:
                 content = {'error': 'phone_number dose not exist..'}
                 return Response(content, status=status.HTTP_400_BAD_REQUEST)
