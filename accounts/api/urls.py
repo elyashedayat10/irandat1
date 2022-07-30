@@ -1,7 +1,8 @@
 from django.urls import path
 
 from .views import (LoginApiView, LogoutApiView, PasswordChange,
-                    SendOtpApiView, VerifyApiView, AdminListApiView, AdminCreateApiView, AdminDeleteApiView,PasswordReset)
+                    SendOtpApiView, VerifyApiView, AdminListApiView, AdminCreateApiView, AdminDeleteApiView,PasswordReset,
+                    PasswordResetVerify)
 
 urlpatterns = [
     path("send_otp/", SendOtpApiView.as_view()),
@@ -13,4 +14,5 @@ urlpatterns = [
     path("admin_create/", AdminCreateApiView.as_view()),
     path("admin_delete/<int:pk>/", AdminDeleteApiView.as_view()),
     path("password_reset/", PasswordReset.as_view()),
+    path("password_reset_verify/", PasswordResetVerify.as_view()),
 ]

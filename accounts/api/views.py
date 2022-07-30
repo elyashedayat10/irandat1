@@ -157,19 +157,25 @@ class PasswordResetVerify(GenericAPIView):
         if serializer.is_valid():
             phone_number = serializer.data['phone_number']
             new_password = serializer.data['new_password']
-
-            try:
-                user_obj = user.objects.get(phone_number=phone_number)
-                user_obj.set_password(new_password)
-                user_obj.save()
-                content = {'success': 'verify password.'}
-                return Response(content, status=status.HTTP_200_OK)
-
-            except user.DoesNotExist:
-                content = {'error': 'Wrong/Expired Token!.'}
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            code = serializer.data['code']
+            otp_obj=OtpCode.objects.filter(phone_number=phone_number).last()
+            if otp_obj and otp_obj.code == str(code):
+                try:
+                    user_obj = user.objects.get(phone_number=phone_number)
+                    user_obj.set_password(new_password)
+                    user_obj.save()
+                    content = {'success': 'verify password.'}
+                    return Response(content, status=status.HTTP_200_OK)
+                except user.DoesNotExist:
+                    content = {'error': 'user dose not exist!.'}
+                    return Response(data=content, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                content = {'error': 'Wrong/code!.'}
+                return Response(data=content, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 
 class AdminListApiView(ListAPIView):
