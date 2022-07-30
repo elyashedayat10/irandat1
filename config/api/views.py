@@ -15,6 +15,6 @@ class GuideApiView(GenericAPIView):
 
 
 class GuideCreateApiView(CreateAPIView):
-    queryset = Guide.objects.all()
+    queryset = Guide.load()
     serializer_class = GuideSerializer
     permission_classes = [IsAdminUser, ]
