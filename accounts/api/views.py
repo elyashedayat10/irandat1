@@ -132,18 +132,19 @@ class PasswordReset(GenericAPIView):
 
         if serializer.is_valid():
             phone_number = serializer.data['phone_number']
-
             try:
                 user_obj = user.objects.get(phone_number=phone_number)
                 random_number = randint(111111, 999999)
+                OtpCode.objects.create(
+                    phone_number=phone_number, code=random_number
+                )
                 send_otp(user_obj.phone_number, random_number)
-                content = {'success': 'send email.'}
+                content = {'success': 'otp sent.'}
                 return Response(content, status=status.HTTP_200_OK)
 
             except user.DoesNotExist:
-                content = {'error': 'Email dose not exists..'}
+                content = {'error': 'phone_number dose not exist..'}
                 return Response(content, status=status.HTTP_400_BAD_REQUEST)
-
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

@@ -83,3 +83,7 @@ class LawDeleteApiView(DestroyAPIView):
             'status': 200,
             'message': 'obj deleted',
         })
+
+
+
+clas
