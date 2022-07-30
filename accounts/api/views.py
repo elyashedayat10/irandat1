@@ -77,7 +77,7 @@ class LoginApiView(GenericAPIView):
         if serializer.is_valid(raise_exception=True):
             user_obj = authenticate(request, phone_number=serializer.validated_data['phone_number'],
                                     password=serializer.validated_data['password'])
-            if user is not None and user.is_active:
+            if user_obj is not None and user.is_active:
                 token, create = Token.objects.get_or_create(user_id=user_obj.id)
                 context = {
                     "message": "user login in successfully",
