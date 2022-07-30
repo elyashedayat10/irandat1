@@ -22,3 +22,7 @@ class Setting(SingletonModel):
     title = models.CharField(max_length=125)
     icon = models.ImageField(upload_to="logo/")
     description = models.TextField()
+
+
+class Guide(SingletonModel):
+    text = models.TextField()
