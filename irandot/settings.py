@@ -153,3 +153,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ]
 }
+
+
+CORS_ALLOWED_ORIGINS = [
+    "https://irandat.darkube.app",
+]
