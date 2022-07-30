@@ -25,12 +25,13 @@ class PasswordChangeSerializer(serializers.Serializer):
 
 
 class PasswordResetSerializer(serializers.Serializer):
-    email = serializers.EmailField(max_length=60)
+    phone_number = serializers.CharField(max_length=12)
 
 
 class PasswordResetVerifiedSerializer(serializers.Serializer):
     phone_number = serializers.CharField(max_length=100)
     new_password = serializers.CharField(max_length=128)
+    code=serializers.CharField(max_length=10)
 
 
 class UserSerializer(serializers.ModelSerializer):
