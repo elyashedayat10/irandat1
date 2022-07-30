@@ -1,14 +1,15 @@
 from re import L
-
+from rest_framework import status
 from rest_framework.generics import (CreateAPIView, DestroyAPIView,
-                                     ListAPIView, UpdateAPIView,
+                                     ListAPIView, UpdateAPIView, GenericAPIView,
                                      get_object_or_404)
 from rest_framework.response import Response
 
 from categories.models import Category
-
+from legalarticle.models import LegalArticle
 from ..models import Law
 from .serializers import LawSerializer
+from legalarticle.api.serializers import LegalArticleSerializer
 
 
 class LawListApiView(ListAPIView):
@@ -31,7 +32,7 @@ class LawCategoryListApiView(ListAPIView):
     def get_queryset(self):
         # queryset = super(LawCategoryListApiView, self).get_queryset()
         category_id = self.kwargs.get("id")
-        laws_list =Law.objects.filter(category_id=category_id)
+        laws_list = Law.objects.filter(category_id=category_id)
         category_obj = get_object_or_404(Category, id=category_id)
         if category_obj.get_descendant_count() >= 1:
             category_list = category_obj.get_descendants(include_self=False)
@@ -83,3 +84,15 @@ class LawDeleteApiView(DestroyAPIView):
             'status': 200,
             'message': 'obj deleted',
         })
+
+
+class SearchApiView(GenericAPIView):
+    def get(self, request, *args, **kwargs):
+        query_params = request.query_params.get('q')
+        law_obj = Law.objects.filter(title__contains=query_params)
+        article_obj = LegalArticle.objects.filter(description__contains=query_params)
+        context = {
+            'law': LawSerializer(law_obj, many=True).data,
+            'article': LegalArticleSerializer(article_obj, many=True).data,
+        }
+        return Response(data=context, status=status.HTTP_200_OK)
