@@ -5,12 +5,10 @@ from rest_framework.permissions import IsAdminUser
 
 
 class GuideApiView(ListAPIView):
-    # queryset = Guide.load()
-    # serializer_class = GuideSerializer
-    pass
+    queryset = Guide.load()
+    serializer_class = GuideSerializer
 
 class GuideCreateApiView(CreateAPIView):
-    pass
-    # queryset = Guide.load()
-    # serializer_class = GuideSerializer
-    # permission_classes = [IsAdminUser, ]
+    queryset = Guide.load()
+    serializer_class = GuideSerializer
+    permission_classes = [IsAdminUser, ]
