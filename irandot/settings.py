@@ -155,6 +155,7 @@ REST_FRAMEWORK = {
 }
 
 
+CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "https://irandat.darkube.app",
 ]
