@@ -6,7 +6,7 @@ from legalarticle.api.serializers import LegalArticleSerializer
 from ..models import Law
 
 
-class LawSerializer(serializers.ModelSerializer):
+class LawSerializer(TaggitSerializer,serializers.ModelSerializer):
     article = serializers.SerializerMethodField()
     tags = TagListSerializerField()
 
