@@ -9,11 +9,15 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = (
+            'id',
             'parent',
             'user',
             'legal_article',
             'content',
+            'confirmed',
         )
         read_only_fields = (
             'user',
+            'id',
+            'confirmed',
         )
