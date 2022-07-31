@@ -6,7 +6,7 @@ from legalarticle.api.serializers import LegalArticleSerializer
 from ..models import Law
 
 
-class LawSerializer(TaggitSerializer,serializers.ModelSerializer):
+class LawSerializer(TaggitSerializer, serializers.ModelSerializer):
     article = serializers.SerializerMethodField()
     tags = TagListSerializerField()
 
@@ -27,6 +27,3 @@ class LawSerializer(TaggitSerializer,serializers.ModelSerializer):
     def get_article(self, obj):
         return LegalArticleSerializer(obj.articles.all(), many=True).data
 
-    def create(self, validated_data):
-        tags = validated_data.pop('tags')
-        return Law.objects.create(tags=tags, **validated_data)
