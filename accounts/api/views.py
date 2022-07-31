@@ -157,7 +157,7 @@ class PasswordResetVerify(GenericAPIView):
             phone_number = serializer.data['phone_number']
             new_password = serializer.data['new_password']
             code = serializer.data['code']
-            otp_obj=OtpCode.objects.filter(phone_number=phone_number).last()
+            otp_obj = OtpCode.objects.filter(phone_number=phone_number).last()
             if otp_obj and otp_obj.code == str(code):
                 try:
                     user_obj = user.objects.get(phone_number=phone_number)
@@ -173,8 +173,6 @@ class PasswordResetVerify(GenericAPIView):
                 return Response(data=content, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 
 
 class AdminListApiView(ListAPIView):
@@ -209,3 +207,9 @@ class AdminDeleteApiView(DestroyAPIView):
         return Response({
             'message': 'admin deleted',
         })
+
+
+class UserListApiView(ListAPIView):
+    queryset = user.objects.exclude(is_admin=True)
+    serializer_class = UserSerializer
+    permission_classes = [IsAdminUser, ]

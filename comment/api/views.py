@@ -43,6 +43,14 @@ class CommentDeleteApiView(DestroyAPIView):
     permission_classes = [OwnerPermission, ]
 
 
+    def delete(self, request, *args, **kwargs):
+        super().delete(request, *args, **kwargs)
+        return Response({
+            'status': 200,
+            'message': 'obj deleted',
+        })
+
+
 class ConfirmCommentApiView(GenericAPIView):
     permission_classes = [IsAdminUser, ]
 
