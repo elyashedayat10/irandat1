@@ -1,6 +1,6 @@
 from rest_framework.generics import GenericAPIView, CreateAPIView
-from .serializers import GuideSerializer
-from ..models import Guide
+from .serializers import GuideSerializer, SettingSerializer
+from ..models import Guide, Setting
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework import status
@@ -19,3 +19,16 @@ class GuideCreateApiView(CreateAPIView):
     serializer_class = GuideSerializer
     permission_classes = [IsAdminUser, ]
 
+
+class SettingCreateApiView(CreateAPIView):
+    queryset = Setting.load()
+    serializer_class = SettingSerializer
+    permission_classes = [IsAdminUser, ]
+
+
+class SettingApiView(GenericAPIView):
+    serializer_class = SettingSerializer
+
+    def get(self, request, *args, **kwargs):
+        serializer = self.serializer_class(Setting.load()).data
+        return Response(data=serializer, status=status.HTTP_200_OK)
