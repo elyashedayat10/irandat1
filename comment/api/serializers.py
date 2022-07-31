@@ -4,7 +4,7 @@ from ..models import Comment
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    user = serializers.CharField(source='user.phone_number')
+    # user = serializers.CharField(source='user.phone_number')
 
     class Meta:
         model = Comment
