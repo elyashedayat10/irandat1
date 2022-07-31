@@ -26,3 +26,7 @@ class LawSerializer(serializers.ModelSerializer):
 
     def get_article(self, obj):
         return LegalArticleSerializer(obj.articles.all(), many=True).data
+
+    def create(self, validated_data):
+        tags = validated_data.pop('tags')
+        return Law.objects.create(tags=tags, **validated_data)
