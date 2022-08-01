@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "laws.apps.LawsConfig",
     "legalarticle.apps.LegalarticleConfig",
     "comment.apps.CommentConfig",
+    "tickets.apps.TicketsConfig",
     # third
     "mptt",
     "rest_framework",
@@ -99,7 +100,7 @@ DATABASES = {
         'PORT': "5432",  # 5432 by default
     }
 }
-#
+
 # DATABASES={
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
