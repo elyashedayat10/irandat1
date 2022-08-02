@@ -66,7 +66,7 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     # custom
-    'legalarticle.middlewares.SaveIPAddressMiddleware',
+    # 'legalarticle.middlewares.SaveIPAddressMiddleware',
 
 ]
 

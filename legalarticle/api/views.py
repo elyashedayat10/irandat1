@@ -65,10 +65,10 @@ class LegalArticleDetailView(RetrieveAPIView):
 
     def retrieve(self, request, *args, **kwargs):
         response = super().retrieve(request, *args, **kwargs)
-        article = self.get_object()
-        ip_address = self.request.user.ip_address
-        if ip_address not in article.hits.all():
-            article.hits.add(ip_address)
+        # article = self.get_object()
+        # ip_address = self.request.user.ip_address
+        # if ip_address not in article.hits.all():
+        #     article.hits.add(ip_address)
         return Response({
             'data': response.data
         })
