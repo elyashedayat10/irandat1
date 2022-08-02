@@ -21,3 +21,20 @@ class LegalArticleSerializer(serializers.ModelSerializer):
 
     def get_comments(self, obj):
         return CommentSerializer(obj.comments.all(), many=True).data
+
+
+# class LegalArticleChartApiView(serializers.ModelSerializer):
+#     count = serializers.IntegerField()
+#     ip_address = serializers.CharField(source="ip_address__sum")
+#     class Meta:
+#         model = LegalArticle
+#         fields = (
+#             'id',
+#             'description',
+#             'approved',
+#             'law',
+#             'number',
+#             'count',
+#             'ip_address',
+#         )
+

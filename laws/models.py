@@ -19,7 +19,7 @@ class Law(TimeStampedModel):
         blank=True,
     )
     approved = models.DateField()
-    note = models.CharField(max_length=500)
+
 
     # def save(self, **kwargs):
     #     self.slug = slugify(self.title)

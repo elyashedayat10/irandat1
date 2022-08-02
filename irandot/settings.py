@@ -62,8 +62,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # third
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
+    # custom
+    'legalarticle.middlewares.SaveIPAddressMiddleware',
+
 ]
 
 ROOT_URLCONF = 'irandot.urls'
@@ -90,22 +94,22 @@ WSGI_APPLICATION = 'irandot.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': "postgres",
+#         'USER': "postgres",
+#         'PASSWORD': "8VNyNqOWdWQyhOG2JafmBQbRQbQYhaa8",
+#         'HOST': "irandat.elyashedayat10.svc",
+#         'PORT': "5432",  # 5432 by default
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': "postgres",
-        'USER': "postgres",
-        'PASSWORD': "8VNyNqOWdWQyhOG2JafmBQbRQbQYhaa8",
-        'HOST': "irandat.elyashedayat10.svc",
-        'PORT': "5432",  # 5432 by default
-    }
-}
-
-# DATABASES={
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR/'sqlite3',
-# }}
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'sqlite3',
+    }}
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
@@ -154,7 +158,6 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ]
 }
-
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
