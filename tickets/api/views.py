@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import status
+from rest_framework.permissions import IsAdminUser
 from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework.response import Response
 
@@ -18,6 +19,7 @@ class UserTicketApiView(ListAPIView):
 class TickerListApiView(ListAPIView):
     serializer_class = TicketSerializer
     queryset = Ticket.objects.all()
+    permission_classes = [IsAdminUser]
 
 
 class TicketDetailApiView(RetrieveAPIView):
