@@ -28,8 +28,9 @@ class TicketSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         body = validated_data.pop('body')
-        ticket = Ticket.objects.create(**validated_data)
-        Answer.objects.create(body=body, from_who='admin', ticket=ticket)
+        user = self.context['request'].user
+        ticket = Ticket.objects.create(user_id=user, **validated_data)
+        Answer.objects.create(body=body, from_who='user', ticket=ticket)
         return ticket
 
 
@@ -47,4 +48,3 @@ class AnswerSerializer(serializers.ModelSerializer):
             'from_who',
             'created',
         )
-
