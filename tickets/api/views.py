@@ -44,9 +44,9 @@ class AnswerCreateApiView(GenericAPIView):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid(raise_exception=True):
             if request.user.is_admin:
-                serializer.save(ticket_id=ticket_id, from_who='user')
-            else:
                 serializer.save(ticket_id=ticket_id, from_who='admin')
+            else:
+                serializer.save(ticket_id=ticket_id, from_who='user')
             return Response(data=serializer.data, status=status.HTTP_200_OK)
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
