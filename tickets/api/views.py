@@ -22,7 +22,7 @@ class TickerListApiView(ListAPIView):
     permission_classes = [IsAdminUser]
 
 
-class TicketDetailApiView(RetrieveAPIView):
+class TicketDetailApiView(ListAPIView):
     serializer_class = AnswerSerializer
 
     def get_queryset(self):
