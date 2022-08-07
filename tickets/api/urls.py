@@ -4,6 +4,7 @@ from .views import (AnswerCreateApiView, TicketCloseApiView,
                     TicketCreateApiView, TicketDetailApiView,
                     UserTicketApiView, TickerListApiView)
 
+app_name = 'tickett'
 urlpatterns = [
     path('', UserTicketApiView.as_view()),
     path('list/', TickerListApiView.as_view()),
