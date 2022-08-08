@@ -132,12 +132,11 @@ class ArticleHitApiView(GenericAPIView):
 
 
 class AllHitsListApiView(ListAPIView):
-    queryset = ArticleHit.objects.all()
     serializer_class = HitsCountSer
 
     def get_queryset(self):
         pk = self.kwargs.get('pk')
-        queryset = self.queryset
+        queryset =  ArticleHit.objects.all()
         if pk:
             queryset = ArticleHit.objects.filter(article_id=pk)
         return queryset
