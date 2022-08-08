@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .views import (LegaArticleApiView, LegaArticleCreateApiView,
-                    LegaArticleDestroyApiView, LegaArticleUpdateApiView, LegalArticleDetailView)
+                    LegaArticleDestroyApiView, LegaArticleUpdateApiView, LegalArticleDetailView, ArticleHitApiView)
 
 urlpatterns = [
     path('create/', LegaArticleCreateApiView.as_view()),
@@ -9,4 +9,5 @@ urlpatterns = [
     path('delete/<int:pk>/', LegaArticleDestroyApiView.as_view()),
     path('<int:pk>/', LegaArticleApiView.as_view()),
     path('detail/<int:pk>/', LegalArticleDetailView.as_view()),
+    path('detail_hit/<int:pk>/', ArticleHitApiView.as_view()),
 ]

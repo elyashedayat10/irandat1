@@ -5,6 +5,7 @@ from rest_framework.response import Response
 
 from ..models import Category
 from .serializers import CategorySerializer
+# from django.contrib.gis.utils import GeoIP
 
 
 class CategoryListApiView(ListAPIView):
@@ -13,6 +14,11 @@ class CategoryListApiView(ListAPIView):
     permission_classes = [AllowAny, ]
 
     def list(self, request, *args, **kwargs):
+        # print(request.META.get('REMOTE_ADDR', None))
+        # g = GeoIP()
+        # ip = request.META.get('REMOTE_ADDR', None)
+        # if ip:
+        #     print(g.city(ip)['city'])
         response = super().list(request, *args, **kwargs)
         return Response({
             'message': 'category list',

@@ -23,6 +23,7 @@ class LegalArticleSerializer(serializers.ModelSerializer):
     def get_comments(self, obj):
         return CommentSerializer(obj.comments.all(), many=True).data
 
+
 # class LegalArticleChartApiView(serializers.ModelSerializer):
 #     count = serializers.IntegerField()
 #     ip_address = serializers.CharField(source="ip_address__sum")
@@ -37,3 +38,20 @@ class LegalArticleSerializer(serializers.ModelSerializer):
 #             'count',
 #             'ip_address',
 #         )
+
+from ..models import ArticleHit
+class HitsCountSer(serializers.ModelSerializer):
+    count = serializers.IntegerField()
+    time = serializers.DateTimeField()
+
+    class Meta:
+        model = ArticleHit
+        fields = (
+            'article',
+            'operating_system',
+            'created',
+            'previous_page',
+            'location',
+            'count',
+            'time',
+        )

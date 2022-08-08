@@ -6,9 +6,6 @@ from laws.models import Law
 
 # Create your models here.
 
-class IPAddress(models.Model):
-    ip_address = models.GenericIPAddressField()
-
 
 class LegalArticle(TimeStampedModel):
     description = models.TextField()
@@ -24,6 +21,8 @@ class LegalArticle(TimeStampedModel):
 
 
 class ArticleHit(models.Model):
-    article = models.ForeignKey(LegalArticle, on_delete=models.CASCADE)
-    ip_address = models.ForeignKey(IPAddress, on_delete=models.CASCADE)
+    article = models.ForeignKey(LegalArticle, on_delete=models.CASCADE,related_name="hits")
+    operating_system = models.CharField(max_length=125, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
+    previous_page = models.URLField(null=True,blank=True)
+    location = models.CharField(max_length=125)

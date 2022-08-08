@@ -1,11 +1,12 @@
-from django.db.models import Sum
-from django.db.models.functions import TruncDate
+from django.db.models import Sum, Count, Q
+from django.db.models.functions import TruncDate, TruncMinute, TruncTime, TruncHour, TruncMonth, TruncYear, TruncDay
+from django.shortcuts import get_object_or_404
 from rest_framework.generics import (CreateAPIView, DestroyAPIView,
-                                     ListAPIView, UpdateAPIView, RetrieveAPIView)
+                                     ListAPIView, UpdateAPIView, RetrieveAPIView, GenericAPIView)
 from rest_framework.response import Response
-
 from ..models import LegalArticle, ArticleHit
 from .serializers import LegalArticleSerializer
+from datetime import datetime, timedelta
 
 
 class LegaArticleApiView(ListAPIView):
@@ -59,19 +60,28 @@ class LegaArticleDestroyApiView(DestroyAPIView):
         })
 
 
+from rest_framework.permissions import IsAdminUser
+import httpagentparser
+
+
 class LegalArticleDetailView(RetrieveAPIView):
     serializer_class = LegalArticleSerializer
     queryset = LegalArticle.objects.all()
 
     def retrieve(self, request, *args, **kwargs):
         response = super().retrieve(request, *args, **kwargs)
-        # article = self.get_object()
-        # ip_address = self.request.user.ip_address
-        # if ip_address not in article.hits.all():
-        #     article.hits.add(ip_address)
+        article = self.get_object()
+        agent = request.META["HTTP_USER_AGENT"]
+        operating_system = httpagentparser.detect(agent)['platform']["name"]
+        print(request.META.get('HTTP_REFERER'))
+        ArticleHit.objects.create(article=article, operating_system=operating_system,
+                                  previous_page=request.META.get('HTTP_REFERER'),
+                                  location=""
+                                  )
         return Response({
             'data': response.data
         })
+
 
 # class LegalArticleList(ListAPIView):
 #
@@ -79,3 +89,43 @@ class LegalArticleDetailView(RetrieveAPIView):
 #         article = self.get_object()
 #         ArticleHit.objects.filter(article_id=article.id).annotate(Sum('ip_address')).annotate(
 #             hours=TruncDate('created'))
+
+from .serializers import HitsCountSer
+import datetime
+
+
+class ArticleHitApiView(GenericAPIView):
+    def get(self, request, pk):
+        today = datetime.date.today()
+        yesterday = today - timedelta(days=1)
+        today_views = ArticleHit.objects.filter(created__date=today).count()
+        yesterday_views = ArticleHit.objects.filter(created__date=yesterday).count()
+        minutes = ArticleHit.objects.values(time=TruncMinute('created')).annotate(
+            count=Count('article')).order_by('time')
+        hours = ArticleHit.objects.values(time=TruncHour('created')).annotate(count=Count('article')).order_by('time')
+        day = ArticleHit.objects.values(time=TruncDay('created')).annotate(count=Count('article')).order_by('time')
+        months = ArticleHit.objects.values(time=TruncMonth('created')).annotate(count=Count('article')).order_by(
+            'time')
+        year = ArticleHit.objects.values(time=TruncYear('created')).annotate(count=Count('article')).order_by('time')
+        last_7_day = ArticleHit.objects.filter(created__date__gte=(today - timedelta(days=7))).aggregate(Count('id'))[
+            "id__count"]
+        last_30_day = ArticleHit.objects.filter(created__date__gte=(today - timedelta(days=30))).aggregate(Count('id'))[
+            "id__count"]
+        last_60_day = ArticleHit.objects.filter(created__date__gte=(today - timedelta(days=60))).aggregate(Count('id'))[
+            "id__count"]
+        last_90_day = ArticleHit.objects.filter(created__date__gte=(today - timedelta(days=90))).aggregate(Count('id'))[
+            "id__count"]
+        result = ArticleHit.objects.aggregate(
+            total=Count('id'),
+            today=Count('id', filter=Q(created__date=day)),
+            yesterday=Count('id', filter=Q(created__date__gte=(today - timedelta(days=1)))),
+            last_7_day=Count('id', filter=Q(created__date__gte=(today - timedelta(days=7)))),
+            last_30_day=Count('id', filter=Q(created__date__gte=(today - timedelta(days=30)))),
+            last_60_day=Count('id', filter=Q(created__date__gte=(today - timedelta(days=60)))),
+            last_90_day=Count('id', filter=Q(created__date__gte=(today - timedelta(days=90)))),
+        )
+        context = {"last_7_day": last_7_day, "minutes": minutes, "hours": hours,
+                   "day": day, "months": months, "year": year, "today": today_views,
+                   "yesterday": yesterday_views, "last_30_day": last_30_day, "last_60_day": last_60_day,
+                   "last_90_day": last_90_day}
+        return Response(data=context)
