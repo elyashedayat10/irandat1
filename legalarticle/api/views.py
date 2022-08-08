@@ -129,3 +129,38 @@ class ArticleHitApiView(GenericAPIView):
                    "yesterday": yesterday_views, "last_30_day": last_30_day, "last_60_day": last_60_day,
                    "last_90_day": last_90_day}
         return Response(data=context)
+
+
+class AllHitsListApiView(ListAPIView):
+    queryset = ArticleHit.objects.all()
+    serializer_class = HitsCountSer
+
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        queryset = self.queryset
+        if pk:
+            queryset = ArticleHit.objects.filter(article_id=pk)
+        return queryset
+
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, *args, **kwargs)
+        return Response({
+            "data": response.data,
+            "message": "hits views"
+        })
+
+
+# class HitsByArticleView(ListAPIView):
+#     serializer_class = HitsCountSer
+#
+#     def get_queryset(self):
+#         pk = self.kwargs.get('pk')
+#         legal = ArticleHit.objects.filter(article_id=pk)
+#         return legal
+#
+#     def list(self, request, *args, **kwargs):
+#         response = super().list(request, *args, **kwargs)
+#         return Response({
+#             "data": response.data,
+#             "message": "hits base on article"
+#         })

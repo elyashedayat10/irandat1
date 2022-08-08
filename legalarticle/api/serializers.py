@@ -40,10 +40,9 @@ class LegalArticleSerializer(serializers.ModelSerializer):
 #         )
 
 from ..models import ArticleHit
-class HitsCountSer(serializers.ModelSerializer):
-    count = serializers.IntegerField()
-    time = serializers.DateTimeField()
 
+
+class HitsCountSer(serializers.ModelSerializer):
     class Meta:
         model = ArticleHit
         fields = (
@@ -52,6 +51,5 @@ class HitsCountSer(serializers.ModelSerializer):
             'created',
             'previous_page',
             'location',
-            'count',
-            'time',
         )
+        depth = 1
