@@ -115,15 +115,15 @@ class ArticleHitApiView(GenericAPIView):
             "id__count"]
         last_90_day = ArticleHit.objects.filter(created__date__gte=(today - timedelta(days=90))).aggregate(Count('id'))[
             "id__count"]
-        result = ArticleHit.objects.aggregate(
-            total=Count('id'),
-            today=Count('id', filter=Q(created__date=day)),
-            yesterday=Count('id', filter=Q(created__date__gte=(today - timedelta(days=1)))),
-            last_7_day=Count('id', filter=Q(created__date__gte=(today - timedelta(days=7)))),
-            last_30_day=Count('id', filter=Q(created__date__gte=(today - timedelta(days=30)))),
-            last_60_day=Count('id', filter=Q(created__date__gte=(today - timedelta(days=60)))),
-            last_90_day=Count('id', filter=Q(created__date__gte=(today - timedelta(days=90)))),
-        )
+        # result = ArticleHit.objects.aggregate(
+        #     total=Count('id'),
+        #     today=Count('id', filter=Q(created__date=day)),
+        #     yesterday=Count('id', filter=Q(created__date__gte=(today - timedelta(days=1)))),
+        #     last_7_day=Count('id', filter=Q(created__date__gte=(today - timedelta(days=7)))),
+        #     last_30_day=Count('id', filter=Q(created__date__gte=(today - timedelta(days=30)))),
+        #     last_60_day=Count('id', filter=Q(created__date__gte=(today - timedelta(days=60)))),
+        #     last_90_day=Count('id', filter=Q(created__date__gte=(today - timedelta(days=90)))),
+        # )
         context = {"last_7_day": last_7_day, "minutes": minutes, "hours": hours,
                    "day": day, "months": months, "year": year, "today": today_views,
                    "yesterday": yesterday_views, "last_30_day": last_30_day, "last_60_day": last_60_day,
