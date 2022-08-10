@@ -24,10 +24,13 @@ class SendOtpApiView(GenericAPIView):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid(raise_exception=True):
             phone_number = serializer.validated_data["phone_number"]
+            first_name = serializer.validated_data["first_name"]
+            last_name = serializer.validated_data["last_name"]
             password = serializer.validated_data['password']
             random_number = randint(111111, 999999)
             try:
-                user_obj = user.objects.create_user(phone_number=phone_number, password=password)
+                user_obj = user.objects.create_user(phone_number=phone_number, password=password, first_name=first_name,
+                                                    last_name=last_name)
                 user_obj.is_active = False
                 user_obj.save()
                 OtpCode.objects.create(
