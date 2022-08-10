@@ -12,7 +12,7 @@ from ..utils import send_otp
 from .serializers import (LoginSerializer, PasswordChangeSerializer,
                           PasswordResetSerializer,
                           PasswordResetVerifiedSerializer, PhoneSerializer,
-                          VerifySerializer, UserSerializer)
+                          VerifySerializer, UserSerializer, UserMainSerializers)
 
 user = get_user_model()
 
@@ -210,6 +210,6 @@ class AdminDeleteApiView(DestroyAPIView):
 
 
 class UserListApiView(ListAPIView):
-    queryset = user.objects.exclude(is_admin=True)
-    serializer_class = UserSerializer
+    queryset = user.objects.exclude(is_admin=True, is_superuser=True)
+    serializer_class = UserMainSerializers
     permission_classes = [IsAdminUser, ]

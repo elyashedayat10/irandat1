@@ -3,25 +3,44 @@ from django.shortcuts import get_object_or_404
 from rest_framework.generics import (CreateAPIView, DestroyAPIView,
                                      UpdateAPIView, ListAPIView, GenericAPIView)
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from pusher import Pusher
 
+from .throttle import CustomUserRateThrottle
 from ..models import Comment
 from .permissions import OwnerPermission
 from .serializers import CommentSerializer
+from django.conf import settings
+from django.core.mail import send_mail
 from rest_framework import status
 
+pusher = Pusher(
+    app_id='1438811',
+    key='05c8dc49c22fbb40bde3',
+    secret='4d37a334eb4d651892f5',
+    cluster='mt1',
+    ssl=True
+)
+
+
 class CommentCreateApiView(CreateAPIView):
+    throttle_classes = [CustomUserRateThrottle]
     permission_classes = [IsAuthenticated, ]
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
     def perform_create(self, serializer):
+        pusher.trigger('irandat', 'my-event', {
+
+            'message': 'کامنت جدیدی ثبت شده'
+
+        })
+        # subject = 'welcome to GFG world'
+        # message = f'Hi {user.username}, thank you for registering in geeksforgeeks.'
+        # email_from = settings.EMAIL_HOST_USER
+        # recipient_list = [user.email, ]
+        # send_mail(subject, message, email_from, recipient_list)
+
         serializer.save(user=self.request.user)
-
-
-class NotConfirmedCommentApiView(ListAPIView):
-    permission_classes = [IsAdminUser, ]
-    queryset = Comment.objects.filter(confirmed=False)
-    serializer_class = CommentSerializer
 
 
 class CommentUpdateApiView(UpdateAPIView):
@@ -42,7 +61,6 @@ class CommentDeleteApiView(DestroyAPIView):
     lookup_url_kwarg = 'pk'
     permission_classes = [OwnerPermission, ]
 
-
     def delete(self, request, *args, **kwargs):
         super().delete(request, *args, **kwargs)
         return Response({
@@ -51,13 +69,7 @@ class CommentDeleteApiView(DestroyAPIView):
         })
 
 
-class ConfirmCommentApiView(GenericAPIView):
+class CommentListApiView(ListAPIView):
     permission_classes = [IsAdminUser, ]
-
-    def get(self, request, *args, **kwargs):
-        comment_id = kwargs.get('pk')
-        comment_obj = get_object_or_404(Comment, id=comment_id)
-        comment_obj.confirmed = True
-        comment_obj.save()
-        content={'message': 'comment confirmed'}
-        return Response(content,status=status.HTTP_200_OK)
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer

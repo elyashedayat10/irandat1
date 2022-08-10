@@ -6,6 +6,8 @@ user = get_user_model()
 
 class PhoneSerializer(serializers.Serializer):
     phone_number = serializers.CharField(max_length=11)
+    first_name = serializers.CharField(max_length=125)
+    last_name = serializers.CharField(max_length=125)
     password = serializers.CharField(max_length=11)
 
 
@@ -31,7 +33,7 @@ class PasswordResetSerializer(serializers.Serializer):
 class PasswordResetVerifiedSerializer(serializers.Serializer):
     phone_number = serializers.CharField(max_length=100)
     new_password = serializers.CharField(max_length=128)
-    code=serializers.CharField(max_length=10)
+    code = serializers.CharField(max_length=10)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -40,3 +42,14 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ("id", "phone_number", "password")
         extra_kwargs = {'password': {'write_only': True}}
         read_only_fields = ('id',)
+
+
+class UserMainSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = user
+        fields = (
+            "id",
+            "phone_number",
+            "first_name",
+            "last_name",
+        )
