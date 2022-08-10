@@ -51,7 +51,7 @@ class CommentUpdateApiView(UpdateAPIView):
     permission_classes = [OwnerPermission, ]
 
     def perform_update(self, serializer):
-        serializer.save(user=self.request.user, confirmed=False)
+        serializer.save(user=self.request.user)
 
 
 class CommentDeleteApiView(DestroyAPIView):

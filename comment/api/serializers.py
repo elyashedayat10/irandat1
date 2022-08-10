@@ -15,12 +15,10 @@ class CommentSerializer(serializers.ModelSerializer):
             'user',
             'legal_article',
             'content',
-            'confirmed',
         )
         read_only_fields = (
             'user',
             'id',
-            'confirmed',
         )
 
     def get_user(self, obj):
