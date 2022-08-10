@@ -12,7 +12,7 @@ from ..utils import send_otp
 from .serializers import (LoginSerializer, PasswordChangeSerializer,
                           PasswordResetSerializer,
                           PasswordResetVerifiedSerializer, PhoneSerializer,
-                          VerifySerializer, UserSerializer, UserMainSerializers)
+                          VerifySerializer, UserSerializer, UserMainSerializers,AdminSerializer)
 
 user = get_user_model()
 
@@ -180,13 +180,13 @@ class PasswordResetVerify(GenericAPIView):
 
 class AdminListApiView(ListAPIView):
     queryset = user.objects.filter(is_admin=True)
-    serializer_class = UserSerializer
+    serializer_class = AdminSerializer
     permission_classes = [IsAdminUser, ]
 
 
 class AdminCreateApiView(CreateAPIView):
     queryset = user.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = AdminSerializer
     permission_classes = [IsAdminUser, ]
 
     def perform_create(self, serializer):

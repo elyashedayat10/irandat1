@@ -53,3 +53,18 @@ class UserMainSerializers(serializers.ModelSerializer):
             "first_name",
             "last_name",
         )
+
+
+
+class AdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=user
+        fields = (
+            "id",
+            "phone_number",
+            "first_name",
+            "last_name",
+            "email",
+        )
+        read_only_fields = ('id',)
+
