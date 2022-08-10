@@ -1,5 +1,5 @@
 from rest_framework import serializers
-
+from notes.api.serializers import NoteSerializers
 from comment.api.serializers import CommentSerializer
 
 from ..models import LegalArticle
@@ -7,6 +7,7 @@ from ..models import LegalArticle
 
 class LegalArticleSerializer(serializers.ModelSerializer):
     comments = serializers.SerializerMethodField()
+    notes = serializers.SerializerMethodField()
 
     class Meta:
         model = LegalArticle
@@ -22,6 +23,9 @@ class LegalArticleSerializer(serializers.ModelSerializer):
 
     def get_comments(self, obj):
         return CommentSerializer(obj.comments.all(), many=True).data
+
+    def get_notes(self, obj):
+        return NoteSerializers(obj.notes.all(), many=True).data
 
 
 # class LegalArticleChartApiView(serializers.ModelSerializer):

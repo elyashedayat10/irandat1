@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "legalarticle.apps.LegalarticleConfig",
     "comment.apps.CommentConfig",
     "tickets.apps.TicketsConfig",
+    "notes.apps.NotesConfig",
     # third
     "mptt",
     "rest_framework",

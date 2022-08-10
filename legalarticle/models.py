@@ -14,7 +14,7 @@ class LegalArticle(TimeStampedModel):
         "laws.Law", on_delete=models.CASCADE, related_name="articles"
     )
     number = models.PositiveIntegerField()
-    note = models.CharField(max_length=500, null=True, blank=True)
+
 
     def __str__(self):
         return f'ماده شماره {self.number} از قانون {self.law}'
