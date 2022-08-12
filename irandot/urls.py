@@ -12,6 +12,7 @@ urlpatterns = [
     path("article/", include("legalarticle.urls", namespace='legal')),
     path("comment/", include("comment.urls", namespace='comment')),
     path("ticcket/", include("tickets.urls", namespace='ticket')),
+    path("notes/", include("notes.urls", namespace='notes')),
 ]
 if settings.DEBUG:
     urlpatterns = urlpatterns + static(
