@@ -18,8 +18,9 @@ class LegalArticleSerializer(serializers.ModelSerializer):
             'law',
             'number',
             'comments',
+            "notes",
         )
-        read_only_fields = ('comments', 'id',)
+        read_only_fields = ('comments', 'id', "notes",)
 
     def get_comments(self, obj):
         return CommentSerializer(obj.comments.all(), many=True).data
