@@ -19,7 +19,7 @@ class UserTicketApiView(ListAPIView):
 class TickerListApiView(ListAPIView):
     serializer_class = TicketSerializer
     queryset = Ticket.objects.all()
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminUser,]
 
 
 class TicketDetailApiView(ListAPIView):

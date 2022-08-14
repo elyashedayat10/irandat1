@@ -10,7 +10,7 @@ from legalarticle.models import LegalArticle
 from ..models import Law
 from .serializers import LawSerializer
 from legalarticle.api.serializers import LegalArticleSerializer
-
+from rest_framework.permissions import IsAdminUser
 
 class LawListApiView(ListAPIView):
     queryset = Law.objects.all()
@@ -51,6 +51,7 @@ class LawCategoryListApiView(ListAPIView):
 class LawCreateApiView(CreateAPIView):
     queryset = Law.objects.all()
     serializer_class = LawSerializer
+    permission_classes = [IsAdminUser,]
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
@@ -64,6 +65,7 @@ class LawCreateApiView(CreateAPIView):
 class LawUpdateApiView(UpdateAPIView):
     queryset = Law.objects.all()
     serializer_class = LawSerializer
+    permission_classes = [IsAdminUser,]
 
     def update(self, request, *args, **kwargs):
         response = super().update(request, *args, **kwargs)
@@ -77,6 +79,7 @@ class LawUpdateApiView(UpdateAPIView):
 class LawDeleteApiView(DestroyAPIView):
     queryset = Law.objects.all()
     serializer_class = LawSerializer
+    permission_classes = [IsAdminUser,]
 
     def delete(self, request, *args, **kwargs):
         response = super().delete(request, *args, **kwargs)

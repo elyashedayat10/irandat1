@@ -133,6 +133,7 @@ class ArticleHitApiView(GenericAPIView):
 
 class AllHitsListApiView(ListAPIView):
     serializer_class = HitsCountSer
+    permission_classes = [IsAdminUser,]
 
     def get_queryset(self):
         pk = self.kwargs.get('pk')
