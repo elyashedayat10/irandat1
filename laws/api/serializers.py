@@ -8,7 +8,7 @@ from ..models import Law
 
 class LawSerializer(TaggitSerializer, serializers.ModelSerializer):
     article = serializers.SerializerMethodField()
-    tags = TagListSerializerField()
+    tags = TagListSerializerField(allow_null=True)
 
     class Meta:
         model = Law
