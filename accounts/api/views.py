@@ -12,7 +12,7 @@ from ..utils import send_otp
 from .serializers import (LoginSerializer, PasswordChangeSerializer,
                           PasswordResetSerializer,
                           PasswordResetVerifiedSerializer, PhoneSerializer,
-                          VerifySerializer, UserSerializer, UserMainSerializers,AdminSerializer)
+                          VerifySerializer, UserSerializer, UserMainSerializers, AdminSerializer)
 
 user = get_user_model()
 
@@ -85,6 +85,7 @@ class LoginApiView(GenericAPIView):
                 context = {
                     "message": "user login in successfully",
                     "data": token.key,
+                    "admin": True if user_obj.is_admin else False
                 }
                 return Response(data=context, status=status.HTTP_200_OK)
             return Response(data={'message': 'user dose not exist'}, status=status.HTTP_400_BAD_REQUEST)
