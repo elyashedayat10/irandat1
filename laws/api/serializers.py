@@ -19,6 +19,7 @@ class LawSerializer(TaggitSerializer, serializers.ModelSerializer):
             'category',
             'approved',
             'article',
+            'published'
         )
 
         read_only_fields = ('article', 'id',)
