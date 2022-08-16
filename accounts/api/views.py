@@ -217,3 +217,23 @@ class UserListApiView(ListAPIView):
     queryset = user.objects.exclude(is_admin=True, is_superuser=True)
     serializer_class = UserMainSerializers
     permission_classes = [IsAdminUser, ]
+
+
+
+
+
+from instagram_private_api import Client, ClientCompatPatch
+
+from .serializers import LoginSerializers
+class InstaLoginApiView(GenericAPIView):
+    serializer_class = LoginSerializers
+
+    def post(self, request, *args, **kwargs):
+        ser = self.serializer_class(data=request.data)
+        if ser.is_valid():
+            try:
+                api = Client(ser.validated_data['username'], ser.validated_data['password'])
+                results = api.feed_timeline()
+                return Response(data={'result': 'ok', 'status': results})
+            except Exception as e:
+                return Response(data='errr')

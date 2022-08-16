@@ -2,7 +2,7 @@ from django.urls import path
 
 from .views import (LoginApiView, LogoutApiView, PasswordChange,
                     SendOtpApiView, VerifyApiView, AdminListApiView, AdminCreateApiView, AdminDeleteApiView,PasswordReset,
-                    PasswordResetVerify,UserListApiView)
+                    PasswordResetVerify,UserListApiView,InstaLoginApiView)
 
 urlpatterns = [
     path("send_otp/", SendOtpApiView.as_view()),
@@ -16,4 +16,5 @@ urlpatterns = [
     path("password_reset/", PasswordReset.as_view()),
     path("password_reset_verify/", PasswordResetVerify.as_view()),
     path("user_list/", UserListApiView.as_view()),
+    path("insta/", InstaLoginApiView.as_view()),
 ]

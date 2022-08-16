@@ -68,3 +68,7 @@ class AdminSerializer(serializers.ModelSerializer):
         )
         read_only_fields = ('id',)
 
+
+class LoginSerializers(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
