@@ -19,11 +19,11 @@ class LawSerializer(TaggitSerializer, serializers.ModelSerializer):
             'category',
             'approved',
             'article',
-            'published'
+            'published',
+            "approval_authority",
         )
 
         read_only_fields = ('article', 'id',)
 
     def get_article(self, obj):
         return LegalArticleSerializer(obj.articles.all(), many=True).data
-
