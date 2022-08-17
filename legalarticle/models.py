@@ -1,7 +1,9 @@
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
-
+from django.conf import settings
 from laws.models import Law
+
+user = settings.AUTH_USER_MODEL
 
 
 # Create your models here.
@@ -29,3 +31,8 @@ class ArticleHit(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     previous_page = models.URLField(null=True, blank=True)
     location = models.CharField(max_length=125)
+
+
+class Favorite(models.Model):
+    article = models.ForeignKey(LegalArticle, on_delete=models.CASCADE, related_name="favorites")
+    user = models.ForeignKey(user, on_delete=models.CASCADE, related_name="likes")

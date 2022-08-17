@@ -1,12 +1,14 @@
 from django.db.models import Sum, Count, Q
 from django.db.models.functions import TruncDate, TruncMinute, TruncTime, TruncHour, TruncMonth, TruncYear, TruncDay
 from django.shortcuts import get_object_or_404
+from rest_framework import status
 from rest_framework.generics import (CreateAPIView, DestroyAPIView,
                                      ListAPIView, UpdateAPIView, RetrieveAPIView, GenericAPIView)
 from rest_framework.response import Response
-from ..models import LegalArticle, ArticleHit
-from .serializers import LegalArticleSerializer
+from ..models import LegalArticle, ArticleHit, Favorite
+from .serializers import LegalArticleSerializer, FavoriteSerializer
 from datetime import datetime, timedelta
+from rest_framework.permissions import IsAuthenticated
 
 
 class LegaArticleApiView(ListAPIView):
@@ -133,11 +135,11 @@ class ArticleHitApiView(GenericAPIView):
 
 class AllHitsListApiView(ListAPIView):
     serializer_class = HitsCountSer
-    permission_classes = [IsAdminUser,]
+    permission_classes = [IsAdminUser, ]
 
     def get_queryset(self):
         pk = self.kwargs.get('pk')
-        queryset =  ArticleHit.objects.all()
+        queryset = ArticleHit.objects.all()
         if pk:
             queryset = ArticleHit.objects.filter(article_id=pk)
         return queryset
@@ -164,3 +166,45 @@ class AllHitsListApiView(ListAPIView):
 #             "data": response.data,
 #             "message": "hits base on article"
 #         })
+
+
+class FavoriteApiView(GenericAPIView):
+    permission_classes = [IsAuthenticated, ]
+
+    def get(self, request, *args, **kwargs):
+        liked_list = request.user.likes.all().values_list("id", flat=True)
+        liked_articles = LegalArticle.objects.filter(id__in=liked_list)
+        serializer = LegalArticleSerializer(
+            instance=liked_articles, many=True, context={"request": request}
+        )
+        context = {
+            'message': 'لیست لایک های کاربر',
+            'data': serializer.data,
+
+        }
+        return Response(data=context, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        serializer = FavoriteSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            like_obj = Favorite.objects.filter(user=request.user, article_id=serializer.validated_data['article'])
+            if like_obj.exists():
+                like_obj.delete()
+                context = {
+                    "is_done": True,
+                    "message": "با موفقیت از like ها حذف شد",
+                }
+            else:
+                serializer.save(user=request.user)
+                context = {
+                    "is_done": True,
+                    "message": "با موفقیت به like ها اضافه شد",
+                    "data": serializer.data,
+                }
+
+            return Response(data=context, status=status.HTTP_200_OK)
+        context = {
+            "is_done": False,
+            "message": "خطا در انجام عملیات",
+        }
+        return Response(data=context, status=status.HTTP_400_BAD_REQUEST)
