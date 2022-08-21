@@ -20,6 +20,12 @@ class LawListApiView(ListAPIView):
     queryset = Law.objects.all()
     serializer_class = LawSerializer
 
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"request": self.request})
+        return context
+
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
         return Response({
@@ -32,6 +38,12 @@ class LawListApiView(ListAPIView):
 class LawCategoryListApiView(ListAPIView):
     queryset = Law.objects.all()
     serializer_class = LawSerializer
+
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"request": self.request})
+        return context
 
     def get_queryset(self):
         # queryset = super(LawCategoryListApiView, self).get_queryset()
@@ -66,10 +78,22 @@ class LawCreateApiView(CreateAPIView):
         })
 
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"request": self.request})
+        return context
+
+
 class LawUpdateApiView(UpdateAPIView):
     queryset = Law.objects.all()
     serializer_class = LawSerializer
     permission_classes = [IsAdminUser, ]
+
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"request": self.request})
+        return context
 
     def update(self, request, *args, **kwargs):
         response = super().update(request, *args, **kwargs)
@@ -84,6 +108,12 @@ class LawDeleteApiView(DestroyAPIView):
     queryset = Law.objects.all()
     serializer_class = LawSerializer
     permission_classes = [IsAdminUser, ]
+
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"request": self.request})
+        return context
 
     def delete(self, request, *args, **kwargs):
         response = super().delete(request, *args, **kwargs)
