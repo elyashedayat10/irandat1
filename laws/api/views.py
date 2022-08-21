@@ -99,13 +99,12 @@ class SearchApiView(GenericAPIView):
         law_obj = Law.objects.filter(title__icontains=query_params)
         article_obj = LegalArticle.objects.filter(description__icontains=query_params).order_by("hits")
         agent = request.META["HTTP_USER_AGENT"]
-        print(agent)
-        operating_system = httpagentparser.detect(agent)['platform']["name"]
-        for article in article_obj:
-            ArticleHit.objects.create(article=article, operating_system=operating_system,
-                                      previous_page=request.META.get('HTTP_REFERER'),
-                                      location=""
-                                      )
+        # operating_system = httpagentparser.detect(agent)['platform']["name"]
+        # for article in article_obj:
+        #     ArticleHit.objects.create(article=article, operating_system=operating_system,
+        #                               previous_page=request.META.get('HTTP_REFERER'),
+        #                               location=""
+        #                               )
         context = {
             'law': LawSerializer(law_obj, many=True).data,
             'article': LegalArticleSerializer(article_obj, many=True).data,
