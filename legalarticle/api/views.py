@@ -6,13 +6,13 @@ from rest_framework.generics import (CreateAPIView, DestroyAPIView,
                                      ListAPIView, UpdateAPIView, RetrieveAPIView, GenericAPIView)
 from rest_framework.response import Response
 from ..models import LegalArticle, ArticleHit, Favorite
-from .serializers import LegalArticleSerializer, FavoriteSerializer
+from .serializers import LegalArticleSerializer, FavoriteSerializer,LegalArticleDetailSerializer
 from datetime import datetime, timedelta
 from rest_framework.permissions import IsAuthenticated
 
 
 class LegaArticleApiView(ListAPIView):
-    serializer_class = LegalArticleSerializer
+    serializer_class = LegalArticleDetailSerializer
     queryset = LegalArticle.objects.all()
 
     def get_serializer_context(self):
@@ -33,7 +33,7 @@ class LegaArticleApiView(ListAPIView):
 
 
 class LegaArticleCreateApiView(CreateAPIView):
-    serializer_class = LegalArticleSerializer
+    serializer_class = LegalArticleDetailSerializer
     queryset = LegalArticle.objects.all()
 
 
@@ -51,7 +51,7 @@ class LegaArticleCreateApiView(CreateAPIView):
 
 
 class LegaArticleUpdateApiView(UpdateAPIView):
-    serializer_class = LegalArticleSerializer
+    serializer_class = LegalArticleDetailSerializer
     queryset = LegalArticle.objects.all()
 
     def get_serializer_context(self):
@@ -68,7 +68,7 @@ class LegaArticleUpdateApiView(UpdateAPIView):
 
 
 class LegaArticleDestroyApiView(DestroyAPIView):
-    serializer_class = LegalArticleSerializer
+    serializer_class = LegalArticleDetailSerializer
     queryset = LegalArticle.objects.all()
 
 
@@ -89,7 +89,7 @@ import httpagentparser
 
 
 class LegalArticleDetailView(RetrieveAPIView):
-    serializer_class = LegalArticleSerializer
+    serializer_class = LegalArticleDetailSerializer
     queryset = LegalArticle.objects.all()
 
 
