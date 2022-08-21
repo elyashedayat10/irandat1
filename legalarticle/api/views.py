@@ -15,6 +15,11 @@ class LegaArticleApiView(ListAPIView):
     serializer_class = LegalArticleSerializer
     queryset = LegalArticle.objects.all()
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"request": self.request})
+        return context
+
     def get_queryset(self):
         queryset = super(LegaArticleApiView, self).get_queryset()
         return queryset.filter(law_id=self.kwargs.get('pk'))
@@ -31,6 +36,12 @@ class LegaArticleCreateApiView(CreateAPIView):
     serializer_class = LegalArticleSerializer
     queryset = LegalArticle.objects.all()
 
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"request": self.request})
+        return context
+
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
         return Response({
@@ -43,6 +54,11 @@ class LegaArticleUpdateApiView(UpdateAPIView):
     serializer_class = LegalArticleSerializer
     queryset = LegalArticle.objects.all()
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"request": self.request})
+        return context
+
     def update(self, request, *args, **kwargs):
         response = super().update(request, *args, **kwargs)
         return Response({
@@ -54,6 +70,12 @@ class LegaArticleUpdateApiView(UpdateAPIView):
 class LegaArticleDestroyApiView(DestroyAPIView):
     serializer_class = LegalArticleSerializer
     queryset = LegalArticle.objects.all()
+
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"request": self.request})
+        return context
 
     def delete(self, request, *args, **kwargs):
         super().delete(request, *args, **kwargs)
@@ -69,6 +91,12 @@ import httpagentparser
 class LegalArticleDetailView(RetrieveAPIView):
     serializer_class = LegalArticleSerializer
     queryset = LegalArticle.objects.all()
+
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"request": self.request})
+        return context
 
     def retrieve(self, request, *args, **kwargs):
         response = super().retrieve(request, *args, **kwargs)
@@ -136,6 +164,11 @@ class ArticleHitApiView(GenericAPIView):
 class AllHitsListApiView(ListAPIView):
     serializer_class = HitsCountSer
     permission_classes = [IsAdminUser, ]
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"request": self.request})
+        return context
 
     def get_queryset(self):
         pk = self.kwargs.get('pk')
