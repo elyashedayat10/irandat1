@@ -1,5 +1,6 @@
 from random import randint
 
+from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate, get_user_model
 from rest_framework import status
 from rest_framework.authtoken.models import Token
@@ -257,6 +258,28 @@ class UserListApiView(ListAPIView):
     permission_classes = [
         IsAdminUser,
     ]
+
+
+class MakeAdminUserApiView(GenericAPIView):
+    serializer_class = UserMainSerializers
+
+    def get(self, request, *args, **kwargs):
+        pk = kwargs.get("pk")
+        user_obj = get_object_or_404(user, pk=pk)
+        user_obj.is_admin = True
+        user_obj.save()
+        return Response({"message": "user upgrade to admin user"}, status=status.HTTP_200_OK)
+
+
+class MakeNormalUserApiView(GenericAPIView):
+    serializer_class = UserMainSerializers
+
+    def get(self, request, *args, **kwargs):
+        pk = kwargs.get("pk")
+        user_obj = get_object_or_404(user, pk=pk)
+        user_obj.is_admin = False
+        user_obj.save()
+        return Response({"message": "user upgrade to admin user"}, status=status.HTTP_200_OK)
 
 
 from instagram_private_api import Client, ClientCompatPatch

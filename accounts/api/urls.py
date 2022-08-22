@@ -13,6 +13,8 @@ from .views import (
     SendOtpApiView,
     UserListApiView,
     VerifyApiView,
+    MakeAdminUserApiView,
+    MakeNormalUserApiView,
 )
 
 urlpatterns = [
@@ -28,4 +30,6 @@ urlpatterns = [
     path("password_reset_verify/", PasswordResetVerify.as_view()),
     path("user_list/", UserListApiView.as_view()),
     path("insta/", InstaLoginApiView.as_view()),
+    path("make_admin/<int:pk>/", MakeAdminUserApiView.as_view()),
+    path("make_normal/<int:pk>/", MakeNormalUserApiView.as_view()),
 ]
