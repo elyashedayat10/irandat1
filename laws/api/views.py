@@ -127,7 +127,7 @@ class SearchApiView(GenericAPIView):
     def get(self, request, *args, **kwargs):
         query_params = request.query_params.get('q')
         law_obj = Law.objects.filter(title__icontains=query_params)
-        article_obj = LegalArticle.objects.filter(description__icontains=query_params).order_by("hits")
+        article_obj = LegalArticle.objects.filter(description__icontains=query_params)
         # agent = request.META["HTTP_USER_AGENT"]
         # operating_system = httpagentparser.detect(agent)['platform']["name"]
         # for article in article_obj:
