@@ -38,6 +38,7 @@ class SettingApiView(GenericAPIView):
 class NotificationListApiView(ListAPIView):
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
+    permission_classes = [IsAdminUser, ]
 
     def list(self, request, *args, **kwargs):
         response = super(NotificationListApiView, self).list(request, *args, **kwargs)
