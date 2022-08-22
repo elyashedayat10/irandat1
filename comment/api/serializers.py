@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
-from ..models import Comment
 from accounts.api.serializers import UserMainSerializers
+
+from ..models import Comment
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -10,17 +11,17 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = (
-            'id',
-            'parent',
-            'user',
-            'legal_article',
-            'content',
-            'created',
+            "id",
+            "parent",
+            "user",
+            "legal_article",
+            "content",
+            "created",
         )
         read_only_fields = (
-            'user',
-            'id',
-            'created',
+            "user",
+            "id",
+            "created",
         )
 
     def get_user(self, obj):

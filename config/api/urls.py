@@ -1,6 +1,8 @@
 from django.urls import path
+
 from . import views
-    # GuideApiView, GuideCreateApiView, SettingCreateApiView, SettingApiView
+
+# GuideApiView, GuideCreateApiView, SettingCreateApiView, SettingApiView
 
 urlpatterns = [
     # path('', GuideApiView.as_view()),

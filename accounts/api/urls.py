@@ -1,8 +1,19 @@
 from django.urls import path
 
-from .views import (LoginApiView, LogoutApiView, PasswordChange,
-                    SendOtpApiView, VerifyApiView, AdminListApiView, AdminCreateApiView, AdminDeleteApiView,PasswordReset,
-                    PasswordResetVerify,UserListApiView,InstaLoginApiView)
+from .views import (
+    AdminCreateApiView,
+    AdminDeleteApiView,
+    AdminListApiView,
+    InstaLoginApiView,
+    LoginApiView,
+    LogoutApiView,
+    PasswordChange,
+    PasswordReset,
+    PasswordResetVerify,
+    SendOtpApiView,
+    UserListApiView,
+    VerifyApiView,
+)
 
 urlpatterns = [
     path("send_otp/", SendOtpApiView.as_view()),

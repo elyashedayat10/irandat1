@@ -9,7 +9,7 @@ from .models import Setting
 # Create your views here.
 
 
-class SettingCreateView( SuccessMessageMixin, CreateView):
+class SettingCreateView(SuccessMessageMixin, CreateView):
     model = Setting
     success_message = "تنظیمات با موفقیت به روزرسانی شد"
     success_url = reverse_lazy("config:setting")
@@ -17,7 +17,7 @@ class SettingCreateView( SuccessMessageMixin, CreateView):
     template_name = "config/create.html"
 
 
-class SettingView( View):
+class SettingView(View):
     def get(self, request):
         setting = Setting.load()
         return render(request, "config/setting.html", {"setting": setting})

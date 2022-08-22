@@ -7,14 +7,13 @@ from .models import OtpCode, User
 admin.site.register(OtpCode)
 
 
-
 # Register your models here.
 @admin.register(User)
 class UserAdmin(BaseAdmin):
     form = ChangeForm
     add_form = CreationForm
 
-    list_display = ("phone_number","fcm_token")
+    list_display = ("phone_number", "fcm_token")
     list_filter = (
         "is_admin",
         "is_active",
@@ -30,7 +29,7 @@ class UserAdmin(BaseAdmin):
     fieldsets = (
         (
             "Main",
-            {"fields": ("phone_number","fcm_token")},
+            {"fields": ("phone_number", "fcm_token")},
         ),
         (
             "Permissions",

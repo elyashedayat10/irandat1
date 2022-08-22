@@ -1,8 +1,9 @@
 from rest_framework import serializers
-from notes.api.serializers import NoteSerializers
-from comment.api.serializers import CommentSerializer
 
-from ..models import LegalArticle, Favorite
+from comment.api.serializers import CommentSerializer
+from notes.api.serializers import NoteSerializers
+
+from ..models import Dislike, Favorite, LegalArticle
 
 
 class LegalArticleSerializer(serializers.ModelSerializer):
@@ -14,17 +15,17 @@ class LegalArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = LegalArticle
         fields = (
-            'id',
-            'description',
-            'approved',
-            'law',
-            'number',
-            'comments',
+            "id",
+            "description",
+            "approved",
+            "law",
+            "number",
+            "comments",
             "notes",
             # "liked",
             "like_count",
         )
-        read_only_fields = ('comments', 'id', "notes", "liked", "like_count")
+        read_only_fields = ("comments", "id", "notes", "liked", "like_count")
 
     def get_comments(self, obj):
         return CommentSerializer(obj.comments.all(), many=True).data
@@ -54,17 +55,17 @@ class LegalArticleDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = LegalArticle
         fields = (
-            'id',
-            'description',
-            'approved',
-            'law',
-            'number',
-            'comments',
+            "id",
+            "description",
+            "approved",
+            "law",
+            "number",
+            "comments",
             "notes",
             "liked",
             "like_count",
         )
-        read_only_fields = ('comments', 'id', "notes", "liked", "like_count")
+        read_only_fields = ("comments", "id", "notes", "liked", "like_count")
 
     def get_comments(self, obj):
         return CommentSerializer(obj.comments.all(), many=True).data
@@ -73,9 +74,9 @@ class LegalArticleDetailSerializer(serializers.ModelSerializer):
         return NoteSerializers(obj.notes.all(), many=True).data
 
     def get_liked(self, obj):
-        user = self.context['request'].user
+        user = self.context["request"].user
         if user.is_authenticated:
-            liked_list = user.likes.all().values_list('id', flat=True)
+            liked_list = user.likes.all().values_list("id", flat=True)
             if obj.id in liked_list:
                 return True
             return False
@@ -107,11 +108,11 @@ class HitsCountSer(serializers.ModelSerializer):
     class Meta:
         model = ArticleHit
         fields = (
-            'article',
-            'operating_system',
-            'created',
-            'previous_page',
-            'location',
+            "article",
+            "operating_system",
+            "created",
+            "previous_page",
+            "location",
         )
         depth = 1
 
@@ -119,5 +120,12 @@ class HitsCountSer(serializers.ModelSerializer):
 class FavoriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Favorite
+        fields = ("id", "user", "article")
+        read_only_fields = ("id", "user")
+
+
+class DislikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Dislike
         fields = ("id", "user", "article")
         read_only_fields = ("id", "user")

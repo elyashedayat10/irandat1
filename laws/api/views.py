@@ -3,23 +3,28 @@ from re import L
 import httpagentparser
 from django.db.models import F
 from rest_framework import status
-from rest_framework.generics import (CreateAPIView, DestroyAPIView,
-                                     ListAPIView, UpdateAPIView, GenericAPIView,
-                                     get_object_or_404)
+from rest_framework.generics import (
+    CreateAPIView,
+    DestroyAPIView,
+    GenericAPIView,
+    ListAPIView,
+    UpdateAPIView,
+    get_object_or_404,
+)
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
 from categories.models import Category
-from legalarticle.models import LegalArticle, ArticleHit
+from legalarticle.api.serializers import LegalArticleSerializer
+from legalarticle.models import ArticleHit, LegalArticle
+
 from ..models import Law
 from .serializers import LawSerializer
-from legalarticle.api.serializers import LegalArticleSerializer
-from rest_framework.permissions import IsAdminUser
 
 
 class LawListApiView(ListAPIView):
     queryset = Law.objects.all()
     serializer_class = LawSerializer
-
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -28,17 +33,12 @@ class LawListApiView(ListAPIView):
 
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
-        return Response({
-            'status': 200,
-            'message': 'law list',
-            'data': response.data
-        })
+        return Response({"status": 200, "message": "law list", "data": response.data})
 
 
 class LawCategoryListApiView(ListAPIView):
     queryset = Law.objects.all()
     serializer_class = LawSerializer
-
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -57,26 +57,23 @@ class LawCategoryListApiView(ListAPIView):
 
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
-        return Response({
-            'status': 200,
-            'message': 'law base on category ',
-            'data': response.data
-        })
+        return Response(
+            {"status": 200, "message": "law base on category ", "data": response.data}
+        )
 
 
 class LawCreateApiView(CreateAPIView):
     queryset = Law.objects.all()
     serializer_class = LawSerializer
-    permission_classes = [IsAdminUser, ]
+    permission_classes = [
+        IsAdminUser,
+    ]
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
-        return Response({
-            'status': 201,
-            'message': 'obj created',
-            'data': response.data
-        })
-
+        return Response(
+            {"status": 201, "message": "obj created", "data": response.data}
+        )
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -87,8 +84,9 @@ class LawCreateApiView(CreateAPIView):
 class LawUpdateApiView(UpdateAPIView):
     queryset = Law.objects.all()
     serializer_class = LawSerializer
-    permission_classes = [IsAdminUser, ]
-
+    permission_classes = [
+        IsAdminUser,
+    ]
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -97,18 +95,17 @@ class LawUpdateApiView(UpdateAPIView):
 
     def update(self, request, *args, **kwargs):
         response = super().update(request, *args, **kwargs)
-        return Response({
-            'status': 200,
-            'message': 'obj updated',
-            'data': response.data
-        })
+        return Response(
+            {"status": 200, "message": "obj updated", "data": response.data}
+        )
 
 
 class LawDeleteApiView(DestroyAPIView):
     queryset = Law.objects.all()
     serializer_class = LawSerializer
-    permission_classes = [IsAdminUser, ]
-
+    permission_classes = [
+        IsAdminUser,
+    ]
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -117,15 +114,17 @@ class LawDeleteApiView(DestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         response = super().delete(request, *args, **kwargs)
-        return Response({
-            'status': 200,
-            'message': 'obj deleted',
-        })
+        return Response(
+            {
+                "status": 200,
+                "message": "obj deleted",
+            }
+        )
 
 
 class SearchApiView(GenericAPIView):
     def get(self, request, *args, **kwargs):
-        query_params = request.query_params.get('q')
+        query_params = request.query_params.get("q")
         law_obj = Law.objects.filter(title__icontains=query_params)
         article_obj = LegalArticle.objects.filter(description__icontains=query_params)
         # agent = request.META["HTTP_USER_AGENT"]
@@ -136,7 +135,7 @@ class SearchApiView(GenericAPIView):
         #                               location=""
         #                               )
         context = {
-            'law': LawSerializer(law_obj, many=True).data,
-            'article': LegalArticleSerializer(article_obj, many=True).data,
+            "law": LawSerializer(law_obj, many=True).data,
+            "article": LegalArticleSerializer(article_obj, many=True).data,
         }
         return Response(data=context, status=status.HTTP_200_OK)

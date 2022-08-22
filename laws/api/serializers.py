@@ -13,17 +13,20 @@ class LawSerializer(TaggitSerializer, serializers.ModelSerializer):
     class Meta:
         model = Law
         fields = (
-            'id',
-            'title',
-            'tags',
-            'category',
-            'approved',
-            'article',
-            'published',
+            "id",
+            "title",
+            "tags",
+            "category",
+            "approved",
+            "article",
+            "published",
             "approval_authority",
         )
 
-        read_only_fields = ('article', 'id',)
+        read_only_fields = (
+            "article",
+            "id",
+        )
 
     def get_article(self, obj):
         return LegalArticleSerializer(obj.articles.all(), many=True).data

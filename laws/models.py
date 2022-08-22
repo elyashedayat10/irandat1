@@ -30,7 +30,7 @@ class Law(TimeStampedModel):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('laws:detail', args=[self.id])
+        return reverse("laws:detail", args=[self.id])
 
     def get_articles_count(self):
         return self.articles.count()

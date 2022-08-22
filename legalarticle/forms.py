@@ -12,16 +12,14 @@ class LegalArticleForm(forms.ModelForm):
             "number",
             "description",
             "approved",
-
         )
         labels = {
-            "number": 'شماره ماده',
-            'description': 'توضیحات ',
-            'approved': 'تاریخ ثبت',
-
+            "number": "شماره ماده",
+            "description": "توضیحات ",
+            "approved": "تاریخ ثبت",
         }
         widgets = {
-            'number': forms.NumberInput(attrs={"class": "form-control"}),
+            "number": forms.NumberInput(attrs={"class": "form-control"}),
         }
 
     def __init__(self, *args, **kwargs):

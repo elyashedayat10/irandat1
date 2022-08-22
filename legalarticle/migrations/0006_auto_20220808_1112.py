@@ -6,19 +6,19 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('legalarticle', '0005_legalarticle_hits'),
+        ("legalarticle", "0005_legalarticle_hits"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='articlehit',
-            name='ip_address',
+            model_name="articlehit",
+            name="ip_address",
         ),
         migrations.RemoveField(
-            model_name='legalarticle',
-            name='hits',
+            model_name="legalarticle",
+            name="hits",
         ),
         migrations.DeleteModel(
-            name='IPAddress',
+            name="IPAddress",
         ),
     ]

@@ -1,9 +1,6 @@
 from django.urls import path
-from .views import (
-    NoteCreateApiView,
-    NoteUpdateApiView,
-    NoteDeleteApiView,
-)
+
+from .views import NoteCreateApiView, NoteDeleteApiView, NoteUpdateApiView
 
 urlpatterns = [
     path("create/", NoteCreateApiView.as_view()),

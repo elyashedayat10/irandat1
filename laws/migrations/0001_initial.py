@@ -11,26 +11,61 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('categories', '0001_initial'),
-        ('taggit', '0005_auto_20220424_2025'),
+        ("categories", "0001_initial"),
+        ("taggit", "0005_auto_20220424_2025"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Law',
+            name="Law",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created', django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name='created')),
-                ('modified', django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name='modified')),
-                ('title', models.CharField(max_length=500)),
-                ('approved', models.DateField()),
-                ('note', models.CharField(max_length=500)),
-                ('category', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='laws', to='categories.category')),
-                ('tags', taggit.managers.TaggableManager(help_text='A comma-separated list of tags.', through='taggit.TaggedItem', to='taggit.Tag', verbose_name='Tags')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "created",
+                    django_extensions.db.fields.CreationDateTimeField(
+                        auto_now_add=True, verbose_name="created"
+                    ),
+                ),
+                (
+                    "modified",
+                    django_extensions.db.fields.ModificationDateTimeField(
+                        auto_now=True, verbose_name="modified"
+                    ),
+                ),
+                ("title", models.CharField(max_length=500)),
+                ("approved", models.DateField()),
+                ("note", models.CharField(max_length=500)),
+                (
+                    "category",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="laws",
+                        to="categories.category",
+                    ),
+                ),
+                (
+                    "tags",
+                    taggit.managers.TaggableManager(
+                        help_text="A comma-separated list of tags.",
+                        through="taggit.TaggedItem",
+                        to="taggit.Tag",
+                        verbose_name="Tags",
+                    ),
+                ),
             ],
             options={
-                'get_latest_by': 'modified',
-                'abstract': False,
+                "get_latest_by": "modified",
+                "abstract": False,
             },
         ),
     ]

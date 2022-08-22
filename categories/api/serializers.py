@@ -13,9 +13,9 @@ class CategorySerializer(serializers.ModelSerializer):
             "parent",
             "title",
             "children",
-            'order',
+            "order",
         )
-        read_only_fields = ['id', 'children']
+        read_only_fields = ["id", "children"]
 
     def get_children(self, obj):
         return CategorySerializer(obj.get_children(), many=True).data

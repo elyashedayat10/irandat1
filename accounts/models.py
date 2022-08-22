@@ -3,7 +3,6 @@ from django.db import models
 
 from .managers import UserManager
 
-
 # Create your models here.
 
 
@@ -17,8 +16,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.CharField(max_length=125, null=True, blank=True)
 
     USERNAME_FIELD = "phone_number"
-    REQUIRED_FIELDS = ['first_name','last_name','email']
-
+    REQUIRED_FIELDS = ["first_name", "last_name", "email"]
 
     objects = UserManager()
 

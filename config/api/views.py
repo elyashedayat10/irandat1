@@ -1,10 +1,10 @@
-from rest_framework.generics import GenericAPIView, CreateAPIView
-from .serializers import GuideSerializer, SettingSerializer
-from ..models import Guide, Setting
+from rest_framework import status
+from rest_framework.generics import CreateAPIView, GenericAPIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
-from rest_framework import status
 
+from ..models import Guide, Setting
+from .serializers import GuideSerializer, SettingSerializer
 
 # class GuideApiView(GenericAPIView):
 #     serializer_class = GuideSerializer

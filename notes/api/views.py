@@ -1,7 +1,8 @@
+from rest_framework.generics import CreateAPIView, DestroyAPIView, UpdateAPIView
+from rest_framework.response import Response
+
 from ..models import Note
 from .serializers import NoteSerializers
-from rest_framework.generics import CreateAPIView, UpdateAPIView, DestroyAPIView
-from rest_framework.response import Response
 
 
 class NoteCreateApiView(CreateAPIView):
@@ -10,10 +11,7 @@ class NoteCreateApiView(CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
-        return Response({
-            "message": "note created",
-            "data": response.data
-        })
+        return Response({"message": "note created", "data": response.data})
 
 
 class NoteUpdateApiView(UpdateAPIView):
@@ -22,10 +20,7 @@ class NoteUpdateApiView(UpdateAPIView):
 
     def update(self, request, *args, **kwargs):
         response = super().update(request, *args, **kwargs)
-        return Response({
-            "message": "note updated",
-            "data": response.data
-        })
+        return Response({"message": "note updated", "data": response.data})
 
 
 class NoteDeleteApiView(DestroyAPIView):
@@ -34,7 +29,4 @@ class NoteDeleteApiView(DestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         response = super().delete(request, *args, **kwargs)
-        return Response({
-            "message": "note deleted",
-            "data": response.data
-        })
+        return Response({"message": "note deleted", "data": response.data})

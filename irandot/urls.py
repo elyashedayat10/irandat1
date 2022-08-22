@@ -9,10 +9,10 @@ urlpatterns = [
     path("config/", include("config.urls", namespace="config")),
     path("accounts/", include("accounts.urls", namespace="accounts")),
     path("laws/", include("laws.urls", namespace="laws")),
-    path("article/", include("legalarticle.urls", namespace='legal')),
-    path("comment/", include("comment.urls", namespace='comment')),
-    path("ticcket/", include("tickets.urls", namespace='ticket')),
-    path("note/", include("notes.urls", namespace='notes')),
+    path("article/", include("legalarticle.urls", namespace="legal")),
+    path("comment/", include("comment.urls", namespace="comment")),
+    path("ticcket/", include("tickets.urls", namespace="ticket")),
+    path("note/", include("notes.urls", namespace="notes")),
 ]
 if settings.DEBUG:
     urlpatterns = urlpatterns + static(

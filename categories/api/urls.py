@@ -1,7 +1,11 @@
 from django.urls import path
 
-from .views import (CategoryCreateAPIView, CategoryDeleteApiView,
-                    CategoryListApiView, CategoryUpdateApiView)
+from .views import (
+    CategoryCreateAPIView,
+    CategoryDeleteApiView,
+    CategoryListApiView,
+    CategoryUpdateApiView,
+)
 
 urlpatterns = [
     path("list/", CategoryListApiView.as_view()),

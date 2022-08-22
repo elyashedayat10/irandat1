@@ -10,15 +10,27 @@ class UserManager(BaseUserManager):
         if not last_name:
             raise ValueError("this field is required")
 
-        user = self.model(phone_number=phone_number, first_name=first_name, last_name=last_name, email=email,
-                          password=password)
+        user = self.model(
+            phone_number=phone_number,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=password,
+        )
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, phone_number, first_name, last_name, password, email=None):
-        user = self.create_user(phone_number=phone_number, first_name=first_name, last_name=last_name, email=email,
-                                password=password)
+    def create_superuser(
+        self, phone_number, first_name, last_name, password, email=None
+    ):
+        user = self.create_user(
+            phone_number=phone_number,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=password,
+        )
         user.is_admin = True
         user.is_superuser = True
         user.save(using=self._db)

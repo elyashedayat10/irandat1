@@ -9,12 +9,12 @@ class SettingForm(forms.ModelForm):
         fields = (
             "title",
             "icon",
-            'description',
+            "description",
         )
         labels = {
             "title": "عنوان",
             "icon": "ایکون",
-            'description': 'توضیحات',
+            "description": "توضیحات",
         }
 
         widgets = {

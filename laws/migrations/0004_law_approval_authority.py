@@ -6,14 +6,14 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('laws', '0003_law_published'),
+        ("laws", "0003_law_published"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='law',
-            name='approval_authority',
-            field=models.CharField(default='asd', max_length=125),
+            model_name="law",
+            name="approval_authority",
+            field=models.CharField(default="asd", max_length=125),
             preserve_default=False,
         ),
     ]
