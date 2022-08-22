@@ -13,6 +13,7 @@ from rest_framework.generics import (
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
+from config.models import Notification
 from ..models import Comment
 from .permissions import OwnerPermission
 from .serializers import CommentSerializer
@@ -36,7 +37,8 @@ class CommentCreateApiView(CreateAPIView):
     serializer_class = CommentSerializer
 
     def perform_create(self, serializer):
-        pusher.trigger("irandat", "my-event", {"message": "کامنت جدیدی ثبت شده"})
+        Notification.objects.create(text=f"{self.request.user}کامنت جدیدی در بارنامه ثبت شده توسط ")
+        # pusher.trigger("irandat", "my-event", {"message": "کامنت جدیدی ثبت شده"})
         # subject = 'welcome to GFG world'
         # message = f'Hi {user.username}, thank you for registering in geeksforgeeks.'
         # email_from = settings.EMAIL_HOST_USER

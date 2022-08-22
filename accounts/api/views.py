@@ -27,6 +27,7 @@ from .serializers import (
     VerifySerializer,
 )
 from .permissions import IsSuperUser
+from config.models import Notification
 
 user = get_user_model()
 
@@ -87,6 +88,7 @@ class VerifyApiView(GenericAPIView):
                     "message": "کاربر با موفقیت وارد شد",
                     "data": token.key,
                 }
+                Notification.objects.create(text=f'{phone_number} به تازگی در برنامه عضو شده ')
                 return Response(data=context, status=status.HTTP_200_OK)
             else:
                 return Response(
