@@ -10,7 +10,7 @@ from rest_framework.generics import (
     GenericAPIView,
     ListAPIView,
 )
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.permissions import IsAdminUser, IsAuthenticated,
 from rest_framework.response import Response
 
 from ..models import OtpCode
@@ -26,6 +26,7 @@ from .serializers import (
     UserSerializer,
     VerifySerializer,
 )
+from .permissions import IsSuperUser
 
 user = get_user_model()
 
@@ -262,6 +263,7 @@ class UserListApiView(ListAPIView):
 
 class MakeAdminUserApiView(GenericAPIView):
     serializer_class = UserMainSerializers
+    permission_classes = [IsSuperUser, ]
 
     def get(self, request, *args, **kwargs):
         pk = kwargs.get("pk")
@@ -273,6 +275,7 @@ class MakeAdminUserApiView(GenericAPIView):
 
 class MakeNormalUserApiView(GenericAPIView):
     serializer_class = UserMainSerializers
+    permission_classes = [IsSuperUser, ]
 
     def get(self, request, *args, **kwargs):
         pk = kwargs.get("pk")

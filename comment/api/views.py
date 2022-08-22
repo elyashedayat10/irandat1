@@ -66,6 +66,7 @@ class CommentDeleteApiView(DestroyAPIView):
     lookup_url_kwarg = "pk"
     permission_classes = [
         OwnerPermission,
+        IsAdminUser,
     ]
 
     def delete(self, request, *args, **kwargs):
