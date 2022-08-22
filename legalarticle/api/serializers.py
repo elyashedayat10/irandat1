@@ -45,11 +45,6 @@ class LegalArticleSerializer(serializers.ModelSerializer):
         return obj.favorites.count()
 
 
-
-
-
-
-
 class LegalArticleDetailSerializer(serializers.ModelSerializer):
     comments = serializers.SerializerMethodField()
     notes = serializers.SerializerMethodField()
@@ -78,8 +73,8 @@ class LegalArticleDetailSerializer(serializers.ModelSerializer):
         return NoteSerializers(obj.notes.all(), many=True).data
 
     def get_liked(self, obj):
-        if self.context['request'].user.is_authenticated():
-            user = self.context['request'].user
+        user = self.context['request'].user
+        if user.is_authenticated:
             liked_list = user.likes.all().values_list('id', flat=True)
             if obj.id in liked_list:
                 return True
@@ -88,10 +83,6 @@ class LegalArticleDetailSerializer(serializers.ModelSerializer):
 
     def get_like_count(self, obj):
         return obj.favorites.count()
-
-
-
-
 
 
 # class LegalArticleChartApiView(serializers.ModelSerializer):
