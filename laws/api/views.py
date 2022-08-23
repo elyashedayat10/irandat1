@@ -147,12 +147,12 @@ class ChapterCreateApiView(CreateAPIView):
     permission_classes = [IsAdminUser, ]
 
     def create(self, request, *args, **kwargs):
-        response = super().create(request, *args, **kwargs)
+        super().create(request, *args, **kwargs)
         return Response(
             data={
                 "status": 201,
                 'message': 'chapter created',
-                'data': response.data
+                'data': request.data
             }
         )
 
@@ -163,12 +163,12 @@ class ChapterUpdateApiView(UpdateAPIView):
     permission_classes = [IsAdminUser, ]
 
     def update(self, request, *args, **kwargs):
-        response = super().update(request, *args, **kwargs)
+        super().update(request, *args, **kwargs)
         return Response(
             data={
                 "status": 200,
                 'message': 'chapter updated',
-                'data': response.data
+                'data': request.data
             }
         )
 
