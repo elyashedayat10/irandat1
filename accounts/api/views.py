@@ -44,7 +44,8 @@ class SendOtpApiView(GenericAPIView):
             last_name = serializer.validated_data["last_name"]
             password = serializer.validated_data["password"]
             random_number = randint(111111, 999999)
-            try:
+            user_obj = user.objects.filter(phone_number=phone_number)
+            if not user_obj:
                 user_obj = user.objects.create_user(
                     phone_number=phone_number,
                     password=password,
@@ -61,13 +62,23 @@ class SendOtpApiView(GenericAPIView):
                     },
                     status=status.HTTP_200_OK,
                 )
-            except Exception:
+            elif user_obj and user_obj.is_active:
                 return Response(
                     data={
                         "message": "user  already exists",
                     },
                     status=status.HTTP_200_OK,
                 )
+            else:
+                OtpCode.objects.create(phone_number=phone_number, code=random_number)
+                send_otp(phone_number, random_number)
+                return Response(
+                    data={
+                        "message": "code resend to user",
+                    },
+                    status=status.HTTP_200_OK,
+                )
+
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
