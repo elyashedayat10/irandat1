@@ -7,6 +7,10 @@ from .views import (
     LawListApiView,
     LawUpdateApiView,
     SearchApiView,
+    ChapterCreateApiView,
+    ChapterUpdateApiView,
+    ChapterDeleteApiView,
+    LawChapterListApiView,
 )
 
 urlpatterns = [
@@ -16,4 +20,8 @@ urlpatterns = [
     path("delete/<int:pk>/", LawDeleteApiView.as_view()),
     path("update/<int:pk>/", LawUpdateApiView.as_view()),
     path("search/", SearchApiView.as_view()),
+    path("chapter_create/", ChapterCreateApiView.as_view()),
+    path("chapter_update/<int:pk>/", ChapterUpdateApiView.as_view()),
+    path("chapter_delete/<int:pk>/", ChapterDeleteApiView.as_view()),
+    path("law_chapters/<int:pk>/", LawChapterListApiView.as_view()),
 ]
