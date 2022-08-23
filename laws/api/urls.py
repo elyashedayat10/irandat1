@@ -1,16 +1,16 @@
 from django.urls import path
 
 from .views import (
+    ChapterCreateApiView,
+    ChapterDeleteApiView,
+    ChapterUpdateApiView,
     LawCategoryListApiView,
+    LawChapterListApiView,
     LawCreateApiView,
     LawDeleteApiView,
     LawListApiView,
     LawUpdateApiView,
     SearchApiView,
-    ChapterCreateApiView,
-    ChapterUpdateApiView,
-    ChapterDeleteApiView,
-    LawChapterListApiView,
 )
 
 urlpatterns = [

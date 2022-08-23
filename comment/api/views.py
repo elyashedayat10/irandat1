@@ -1,12 +1,10 @@
 from django.conf import settings
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
-from pusher import Pusher
 from rest_framework import status
 from rest_framework.generics import (
     CreateAPIView,
     DestroyAPIView,
-    GenericAPIView,
     ListAPIView,
     UpdateAPIView,
 )
@@ -14,18 +12,11 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
 from config.models import Notification
+
 from ..models import Comment
 from .permissions import OwnerPermission
 from .serializers import CommentSerializer
 from .throttle import CustomUserRateThrottle
-
-pusher = Pusher(
-    app_id="1438811",
-    key="05c8dc49c22fbb40bde3",
-    secret="4d37a334eb4d651892f5",
-    cluster="mt1",
-    ssl=True,
-)
 
 
 class CommentCreateApiView(CreateAPIView):
@@ -37,8 +28,9 @@ class CommentCreateApiView(CreateAPIView):
     serializer_class = CommentSerializer
 
     def perform_create(self, serializer):
-        Notification.objects.create(text=f"{self.request.user}کامنت جدیدی در بارنامه ثبت شده توسط ")
-        # pusher.trigger("irandat", "my-event", {"message": "کامنت جدیدی ثبت شده"})
+        Notification.objects.create(
+            text=f"{self.request.user}کامنت جدیدی در بارنامه ثبت شده توسط "
+        )
         # subject = 'welcome to GFG world'
         # message = f'Hi {user.username}, thank you for registering in geeksforgeeks.'
         # email_from = settings.EMAIL_HOST_USER
@@ -51,8 +43,6 @@ class CommentCreateApiView(CreateAPIView):
 class CommentUpdateApiView(UpdateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    lookup_field = "pk"
-    lookup_url_kwarg = "pk"
     permission_classes = [
         OwnerPermission,
     ]
@@ -64,8 +54,6 @@ class CommentUpdateApiView(UpdateAPIView):
 class CommentDeleteApiView(DestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    lookup_field = "pk"
-    lookup_url_kwarg = "pk"
     permission_classes = [
         OwnerPermission,
         IsAdminUser,

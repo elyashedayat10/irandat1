@@ -3,13 +3,13 @@ from django.urls import path
 from .views import (
     AllHitsListApiView,
     ArticleHitApiView,
+    DisLikeApiView,
     FavoriteApiView,
     LegaArticleApiView,
     LegaArticleCreateApiView,
     LegaArticleDestroyApiView,
     LegaArticleUpdateApiView,
     LegalArticleDetailView,
-    DisLikeApiView,
 )
 
 urlpatterns = [
@@ -22,5 +22,5 @@ urlpatterns = [
     path("hits_list/<int:pk>/", AllHitsListApiView.as_view()),
     path("detail/<int:pk>/", LegalArticleDetailView.as_view()),
     path("detail_hit/<int:pk>/", ArticleHitApiView.as_view()),
-    path('dislike/', DisLikeApiView.as_view())
+    path("dislike/", DisLikeApiView.as_view()),
 ]

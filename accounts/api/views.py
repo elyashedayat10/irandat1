@@ -1,7 +1,7 @@
 from random import randint
 
-from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate, get_user_model
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.generics import (
@@ -13,8 +13,11 @@ from rest_framework.generics import (
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
+from config.models import Notification
+
 from ..models import OtpCode
 from ..utils import send_otp
+from .permissions import IsSuperUser
 from .serializers import (
     AdminSerializer,
     LoginSerializer,
@@ -26,8 +29,6 @@ from .serializers import (
     UserSerializer,
     VerifySerializer,
 )
-from .permissions import IsSuperUser
-from config.models import Notification
 
 user = get_user_model()
 
@@ -88,17 +89,18 @@ class VerifyApiView(GenericAPIView):
                     "message": "کاربر با موفقیت وارد شد",
                     "data": token.key,
                 }
-                Notification.objects.create(text=f'{phone_number} به تازگی در برنامه عضو شده ')
+                Notification.objects.create(
+                    text=f"{phone_number} به تازگی در برنامه عضو شده "
+                )
                 return Response(data=context, status=status.HTTP_200_OK)
             else:
                 return Response(
                     data={"message": "رمز وارد شده درست نمیباشذ"},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
-        else:
-            return Response(
-                data={"message": serializer.errors}, status=status.HTTP_502_BAD_GATEWAY
-            )
+        return Response(
+            data={"message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST
+        )
 
 
 class LoginApiView(GenericAPIView):
@@ -265,44 +267,31 @@ class UserListApiView(ListAPIView):
 
 class MakeAdminUserApiView(GenericAPIView):
     serializer_class = UserMainSerializers
-    permission_classes = [IsSuperUser, ]
+    permission_classes = [
+        IsSuperUser,
+    ]
 
     def get(self, request, *args, **kwargs):
         pk = kwargs.get("pk")
         user_obj = get_object_or_404(user, pk=pk)
         user_obj.is_admin = True
         user_obj.save()
-        return Response({"message": "user upgrade to admin user"}, status=status.HTTP_200_OK)
+        return Response(
+            {"message": "user upgrade to admin user"}, status=status.HTTP_200_OK
+        )
 
 
 class MakeNormalUserApiView(GenericAPIView):
     serializer_class = UserMainSerializers
-    permission_classes = [IsSuperUser, ]
+    permission_classes = [
+        IsSuperUser,
+    ]
 
     def get(self, request, *args, **kwargs):
         pk = kwargs.get("pk")
         user_obj = get_object_or_404(user, pk=pk)
         user_obj.is_admin = False
         user_obj.save()
-        return Response({"message": "user dowmgraded to normal user"}, status=status.HTTP_200_OK)
-
-
-from instagram_private_api import Client, ClientCompatPatch
-
-from .serializers import LoginSerializers
-
-
-class InstaLoginApiView(GenericAPIView):
-    serializer_class = LoginSerializers
-
-    def post(self, request, *args, **kwargs):
-        ser = self.serializer_class(data=request.data)
-        if ser.is_valid():
-            try:
-                api = Client(
-                    ser.validated_data["username"], ser.validated_data["password"]
-                )
-                results = api.feed_timeline()
-                return Response(data={"result": "ok", "status": results})
-            except Exception as e:
-                return Response(data="errr")
+        return Response(
+            {"message": "user dowmgraded to normal user"}, status=status.HTTP_200_OK
+        )

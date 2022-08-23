@@ -1,10 +1,8 @@
-from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.generics import (
     CreateAPIView,
     GenericAPIView,
     ListAPIView,
-    RetrieveAPIView,
 )
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
@@ -59,6 +57,7 @@ class AnswerCreateApiView(GenericAPIView):
 
 
 class TicketCloseApiView(GenericAPIView):
+
     def get(self, request, *args, **kwargs):
         ticket_id = kwargs.get("ticket_id")
         ticket_obj = Ticket.objects.get(id=ticket_id)

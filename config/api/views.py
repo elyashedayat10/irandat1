@@ -3,8 +3,8 @@ from rest_framework.generics import CreateAPIView, GenericAPIView, ListAPIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
-from ..models import Guide, Setting, Notification
-from .serializers import GuideSerializer, SettingSerializer, NotificationSerializer
+from ..models import Guide, Notification, Setting
+from .serializers import GuideSerializer, NotificationSerializer, SettingSerializer
 
 
 class GuideApiView(GenericAPIView):
@@ -18,13 +18,17 @@ class GuideApiView(GenericAPIView):
 class GuideCreateApiView(CreateAPIView):
     queryset = Guide.load()
     serializer_class = GuideSerializer
-    permission_classes = [IsAdminUser, ]
+    permission_classes = [
+        IsAdminUser,
+    ]
 
 
 class SettingCreateApiView(CreateAPIView):
     queryset = Setting.load()
     serializer_class = SettingSerializer
-    permission_classes = [IsAdminUser, ]
+    permission_classes = [
+        IsAdminUser,
+    ]
 
 
 class SettingApiView(GenericAPIView):
@@ -38,7 +42,9 @@ class SettingApiView(GenericAPIView):
 class NotificationListApiView(ListAPIView):
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
-    permission_classes = [IsAdminUser, ]
+    permission_classes = [
+        IsAdminUser,
+    ]
 
     def list(self, request, *args, **kwargs):
         response = super(NotificationListApiView, self).list(request, *args, **kwargs)

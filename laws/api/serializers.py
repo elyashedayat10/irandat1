@@ -3,7 +3,7 @@ from taggit.serializers import TaggitSerializer, TagListSerializerField
 
 from legalarticle.api.serializers import LegalArticleSerializer
 
-from ..models import Law, Chapter
+from ..models import Chapter, Law
 
 
 class ChapterSerializer(serializers.ModelSerializer):
@@ -11,8 +11,8 @@ class ChapterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Chapter
-        fields = ('id', 'number', 'law', 'articles')
-        read_only_fields = ('articles',)
+        fields = ("id", "number", "law", "articles")
+        read_only_fields = ("articles",)
 
     def get_articles(self, obj):
         return LegalArticleSerializer(obj.articles.all(), many=True).data

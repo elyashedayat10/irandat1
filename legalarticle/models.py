@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
 
-from laws.models import Law, Chapter
+from laws.models import Chapter, Law
 
 user = settings.AUTH_USER_MODEL
 
@@ -17,7 +17,13 @@ class LegalArticle(TimeStampedModel):
         "laws.Law", on_delete=models.CASCADE, related_name="articles"
     )
     number = models.PositiveIntegerField()
-    chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE, related_name="articles",blank=True,null=True)
+    chapter = models.ForeignKey(
+        Chapter,
+        on_delete=models.CASCADE,
+        related_name="articles",
+        blank=True,
+        null=True,
+    )
 
     def __str__(self):
         return f"ماده شماره {self.number} از قانون {self.law}"

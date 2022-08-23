@@ -1,6 +1,5 @@
 from django.db import models
 from django.urls import reverse
-
 from django_extensions.db.models import TimeStampedModel
 from taggit.managers import TaggableManager
 
@@ -39,7 +38,7 @@ class Chapter(models.Model):
     law = models.ForeignKey(Law, on_delete=models.CASCADE, related_name="chapters")
 
     def __str__(self):
-        return f'{self.number} from {self.law}'
+        return f"{self.number} from {self.law}"
 
     def article_count(self):
         return self.articles.all()

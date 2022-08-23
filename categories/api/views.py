@@ -10,8 +10,6 @@ from rest_framework.response import Response
 from ..models import Category
 from .serializers import CategorySerializer
 
-# from django.contrib.gis.utils import GeoIP
-
 
 class CategoryListApiView(ListAPIView):
     queryset = Category.objects.filter(parent=None)
@@ -21,11 +19,6 @@ class CategoryListApiView(ListAPIView):
     ]
 
     def list(self, request, *args, **kwargs):
-        # print(request.META.get('REMOTE_ADDR', None))
-        # g = GeoIP()
-        # ip = request.META.get('REMOTE_ADDR', None)
-        # if ip:
-        #     print(g.city(ip)['city'])
         response = super().list(request, *args, **kwargs)
         return Response({"message": "category list", "data": response.data})
 
@@ -86,16 +79,4 @@ class CategoryDeleteApiView(DestroyAPIView):
 #         return Law.objects.filter(category_id=self.kwargs.get('id'))
 
 
-# class ProfessorReviewList(generics.ListCreateAPIView):
-#     queryset = Review.objects.all()
-#     serializer_class = ReviewSerializer
-#     def get_queryset(self):
-#         queryset = super(ProfessorReviewList, self).get_queryset()
-#         return queryset.filter(professor__pk=self.kwargs.get('pk'))
-#
-#     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
-#                           IsAuthorOrReadOnly,)
-#
-#     def perform_create(self, serializer):
-#         # The request user is set as author automatically.
-#         serializer.save(author=self.request.user)
+

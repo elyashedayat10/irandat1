@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from ..models import Guide, Setting, Notification
+from ..models import Guide, Notification, Setting
 
 
 class GuideSerializer(serializers.ModelSerializer):
@@ -19,7 +19,7 @@ class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
         fields = (
-            'id',
-            'text',
-            'created',
+            "id",
+            "text",
+            "created",
         )

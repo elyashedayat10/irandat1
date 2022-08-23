@@ -18,8 +18,8 @@ from categories.models import Category
 from legalarticle.api.serializers import LegalArticleSerializer
 from legalarticle.models import ArticleHit, LegalArticle
 
-from ..models import Law, Chapter
-from .serializers import LawSerializer, ChapterSerializer
+from ..models import Chapter, Law
+from .serializers import ChapterSerializer, LawSerializer
 
 
 class LawListApiView(ListAPIView):
@@ -144,46 +144,44 @@ class SearchApiView(GenericAPIView):
 class ChapterCreateApiView(CreateAPIView):
     serializer_class = ChapterSerializer
     queryset = Chapter.objects.all()
-    permission_classes = [IsAdminUser, ]
+    permission_classes = [
+        IsAdminUser,
+    ]
 
     def create(self, request, *args, **kwargs):
         super().create(request, *args, **kwargs)
         return Response(
-            data={
-                "status": 201,
-                'message': 'chapter created',
-                'data': request.data
-            }
+            data={"status": 201, "message": "chapter created", "data": request.data}
         )
 
 
 class ChapterUpdateApiView(UpdateAPIView):
     serializer_class = ChapterSerializer
     queryset = Chapter.objects.all()
-    permission_classes = [IsAdminUser, ]
+    permission_classes = [
+        IsAdminUser,
+    ]
 
     def update(self, request, *args, **kwargs):
         super().update(request, *args, **kwargs)
         return Response(
-            data={
-                "status": 200,
-                'message': 'chapter updated',
-                'data': request.data
-            }
+            data={"status": 200, "message": "chapter updated", "data": request.data}
         )
 
 
 class ChapterDeleteApiView(DestroyAPIView):
     serializer_class = ChapterSerializer
     queryset = Chapter.objects.all()
-    permission_classes = [IsAdminUser, ]
+    permission_classes = [
+        IsAdminUser,
+    ]
 
     def delete(self, request, *args, **kwargs):
         super().delete(request, *args, **kwargs)
         return Response(
             data={
                 "status": 200,
-                'message': 'chapter deleted',
+                "message": "chapter deleted",
             }
         )
 
@@ -200,8 +198,8 @@ class LawChapterListApiView(ListAPIView):
         response = super(LawChapterListApiView, self).list(request, *args, **kwargs)
         return Response(
             data={
-                'status': 200,
-                'message': 'chapter base on law',
-                'data': response.data,
+                "status": 200,
+                "message": "chapter base on law",
+                "data": response.data,
             }
         )
