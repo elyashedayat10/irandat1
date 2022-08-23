@@ -44,7 +44,7 @@ class SendOtpApiView(GenericAPIView):
             last_name = serializer.validated_data["last_name"]
             password = serializer.validated_data["password"]
             random_number = randint(111111, 999999)
-            user_obj = user.objects.filter(phone_number=phone_number)
+            user_obj = user.objects.filter(phone_number=phone_number).first()
             if not user_obj:
                 user_obj = user.objects.create_user(
                     phone_number=phone_number,
