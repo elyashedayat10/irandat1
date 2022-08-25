@@ -19,6 +19,10 @@ class Law(TimeStampedModel):
     approved = models.DateField()
     published = models.DateField()
     approval_authority = models.CharField(max_length=125)
+    order = models.IntegerField()
+
+    class Meta:
+        ordering = ("-order",)
 
     def __str__(self):
         return self.title
@@ -36,7 +40,13 @@ class Law(TimeStampedModel):
 class Chapter(models.Model):
     number = models.CharField(max_length=125)
     law = models.ForeignKey(Law, on_delete=models.CASCADE, related_name="chapters")
-    parent = models.ForeignKey("self", on_delete=models.CASCADE, related_name="child", null=True, blank=True)
+    parent = models.ForeignKey(
+        "self", on_delete=models.CASCADE, related_name="child", null=True, blank=True
+    )
+    order = models.IntegerField()
+
+    class Meta:
+        ordering = ("-order",)
 
     def __str__(self):
         return f"{self.number} from {self.law}"

@@ -3,7 +3,7 @@ from rest_framework import serializers
 from comment.api.serializers import CommentSerializer
 from notes.api.serializers import NoteSerializers
 
-from ..models import Dislike, Favorite, LegalArticle
+from ..models import ArticleHit, Dislike, Favorite, LegalArticle
 
 
 class LegalArticleSerializer(serializers.ModelSerializer):
@@ -24,6 +24,7 @@ class LegalArticleSerializer(serializers.ModelSerializer):
             "chapter",
             "comments",
             "notes",
+            "_type",
             # "liked",
             "like_count",
             "dislike_count",
@@ -76,12 +77,20 @@ class LegalArticleDetailSerializer(serializers.ModelSerializer):
             "number",
             "comments",
             "notes",
+            "_type",
             "liked",
             "like_count",
             "chapter",
             "dislike_count",
         )
-        read_only_fields = ("comments", "id", "notes", "liked", "like_count","dislike_count")
+        read_only_fields = (
+            "comments",
+            "id",
+            "notes",
+            "liked",
+            "like_count",
+            "dislike_count",
+        )
 
     def get_comments(self, obj):
         return CommentSerializer(obj.comments.all(), many=True).data
@@ -103,25 +112,6 @@ class LegalArticleDetailSerializer(serializers.ModelSerializer):
 
     def get_dislike_count(self, obj):
         return obj.dislike.count()
-
-
-
-# class LegalArticleChartApiView(serializers.ModelSerializer):
-#     count = serializers.IntegerField()
-#     ip_address = serializers.CharField(source="ip_address__sum")
-#     class Meta:
-#         model = LegalArticle
-#         fields = (
-#             'id',
-#             'description',
-#             'approved',
-#             'law',
-#             'number',
-#             'count',
-#             'ip_address',
-#         )
-
-from ..models import ArticleHit
 
 
 class HitsCountSer(serializers.ModelSerializer):

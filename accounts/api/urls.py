@@ -12,9 +12,9 @@ from .views import (
     PasswordReset,
     PasswordResetVerify,
     SendOtpApiView,
+    UpdateUserApiView,
     UserListApiView,
     VerifyApiView,
-    UpdateUserApiView,
 )
 
 urlpatterns = [

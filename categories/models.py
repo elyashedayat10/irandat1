@@ -1,6 +1,7 @@
 from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
 
+
 # Create your models here.
 
 
@@ -21,7 +22,7 @@ class Category(MPTTModel):
     order = models.PositiveIntegerField(null=True, blank=True)
 
     class MPTTMeta:
-        order_insertion_by = ["title"]
+        order_insertion_by = ["order"]
 
     def __str__(self):
         return self.title

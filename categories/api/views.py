@@ -77,6 +77,3 @@ class CategoryDeleteApiView(DestroyAPIView):
 #
 #     def get_queryset(self):
 #         return Law.objects.filter(category_id=self.kwargs.get('id'))
-
-
-

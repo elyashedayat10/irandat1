@@ -26,10 +26,10 @@ from .serializers import (
     PasswordResetSerializer,
     PasswordResetVerifiedSerializer,
     PhoneSerializer,
+    UpdateUserSerializers,
     UserMainSerializers,
     UserSerializer,
     VerifySerializer,
-    UpdateUserSerializers,
 )
 
 user = get_user_model()
@@ -315,16 +315,20 @@ class UpdateUserApiView(GenericAPIView):
     queryset = user.objects.all()
 
     def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(instance=request.user, data=request.data, partial=True)
+        serializer = self.serializer_class(
+            instance=request.user, data=request.data, partial=True
+        )
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(
                 data={
                     "message": "user updated",
                 },
-                status=status.HTTP_200_OK
+                status=status.HTTP_200_OK,
             )
-        return Response(data={
-            "message": "invalid data",
-        },
-            status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            data={
+                "message": "invalid data",
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
