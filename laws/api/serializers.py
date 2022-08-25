@@ -11,7 +11,7 @@ class ChapterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Chapter
-        fields = ("id", "number", "law", "articles")
+        fields = ("id", "number", "parent", "law", "articles")
         read_only_fields = ("articles",)
 
     def get_articles(self, obj):
