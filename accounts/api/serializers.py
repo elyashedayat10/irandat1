@@ -71,3 +71,13 @@ class AdminSerializer(serializers.ModelSerializer):
 class LoginSerializers(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField()
+
+
+class UpdateUserSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = user
+        fields = (
+            'first_name',
+            'last_name',
+            'email',
+        )

@@ -9,6 +9,7 @@ from rest_framework.generics import (
     DestroyAPIView,
     GenericAPIView,
     ListAPIView,
+    UpdateAPIView,
 )
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
@@ -28,6 +29,7 @@ from .serializers import (
     UserMainSerializers,
     UserSerializer,
     VerifySerializer,
+    UpdateUserSerializers,
 )
 
 user = get_user_model()
@@ -305,4 +307,18 @@ class MakeNormalUserApiView(GenericAPIView):
         user_obj.save()
         return Response(
             {"message": "user dowmgraded to normal user"}, status=status.HTTP_200_OK
+        )
+
+
+class UpdateUserApiView(UpdateAPIView):
+    serializer_class = UpdateUserSerializers
+    queryset = user.objects.all()
+
+    def update(self, request, *args, **kwargs):
+        super().update(request, *args, **kwargs)
+        return Response(
+            data={
+                "status": 200,
+                "message": "user updated",
+            }
         )
