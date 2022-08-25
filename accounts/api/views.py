@@ -310,15 +310,21 @@ class MakeNormalUserApiView(GenericAPIView):
         )
 
 
-class UpdateUserApiView(UpdateAPIView):
+class UpdateUserApiView(GenericAPIView):
     serializer_class = UpdateUserSerializers
     queryset = user.objects.all()
 
-    def update(self, request, *args, **kwargs):
-        super().update(request, *args, **kwargs)
-        return Response(
-            data={
-                "status": 200,
-                "message": "user updated",
-            }
-        )
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(instance=request.user, data=request.data, partial=True)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(
+                data={
+                    "message": "user updated",
+                },
+                status=status.HTTP_200_OK
+            )
+        return Response(data={
+            "message": "invalid data",
+        },
+            status=status.HTTP_400_BAD_REQUEST)

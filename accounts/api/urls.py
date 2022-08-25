@@ -31,5 +31,5 @@ urlpatterns = [
     path("user_list/", UserListApiView.as_view()),
     path("make_admin/<int:pk>/", MakeAdminUserApiView.as_view()),
     path("make_normal/<int:pk>/", MakeNormalUserApiView.as_view()),
-    path("update_user/<int:pk>/", UpdateUserApiView.as_view()),
+    path("update_user/", UpdateUserApiView.as_view()),
 ]
