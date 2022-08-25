@@ -11,6 +11,7 @@ class LegalArticleSerializer(serializers.ModelSerializer):
     notes = serializers.SerializerMethodField()
     # liked = serializers.SerializerMethodField()
     like_count = serializers.SerializerMethodField()
+    dislike_count = serializers.SerializerMethodField()
 
     class Meta:
         model = LegalArticle
@@ -25,6 +26,7 @@ class LegalArticleSerializer(serializers.ModelSerializer):
             "notes",
             # "liked",
             "like_count",
+            "dislike_count",
         )
         read_only_fields = (
             "comments",
@@ -32,6 +34,7 @@ class LegalArticleSerializer(serializers.ModelSerializer):
             "notes",
             "liked",
             "like_count",
+            "dislike_count",
         )
 
     def get_comments(self, obj):
@@ -52,12 +55,16 @@ class LegalArticleSerializer(serializers.ModelSerializer):
     def get_like_count(self, obj):
         return obj.favorites.count()
 
+    def get_dislike_count(self, obj):
+        return obj.dislike.count()
+
 
 class LegalArticleDetailSerializer(serializers.ModelSerializer):
     comments = serializers.SerializerMethodField()
     notes = serializers.SerializerMethodField()
     liked = serializers.SerializerMethodField()
     like_count = serializers.SerializerMethodField()
+    dislike_count = serializers.SerializerMethodField()
 
     class Meta:
         model = LegalArticle
@@ -72,8 +79,9 @@ class LegalArticleDetailSerializer(serializers.ModelSerializer):
             "liked",
             "like_count",
             "chapter",
+            "dislike_count",
         )
-        read_only_fields = ("comments", "id", "notes", "liked", "like_count")
+        read_only_fields = ("comments", "id", "notes", "liked", "like_count","dislike_count")
 
     def get_comments(self, obj):
         return CommentSerializer(obj.comments.all(), many=True).data
@@ -92,6 +100,10 @@ class LegalArticleDetailSerializer(serializers.ModelSerializer):
 
     def get_like_count(self, obj):
         return obj.favorites.count()
+
+    def get_dislike_count(self, obj):
+        return obj.dislike.count()
+
 
 
 # class LegalArticleChartApiView(serializers.ModelSerializer):
