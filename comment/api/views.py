@@ -56,7 +56,6 @@ class CommentDeleteApiView(DestroyAPIView):
     serializer_class = CommentSerializer
     permission_classes = [
         OwnerPermission,
-        IsAdminUser,
     ]
 
     def delete(self, request, *args, **kwargs):
