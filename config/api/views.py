@@ -52,7 +52,7 @@ class NotificationListApiView(ListAPIView):
         return Response(
             data={
                 "read_list": response.data,
-                "unread_list": unread_list,
+                "unread_list": self.serializer_class(unread_list, many=True).data,
                 "unread_count": unread_list.count(),
             }
         )
