@@ -48,7 +48,7 @@ class NotificationListApiView(ListAPIView):
 
     def list(self, request, *args, **kwargs):
         response = super(NotificationListApiView, self).list(request, *args, **kwargs)
-        unread_list = self.get_queryset().filter(read=False)
+        unread_list = Notification.objects.filter(read=False)
         return Response(
             data={
                 "read_list": response.data,
