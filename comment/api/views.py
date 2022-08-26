@@ -29,7 +29,7 @@ class CommentCreateApiView(CreateAPIView):
 
     def perform_create(self, serializer):
         Notification.objects.create(
-            text=f"{self.request.user}کامنت جدیدی در بارنامه ثبت شده توسط "
+            text=f"{self.request.user}کامنت جدیدی در برنامه ثبت شده توسط "
         )
         # subject = 'welcome to GFG world'
         # message = f'Hi {user.username}, thank you for registering in geeksforgeeks.'
