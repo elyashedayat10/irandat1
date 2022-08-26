@@ -12,7 +12,7 @@ from .serializers import CategorySerializer
 
 
 class CategoryListApiView(ListAPIView):
-    queryset = Category.objects.filter(parent=None)
+    queryset = Category.objects.filter(parent=None).order_by("order")
     serializer_class = CategorySerializer
     permission_classes = [
         AllowAny,
