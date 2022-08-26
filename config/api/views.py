@@ -1,5 +1,5 @@
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, GenericAPIView, ListAPIView
+from rest_framework.generics import CreateAPIView, GenericAPIView, ListAPIView, RetrieveAPIView, DestroyAPIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
@@ -40,7 +40,7 @@ class SettingApiView(GenericAPIView):
 
 
 class NotificationListApiView(ListAPIView):
-    queryset = Notification.objects.all()
+    queryset = Notification.objects.filter(read=True)
     serializer_class = NotificationSerializer
     permission_classes = [
         IsAdminUser,
@@ -48,10 +48,54 @@ class NotificationListApiView(ListAPIView):
 
     def list(self, request, *args, **kwargs):
         response = super(NotificationListApiView, self).list(request, *args, **kwargs)
-        unread_count = self.get_queryset().filter(read=False).count()
+        unread_list = self.get_queryset().filter(read=False)
+        return Response(
+            data={
+                "read_list": response.data,
+                "unread_list": unread_list,
+                "unread_count": unread_list.count(),
+            }
+        )
+
+
+class NotificationDetailApiViewApiView(RetrieveAPIView):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        response = super().retrieve(request, *args, **kwargs)
+        queryset = self.get_object()
+        queryset.update(read=True)
         return Response(
             data={
                 "data": response.data,
-                "unread_count": unread_count,
             }
         )
+
+
+class NotificationUpdateAllApiView(ListAPIView):
+    queryset = Notification.objects.filter(read=True)
+    serializer_class = NotificationSerializer
+    permission_classes = [
+        IsAdminUser,
+    ]
+
+    def list(self, request, *args, **kwargs):
+        super(NotificationUpdateAllApiView, self).list(request, *args, **kwargs)
+        self.get_queryset().update(read=True)
+        return Response(
+            data={
+                "message": "all the notif updated"
+            }
+        )
+
+
+class NotificationDeleteApiViewApiView(DestroyAPIView):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
+    permission_classes = [IsAdminUser, ]
+
+    def get_renderer_context(self):
+        render = super().get_renderer_context()
+        render['message'] = "notif deleted"
+        return render

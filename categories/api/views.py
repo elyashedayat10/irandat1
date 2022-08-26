@@ -62,9 +62,6 @@ class CategoryDeleteApiView(DestroyAPIView):
             }
         )
 
-    # def get_queryset(self):
-    #     queryset = super(CategoryListApiView, self).get_queryset()
-    #     return queryset.filter(professor__pk=self.kwargs.get('pk'))
 
 
 #
