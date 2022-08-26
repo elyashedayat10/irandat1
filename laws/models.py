@@ -22,7 +22,7 @@ class Law(TimeStampedModel):
     order = models.IntegerField()
 
     class Meta:
-        ordering = ("-order",)
+        ordering = ("order",)
 
     def __str__(self):
         return self.title
@@ -46,7 +46,7 @@ class Chapter(models.Model):
     order = models.IntegerField()
 
     class Meta:
-        ordering = ("-order",)
+        ordering = ("order",)
 
     def __str__(self):
         return f"{self.number} from {self.law}"
