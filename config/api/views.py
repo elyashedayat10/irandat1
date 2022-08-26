@@ -77,7 +77,7 @@ class NotificationDetailApiViewApiView(GenericAPIView):
 
 
 class NotificationUpdateAllApiView(ListAPIView):
-    queryset = Notification.objects.filter(read=True)
+    queryset = Notification.objects.filter(read=False)
     serializer_class = NotificationSerializer
     permission_classes = [
         IsAdminUser,
