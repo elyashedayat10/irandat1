@@ -58,17 +58,20 @@ class NotificationListApiView(ListAPIView):
         )
 
 
-class NotificationDetailApiViewApiView(RetrieveAPIView):
+class NotificationDetailApiViewApiView(GenericAPIView):
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
 
-    def retrieve(self, request, *args, **kwargs):
-        response = super().retrieve(request, *args, **kwargs)
-        queryset = self.get_object()
-        queryset.update(read=True)
+    def get(self, request, *args, **kwargs):
+        pk = self.kwargs.get("pk")
+        notif_obj = Notification.objects.get(pk=pk)
+        serializer = self.serializer_class(notif_obj).data
+        notif_obj.read = True
+        notif_obj.save()
         return Response(
             data={
-                "data": response.data,
+                "message": "notif detail",
+                "data": serializer,
             }
         )
 
