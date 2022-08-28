@@ -22,10 +22,13 @@ class ChapterSerializer(serializers.ModelSerializer):
             "children",
 
         )
-        read_only_fields = ["id", "children"]
+        read_only_fields = ["id", "children", "articles"]
 
     def get_children(self, obj):
         return ChapterSerializer(obj.get_children(), many=True).data
+
+    def get_article(self, obj):
+        return LegalArticleSerializer(obj.articles.all(), many=True).data
 
 
 class LawSerializer(TaggitSerializer, serializers.ModelSerializer):
