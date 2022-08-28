@@ -191,7 +191,7 @@ class LawChapterListApiView(ListAPIView):
 
     def get_queryset(self):
         pk = self.kwargs.get("pk")
-        chapter_list = Chapter.objects.filter(law_id=pk)
+        chapter_list = Chapter.objects.filter(law_id=pk, parent=None)
         return chapter_list
 
     def list(self, request, *args, **kwargs):
