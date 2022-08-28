@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.postgres",
     # local
     "categories.apps.CategoriesConfig",
     "config.apps.ConfigConfig",
@@ -160,3 +161,5 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "https://irandat.darkube.app",
 ]
+
+
