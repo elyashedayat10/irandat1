@@ -19,6 +19,8 @@ class ChapterSerializer(serializers.ModelSerializer):
             "law",
             "order",
             "articles",
+            "children",
+
         )
         read_only_fields = ["id", "children"]
 
