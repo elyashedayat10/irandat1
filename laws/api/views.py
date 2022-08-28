@@ -126,7 +126,7 @@ class LawDeleteApiView(DestroyAPIView):
 class SearchApiView(GenericAPIView):
     def get(self, request, *args, **kwargs):
         query_params = request.query_params.get("q")
-        search_query = SearchQuery(query_params, config="fa")
+        search_query = SearchQuery(query_params, config="persian")
         law_obj = Law.objects.filter(title__search=search_query)
         article_obj = LegalArticle.objects.filter(description__search=search_query)
         # agent = request.META["HTTP_USER_AGENT"]
