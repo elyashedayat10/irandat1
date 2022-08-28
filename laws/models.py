@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django_extensions.db.models import TimeStampedModel
+from mptt.models import MPTTModel
 from taggit.managers import TaggableManager
 
 from categories.models import Category
@@ -37,16 +38,16 @@ class Law(TimeStampedModel):
         return self.chapters.count()
 
 
-class Chapter(models.Model):
+class Chapter(MPTTModel):
     number = models.CharField(max_length=125)
     law = models.ForeignKey(Law, on_delete=models.CASCADE, related_name="chapters")
     parent = models.ForeignKey(
-        "self", on_delete=models.CASCADE, related_name="child", null=True, blank=True
+        "self", on_delete=models.CASCADE, related_name="children", null=True, blank=True
     )
     order = models.IntegerField()
 
-    class Meta:
-        ordering = ("order",)
+    class MPTTMeta:
+        order_insertion_by = ["order"]
 
     def __str__(self):
         return f"{self.number} from {self.law}"

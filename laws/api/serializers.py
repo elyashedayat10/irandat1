@@ -8,14 +8,22 @@ from ..models import Chapter, Law
 
 class ChapterSerializer(serializers.ModelSerializer):
     articles = serializers.SerializerMethodField()
+    children = serializers.SerializerMethodField()
 
     class Meta:
         model = Chapter
-        fields = ("id", "number", "parent", "law", "order", "articles")
-        read_only_fields = ("articles",)
+        fields = (
+            "id",
+            "number",
+            "parent",
+            "law",
+            "order",
+            "articles",
+        )
+        read_only_fields = ["id", "children"]
 
-    def get_articles(self, obj):
-        return LegalArticleSerializer(obj.articles.all(), many=True).data
+    def get_children(self, obj):
+        return ChapterSerializer(obj.get_children(), many=True).data
 
 
 class LawSerializer(TaggitSerializer, serializers.ModelSerializer):
