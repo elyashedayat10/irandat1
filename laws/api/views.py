@@ -2,6 +2,7 @@ from re import L
 
 import httpagentparser
 from django.db.models import F
+from django.contrib.postgres.search import SearchQuery
 from rest_framework import status
 from rest_framework.generics import (
     CreateAPIView,
@@ -125,8 +126,9 @@ class LawDeleteApiView(DestroyAPIView):
 class SearchApiView(GenericAPIView):
     def get(self, request, *args, **kwargs):
         query_params = request.query_params.get("q")
-        law_obj = Law.objects.filter(title__icontains=query_params)
-        article_obj = LegalArticle.objects.filter(description__icontains=query_params)
+        search_query = SearchQuery(query_params)
+        law_obj = Law.objects.filter(title__search=search_query)
+        article_obj = LegalArticle.objects.filter(description__search=search_query)
         # agent = request.META["HTTP_USER_AGENT"]
         # operating_system = httpagentparser.detect(agent)['platform']["name"]
         # for article in article_obj:
