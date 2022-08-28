@@ -27,7 +27,7 @@ class ChapterSerializer(serializers.ModelSerializer):
     def get_children(self, obj):
         return ChapterSerializer(obj.get_children(), many=True).data
 
-    def get_article(self, obj):
+    def get_articles(self, obj):
         return LegalArticleSerializer(obj.articles.all(), many=True).data
 
 
