@@ -1,7 +1,6 @@
 from django.contrib.postgres.operations import TrigramExtension
 
-from django.db import migrations, models
-import django.db.models.deletion
+from django.db import migrations
 
 
 class Migration(migrations.Migration):
