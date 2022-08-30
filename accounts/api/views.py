@@ -103,7 +103,7 @@ class VerifyApiView(GenericAPIView):
                     "data": token.key,
                 }
                 Notification.objects.create(
-                    text=f" عضو جدید:{self.request.user.first_name} {self.request.user.last_name}"
+                    text=f" عضو جدید :{self.request.user.first_name} {self.request.user.last_name}"
                 )
                 return Response(data=context, status=status.HTTP_200_OK)
             else:
