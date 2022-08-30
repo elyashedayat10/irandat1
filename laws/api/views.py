@@ -134,7 +134,8 @@ class SearchApiView(GenericAPIView):
             .filter(similarity__gt=0.1)
             .order_by("-similarity")
         )
-        # article_obj = LegalArticle.objects.annotate(search=SearchVector('description')).filter(search=search_query)
+        article_obj = LegalArticle.objects.annotate(similarity=TrigramSimilarity("title", query_params)).filter(
+            similarity__gt=0.1)..order_by("-similarity")
         # agent = request.META["HTTP_USER_AGENT"]
         # operating_system = httpagentparser.detect(agent)['platform']["name"]
         # for article in article_obj:
@@ -144,7 +145,7 @@ class SearchApiView(GenericAPIView):
         #                               )
         context = {
             "law": LawSerializer(law_obj, many=True).data,
-            # "article": LegalArticleSerializer(article_obj, many=True).data,
+            "article": LegalArticleSerializer(article_obj, many=True).data,
         }
         return Response(data=context, status=status.HTTP_200_OK)
 
