@@ -131,7 +131,7 @@ class SearchApiView(GenericAPIView):
             Law.objects.annotate(
                 similarity=TrigramSimilarity("title", query_params)
             )
-            .filter(similarity__gt=0)
+            .filter(similarity__gt=0.1)
             .order_by("-similarity")
         )
         # article_obj = LegalArticle.objects.annotate(search=SearchVector('description')).filter(search=search_query)
