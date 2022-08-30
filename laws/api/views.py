@@ -129,7 +129,7 @@ class SearchApiView(GenericAPIView):
         search_query = SearchQuery(query_params)
         law_obj = (
             Law.objects.annotate(
-                similarity=TrigramSimilarity("title", search_query),
+                similarity=TrigramSimilarity("title", search_query)
             )
             .filter(similarity__gt=0.1)
             .order_by("-similarity")
