@@ -138,15 +138,15 @@ class SearchApiView(GenericAPIView):
             .filter(similarity__gt=0.1)
             .order_by("-similarity")
         )
-        article_obj = (
-            LegalArticle.objects.annotate(similarity=Greatest(
-                TrigramSimilarity("description", query_params),
-                TrigramSimilarity("tags", query_params),
-            )
-            )
-            .filter(similarity__gt=0.1)
-            .order_by("-similarity")
-        )
+        # article_obj = (
+        #     LegalArticle.objects.annotate(similarity=Greatest(
+        #         TrigramSimilarity("description", query_params),
+        #         TrigramSimilarity("tags", query_params),
+        #     )
+        #     )
+        #     .filter(similarity__gt=0.1)
+        #     .order_by("-similarity")
+        # )
 
         # agent = request.META["HTTP_USER_AGENT"]
         # operating_system = httpagentparser.detect(agent)['platform']["name"]
@@ -157,7 +157,7 @@ class SearchApiView(GenericAPIView):
         #                               )
         context = {
             "law": LawSerializer(law_obj, many=True).data,
-            "article": LegalArticleSerializer(article_obj, many=True).data,
+            # "article": LegalArticleSerializer(article_obj, many=True).data,
         }
         return Response(data=context, status=status.HTTP_200_OK)
 
