@@ -1,8 +1,8 @@
 from re import L
 
 import httpagentparser
-from django.db.models import F
 from django.contrib.postgres.search import SearchQuery, SearchVector, TrigramSimilarity
+from django.db.models import F
 from rest_framework import status
 from rest_framework.generics import (
     CreateAPIView,
@@ -127,9 +127,13 @@ class SearchApiView(GenericAPIView):
     def get(self, request, *args, **kwargs):
         query_params = request.query_params.get("q")
         search_query = SearchQuery(query_params)
-        law_obj = Law.objects.annotate(
-            similarity=TrigramSimilarity('title', search_query),
-        ).filter(similarity__gt=0.1).order_by("-similarity")
+        law_obj = (
+            Law.objects.annotate(
+                similarity=TrigramSimilarity("title", search_query),
+            )
+            .filter(similarity__gt=0.1)
+            .order_by("-similarity")
+        )
         # article_obj = LegalArticle.objects.annotate(search=SearchVector('description')).filter(search=search_query)
         # agent = request.META["HTTP_USER_AGENT"]
         # operating_system = httpagentparser.detect(agent)['platform']["name"]

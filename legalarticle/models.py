@@ -11,7 +11,8 @@ user = settings.AUTH_USER_MODEL
 
 
 class LegalArticle(TimeStampedModel):
-    _type = models.CharField(max_length=125)
+    _type = models.TextField(blank=True)
+    _type2 = models.TextField(blank=True)
     description = models.TextField()
     approved = models.DateField()
     law = models.ForeignKey(

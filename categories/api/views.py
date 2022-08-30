@@ -63,7 +63,6 @@ class CategoryDeleteApiView(DestroyAPIView):
         )
 
 
-
 #
 # class CategoryLawApiView(ListAPIView):
 #     # queryset=

@@ -3,12 +3,12 @@ from django.urls import path
 from .views import (
     GuideApiView,
     GuideCreateApiView,
+    NotificationDeleteApiViewApiView,
+    NotificationDetailApiViewApiView,
     NotificationListApiView,
+    NotificationUpdateAllApiView,
     SettingApiView,
     SettingCreateApiView,
-    NotificationDetailApiViewApiView,
-    NotificationUpdateAllApiView,
-    NotificationDeleteApiViewApiView,
 )
 
 urlpatterns = [

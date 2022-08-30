@@ -20,7 +20,6 @@ class ChapterSerializer(serializers.ModelSerializer):
             "order",
             "articles",
             "children",
-
         )
         read_only_fields = ["id", "children", "articles"]
 

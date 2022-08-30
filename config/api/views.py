@@ -1,5 +1,11 @@
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, GenericAPIView, ListAPIView, RetrieveAPIView, DestroyAPIView
+from rest_framework.generics import (
+    CreateAPIView,
+    DestroyAPIView,
+    GenericAPIView,
+    ListAPIView,
+    RetrieveAPIView,
+)
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
@@ -86,19 +92,17 @@ class NotificationUpdateAllApiView(ListAPIView):
     def list(self, request, *args, **kwargs):
         super(NotificationUpdateAllApiView, self).list(request, *args, **kwargs)
         self.get_queryset().update(read=True)
-        return Response(
-            data={
-                "message": "all the notif updated"
-            }
-        )
+        return Response(data={"message": "all the notif updated"})
 
 
 class NotificationDeleteApiViewApiView(DestroyAPIView):
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
-    permission_classes = [IsAdminUser, ]
+    permission_classes = [
+        IsAdminUser,
+    ]
 
     def get_renderer_context(self):
         render = super().get_renderer_context()
-        render['message'] = "notif deleted"
+        render["message"] = "notif deleted"
         return render

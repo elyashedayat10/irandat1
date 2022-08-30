@@ -28,16 +28,15 @@ class CommentCreateApiView(CreateAPIView):
     serializer_class = CommentSerializer
 
     def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
         Notification.objects.create(
-            text=f"{self.request.user}کامنت جدیدی در برنامه ثبت شده توسط "
+            text=f"دیدگاه حدید:{self.request.user.first_name}-{self.request.user.last_name}"
         )
         # subject = 'welcome to GFG world'
         # message = f'Hi {user.username}, thank you for registering in geeksforgeeks.'
         # email_from = settings.EMAIL_HOST_USER
         # recipient_list = [user.email, ]
         # send_mail(subject, message, email_from, recipient_list)
-
-        serializer.save(user=self.request.user)
 
 
 class CommentUpdateApiView(UpdateAPIView):
