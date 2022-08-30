@@ -22,4 +22,5 @@ class NotificationSerializer(serializers.ModelSerializer):
             "id",
             "text",
             "created",
+            "additional_data",
         )
