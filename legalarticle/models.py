@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
+from taggit.managers import TaggableManager
 
 from laws.models import Chapter, Law
 
@@ -15,6 +16,7 @@ class LegalArticle(TimeStampedModel):
     _type2 = models.TextField(blank=True)
     description = models.TextField()
     approved = models.DateField()
+    tags = TaggableManager()
     law = models.ForeignKey(
         "laws.Law", on_delete=models.CASCADE, related_name="articles"
     )

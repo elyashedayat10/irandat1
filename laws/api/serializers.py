@@ -30,6 +30,27 @@ class ChapterSerializer(serializers.ModelSerializer):
         return LegalArticleSerializer(obj.articles.all(), many=True).data
 
 
+class ChapterPartialSerializer(serializers.ModelSerializer):
+    articles = serializers.SerializerMethodField()
+    children = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Chapter
+        fields = (
+            "id",
+            "number",
+            "parent",
+            "law",
+            "order",
+            "articles",
+            "children",
+        )
+        read_only_fields = ["id", "children", "articles"]
+
+    def get_articles(self, obj):
+        return LegalArticleSerializer(obj.articles.all(), many=True).data
+
+
 class LawSerializer(TaggitSerializer, serializers.ModelSerializer):
     article = serializers.SerializerMethodField()
     chapter = serializers.SerializerMethodField()

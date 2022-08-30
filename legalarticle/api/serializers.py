@@ -4,14 +4,16 @@ from comment.api.serializers import CommentSerializer
 from notes.api.serializers import NoteSerializers
 
 from ..models import ArticleHit, Dislike, Favorite, LegalArticle
+from taggit.serializers import TaggitSerializer, TagListSerializerField
 
 
-class LegalArticleSerializer(serializers.ModelSerializer):
+class LegalArticleSerializer(TaggitSerializer, serializers.ModelSerializer):
     comments = serializers.SerializerMethodField()
     notes = serializers.SerializerMethodField()
     # liked = serializers.SerializerMethodField()
     like_count = serializers.SerializerMethodField()
     dislike_count = serializers.SerializerMethodField()
+    tags = TagListSerializerField(allow_null=True)
 
     class Meta:
         model = LegalArticle
@@ -29,6 +31,7 @@ class LegalArticleSerializer(serializers.ModelSerializer):
             # "liked",
             "like_count",
             "dislike_count",
+            "tags",
         )
         read_only_fields = (
             "comments",
@@ -61,12 +64,13 @@ class LegalArticleSerializer(serializers.ModelSerializer):
         return obj.dislike.count()
 
 
-class LegalArticleDetailSerializer(serializers.ModelSerializer):
+class LegalArticleDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
     comments = serializers.SerializerMethodField()
     notes = serializers.SerializerMethodField()
     liked = serializers.SerializerMethodField()
     like_count = serializers.SerializerMethodField()
     dislike_count = serializers.SerializerMethodField()
+    tags = TagListSerializerField(allow_null=True)
 
     class Meta:
         model = LegalArticle
@@ -84,6 +88,7 @@ class LegalArticleDetailSerializer(serializers.ModelSerializer):
             "like_count",
             "chapter",
             "dislike_count",
+            "tags",
         )
         read_only_fields = (
             "comments",
