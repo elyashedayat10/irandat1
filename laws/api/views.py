@@ -125,29 +125,16 @@ class LawDeleteApiView(DestroyAPIView):
 
 
 class SearchApiView(GenericAPIView):
-
     def get(self, request, *args, **kwargs):
         query_params = request.query_params.get("q")
         law_obj = (
             Law.objects.annotate(
-                similarity=Greatest(
-                    TrigramSimilarity("title", query_params),
-                    TrigramSimilarity("tags", query_params),
-                )
+                similarity=TrigramSimilarity("title", query_params)
             )
             .filter(similarity__gt=0.1)
             .order_by("-similarity")
         )
-        # article_obj = (
-        #     LegalArticle.objects.annotate(similarity=Greatest(
-        #         TrigramSimilarity("description", query_params),
-        #         TrigramSimilarity("tags", query_params),
-        #     )
-        #     )
-        #     .filter(similarity__gt=0.1)
-        #     .order_by("-similarity")
-        # )
-
+        # article_obj = LegalArticle.objects.annotate(search=SearchVector('description')).filter(search=search_query)
         # agent = request.META["HTTP_USER_AGENT"]
         # operating_system = httpagentparser.detect(agent)['platform']["name"]
         # for article in article_obj:
