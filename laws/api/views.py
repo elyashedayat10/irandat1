@@ -134,7 +134,7 @@ class SearchApiView(GenericAPIView):
             .filter(similarity__gt=0.1)
             .order_by("-similarity")
         )
-        article_obj = LegalArticle.objects.annotate(similarity=TrigramSimilarity("title", query_params)).filter(
+        article_obj = LegalArticle.objects.annotate(similarity=TrigramSimilarity("description", query_params)).filter(
             similarity__gt=0.1).order_by("-similarity")
         # agent = request.META["HTTP_USER_AGENT"]
         # operating_system = httpagentparser.detect(agent)['platform']["name"]
