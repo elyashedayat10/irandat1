@@ -30,5 +30,6 @@ class Guide(SingletonModel):
 
 class Notification(models.Model):
     text = models.CharField(max_length=255)
+    additional_data = models.JSONField(null=True,blank=True)
     created = models.DateTimeField(auto_now_add=True)
     read = models.BooleanField(default=False)

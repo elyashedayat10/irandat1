@@ -28,9 +28,14 @@ class CommentCreateApiView(CreateAPIView):
     serializer_class = CommentSerializer
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        obj = serializer.save(user=self.request.user)
         Notification.objects.create(
-            text=f" دیدگاه جدید :{self.request.user.first_name} {self.request.user.last_name}"
+            text=f" دیدگاه جدید :{self.request.user.first_name} {self.request.user.last_name}",
+            additional_data={
+                "comment_id": obj.id,
+                "article_number": obj.legal_article.number,
+                "law_id": obj.legal_article.law.id,
+            }
         )
         # subject = 'welcome to GFG world'
         # message = f'Hi {user.username}, thank you for registering in geeksforgeeks.'

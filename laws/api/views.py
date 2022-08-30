@@ -128,14 +128,17 @@ class SearchApiView(GenericAPIView):
     def get(self, request, *args, **kwargs):
         query_params = request.query_params.get("q")
         law_obj = (
-            Law.objects.annotate(
-                similarity=TrigramSimilarity("title", query_params)
+            Law.objects.annotate(similarity=TrigramSimilarity("title", query_params))
+            .filter(similarity__gt=0.1)
+            .order_by("-similarity")
+        )
+        article_obj = (
+            LegalArticle.objects.annotate(
+                similarity=TrigramSimilarity("description", query_params)
             )
             .filter(similarity__gt=0.1)
             .order_by("-similarity")
         )
-        article_obj = LegalArticle.objects.annotate(similarity=TrigramSimilarity("description", query_params)).filter(
-            similarity__gt=0.1).order_by("-similarity")
         # agent = request.META["HTTP_USER_AGENT"]
         # operating_system = httpagentparser.detect(agent)['platform']["name"]
         # for article in article_obj:
