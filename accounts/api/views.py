@@ -9,7 +9,6 @@ from rest_framework.generics import (
     DestroyAPIView,
     GenericAPIView,
     ListAPIView,
-    UpdateAPIView,
 )
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response

@@ -21,4 +21,4 @@ class Comment(TimeStampedModel):
     )
 
     def __str__(self):
-        return f"{self.user} commrnt on {self.legal_article}"
+        return f"{self.user} comment on {self.legal_article}"
