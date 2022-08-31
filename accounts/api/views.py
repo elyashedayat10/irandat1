@@ -132,6 +132,7 @@ class LoginApiView(GenericAPIView):
                     "message": "user login in successfully",
                     "data": token.key,
                     "admin": True if user_obj.is_admin else False,
+                    "id": user_obj.id,
                 }
                 return Response(data=context, status=status.HTTP_200_OK)
             return Response(
