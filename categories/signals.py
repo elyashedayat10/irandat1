@@ -5,7 +5,5 @@ from .models import Category
 
 
 @receiver(post_save, sender=Category)
-def update_order(sender, **kwargs):
-    if kwargs['created']:
-        updated_category = Category.objects.get(order=kwargs['instance'].order)
-        Category.objects.filter(order__gt=updated_category.order).update(F('order') + 1)
+def update_category_order(sender, **kwargs):
+    Category.objects.filter(order__gt=kwargs['instance'].order).update(F('order') - 1)
