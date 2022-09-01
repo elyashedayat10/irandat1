@@ -101,6 +101,15 @@ class LawUpdateApiView(UpdateAPIView):
             {"status": 200, "message": "obj updated", "data": response.data}
         )
 
+    def perform_update(self, serializer):
+        order_number = serializer.validated_data['order']
+        current_number = self.get_object().order
+        if order_number > current_number:
+            Law.objects.filter(order__gte=order_number).update(order=F('order') - 1)
+        else:
+            Law.objects.filter(order__gte=order_number).update(order=F('order') + 1)
+        serializer.save()
+
 
 class LawDeleteApiView(DestroyAPIView):
     queryset = Law.objects.all()
@@ -200,6 +209,16 @@ class ChapterUpdateApiView(UpdateAPIView):
         return Response(
             data={"status": 200, "message": "chapter updated", "data": request.data}
         )
+
+
+    def perform_update(self, serializer):
+        order_number = serializer.validated_data['order']
+        current_number = self.get_object().order
+        if order_number > current_number:
+            Chapter.objects.filter(order__gte=order_number).update(order=F('order') - 1)
+        else:
+            Chapter.objects.filter(order__gte=order_number).update(order=F('order') + 1)
+        serializer.save()
 
 
 class ChapterDeleteApiView(DestroyAPIView):

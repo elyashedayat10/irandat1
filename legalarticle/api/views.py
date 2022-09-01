@@ -124,13 +124,6 @@ class LegalArticleDetailView(RetrieveAPIView):
         return Response({"data": response.data})
 
 
-# class LegalArticleList(ListAPIView):
-#
-#     def get_queryset(self):
-#         article = self.get_object()
-#         ArticleHit.objects.filter(article_id=article.id).annotate(Sum('ip_address')).annotate(
-#             hours=TruncDate('created'))
-
 import datetime
 
 from .serializers import HitsCountSer
@@ -331,3 +324,13 @@ class DisLikeApiView(GenericAPIView):
             "message": "خطا در انجام عملیات",
         }
         return Response(data=context, status=status.HTTP_400_BAD_REQUEST)
+
+
+class MostViewedArticleApiView(GenericAPIView):
+    def get(self, request, *args, **kwargs):
+        legal_article_obj = LegalArticle.objects.annotate(count=Count('hits__id')).order_by('-count')[:10]
+        serializer = LegalArticleSerializer(legal_article_obj, many=True).data
+        return Response(
+            data={"data": serializer},
+            status=status.HTTP_200_OK
+        )

@@ -10,6 +10,7 @@ from .views import (
     LegaArticleDestroyApiView,
     LegaArticleUpdateApiView,
     LegalArticleDetailView,
+    MostViewedArticleApiView,
 )
 
 urlpatterns = [
@@ -23,4 +24,5 @@ urlpatterns = [
     path("detail/<int:pk>/", LegalArticleDetailView.as_view()),
     path("detail_hit/<int:pk>/", ArticleHitApiView.as_view()),
     path("dislike/", DisLikeApiView.as_view()),
+    path("most_viewd/", MostViewedArticleApiView.as_view()),
 ]

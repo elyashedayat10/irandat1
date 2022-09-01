@@ -1,3 +1,4 @@
+from django.db.models import F
 from rest_framework.generics import (
     CreateAPIView,
     DestroyAPIView,
@@ -42,6 +43,15 @@ class CategoryUpdateApiView(UpdateAPIView):
         IsAdminUser,
     ]
 
+    def perform_update(self, serializer):
+        order_number = serializer.validated_data['order']
+        current_number = self.get_object().order
+        if order_number > current_number:
+            Category.objects.filter(order__gte=order_number).update(order=F('order') - 1)
+        else:
+            Category.objects.filter(order__gte=order_number).update(order=F('order') + 1)
+        serializer.save()
+
     def update(self, request, *args, **kwargs):
         response = super().update(request, *args, **kwargs)
         return Response({"message": "item updated", "data": response.data})
@@ -61,7 +71,6 @@ class CategoryDeleteApiView(DestroyAPIView):
                 "message": "item deleted",
             }
         )
-
 
 #
 # class CategoryLawApiView(ListAPIView):
