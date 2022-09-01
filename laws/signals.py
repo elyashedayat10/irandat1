@@ -6,9 +6,10 @@ from django.db.models import F
 
 @receiver(post_delete, sender=Law)
 def update_law_order(sender, **kwargs):
-    Law.objects.filter(order__gt=kwargs['instance'].order).update(F('order') - 1)
+    print(kwargs['instance'].order)
+    Law.objects.filter(order__gt=kwargs['instance'].order).update(order=F('order') - 1)
 
 
 @receiver(post_delete, sender=Chapter)
 def update_chapter_order(sender, **kwargs):
-    Chapter.objects.filter(order__gt=kwargs['instance'].order).update(F('order') - 1)
+    Chapter.objects.filter(order__gt=kwargs['instance'].order).update(order=F('order') - 1)

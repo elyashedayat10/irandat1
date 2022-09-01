@@ -6,4 +6,4 @@ from .models import Category
 
 @receiver(post_delete, sender=Category)
 def update_category_order(sender, **kwargs):
-    Category.objects.filter(order__gt=kwargs['instance'].order).update(F('order') - 1)
+    Category.objects.filter(order__gt=kwargs['instance'].order).update(order=F('order') - 1)
