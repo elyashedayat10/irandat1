@@ -33,7 +33,7 @@ class CommentCreateApiView(CreateAPIView):
             text=f" دیدگاه جدید :{self.request.user.first_name} {self.request.user.last_name}",
             additional_data={
                 "comment_id": obj.id,
-                "article_number": obj.legal_article.number,
+                "article_number": obj.legal_article.id,
                 "law_id": obj.legal_article.law.id,
             }
         )
