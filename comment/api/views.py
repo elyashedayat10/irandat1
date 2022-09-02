@@ -11,6 +11,7 @@ from rest_framework.generics import (
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
+from config.api.permissions import ActiveUserPermission
 from config.models import Notification
 
 from ..models import Comment
@@ -23,6 +24,7 @@ class CommentCreateApiView(CreateAPIView):
     throttle_classes = [CustomUserRateThrottle]
     permission_classes = [
         IsAuthenticated,
+        ActiveUserPermission,
     ]
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
@@ -49,6 +51,7 @@ class CommentUpdateApiView(UpdateAPIView):
     serializer_class = CommentSerializer
     permission_classes = [
         OwnerPermission,
+        ActiveUserPermission,
     ]
 
     def perform_update(self, serializer):
@@ -60,6 +63,7 @@ class CommentDeleteApiView(DestroyAPIView):
     serializer_class = CommentSerializer
     permission_classes = [
         OwnerPermission,
+        ActiveUserPermission,
     ]
 
     def delete(self, request, *args, **kwargs):

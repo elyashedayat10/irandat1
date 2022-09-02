@@ -16,6 +16,7 @@ from .views import (
     UserListApiView,
     VerifyApiView,
     UserStatusApiView,
+    UserDescriptionApiView,
 )
 
 urlpatterns = [
@@ -34,4 +35,5 @@ urlpatterns = [
     path("make_normal/<int:pk>/", MakeNormalUserApiView.as_view()),
     path("update_user/", UpdateUserApiView.as_view()),
     path("user_status/<int:pk>/", UserStatusApiView.as_view()),
+    path("user_description/<int:pk>/", UserDescriptionApiView.as_view()),
 ]

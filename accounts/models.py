@@ -15,6 +15,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.CharField(max_length=125, null=True, blank=True)
     joined = models.DateTimeField(auto_now_add=True)
     promoted_date = models.DateTimeField(blank=True, null=True)
+    description = models.TextField(blank=True)
 
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)

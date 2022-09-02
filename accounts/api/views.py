@@ -1,5 +1,6 @@
 from random import randint
 
+from django.contrib.sessions.models import Session
 from django.utils import timezone
 from django.contrib.auth import authenticate, get_user_model
 from django.shortcuts import get_object_or_404
@@ -14,6 +15,7 @@ from rest_framework.generics import (
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
+from config.api.permissions import ActiveUserPermission
 from config.models import Notification
 
 from ..models import OtpCode
@@ -29,7 +31,7 @@ from .serializers import (
     UpdateUserSerializers,
     UserMainSerializers,
     UserSerializer,
-    VerifySerializer,
+    VerifySerializer, DescriptionSerializer,
 )
 
 user = get_user_model()
@@ -127,7 +129,7 @@ class LoginApiView(GenericAPIView):
                 phone_number=serializer.validated_data["phone_number"],
                 password=serializer.validated_data["password"],
             )
-            if user_obj is not None and user.is_active:
+            if user_obj is not None and user_obj.is_active:
                 token, create = Token.objects.get_or_create(user_id=user_obj.id)
                 context = {
                     "message": "user login in successfully",
@@ -137,10 +139,16 @@ class LoginApiView(GenericAPIView):
                     "id": user_obj.id,
                 }
                 return Response(data=context, status=status.HTTP_200_OK)
-            return Response(
-                data={"message": "user dose not exist"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+            elif user_obj is not None and not user_obj.is_active:
+                return Response(
+                    data={"message": "user is not active"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            else:
+                return Response(
+                    data={"message": "user dose not exist"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -163,6 +171,7 @@ class LogoutApiView(GenericAPIView):
 class PasswordChange(GenericAPIView):
     permission_classes = [
         IsAuthenticated,
+        ActiveUserPermission,
     ]
     serializer_class = PasswordChangeSerializer
 
@@ -316,6 +325,9 @@ class MakeNormalUserApiView(GenericAPIView):
 class UpdateUserApiView(GenericAPIView):
     serializer_class = UpdateUserSerializers
     queryset = user.objects.all()
+    permission_classes = [
+        ActiveUserPermission,
+    ]
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(
@@ -348,10 +360,37 @@ class UserStatusApiView(GenericAPIView):
         active = False
         if user_obj.is_active:
             user_obj.is_active = False
+            [s.delete() for s in Session.objects.all() if s.get_decoded().get('_auth_user_id') == user_obj.id]
         else:
             user_obj.is_active = True
             active = True
         user_obj.save()
         return Response(
             {"message": f"user status {active}"}, status=status.HTTP_200_OK
+        )
+
+
+class UserDescriptionApiView(GenericAPIView):
+    queryset = user.objects.all()
+    serializer_class = DescriptionSerializer
+    permission_classes = [IsAdminUser, ]
+
+    def post(self, request, *args, **kwargs):
+        status = request.query_params.get("clear", None)
+        user_obj = get_object_or_404(user, id=kwargs.get('pk'))
+        if status:
+            user_obj.description = None
+            user_obj.save()
+            return Response(
+                {"message": "user description blanked"}, status=status.HTTP_200_OK
+            )
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            user_obj.description = serializer.validated_data['description']
+            user_obj.save()
+            return Response(
+                {"message": "user description updated"}, status=status.HTTP_200_OK
+            )
+        return Response(
+            {"message": "invalid data submited"}, status=status.HTTP_400_BAD_REQUEST
         )

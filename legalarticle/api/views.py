@@ -23,6 +23,7 @@ from rest_framework.generics import (
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from config.api.permissions import ActiveUserPermission
 from ..models import ArticleHit, Dislike, Favorite, LegalArticle
 from .serializers import (
     DislikeSerializer,
@@ -239,6 +240,7 @@ class AllHitsListApiView(ListAPIView):
 class FavoriteApiView(GenericAPIView):
     permission_classes = [
         IsAuthenticated,
+        ActiveUserPermission,
     ]
 
     def get(self, request, *args, **kwargs):
@@ -284,6 +286,7 @@ class FavoriteApiView(GenericAPIView):
 class DisLikeApiView(GenericAPIView):
     permission_classes = [
         IsAuthenticated,
+        ActiveUserPermission,
     ]
 
     def get(self, request, *args, **kwargs):

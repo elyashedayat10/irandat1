@@ -54,6 +54,7 @@ class UserMainSerializers(serializers.ModelSerializer):
             "last_name",
             "is_active",
             "joined",
+            "description",
         )
 
 
@@ -68,6 +69,7 @@ class AdminSerializer(serializers.ModelSerializer):
             "email",
             "joined",
             "promoted_date",
+            "description",
         )
         read_only_fields = ("id",)
 
@@ -85,3 +87,7 @@ class UpdateUserSerializers(serializers.ModelSerializer):
             "last_name",
             "email",
         )
+
+
+class DescriptionSerializer(serializers.Serializer):
+    description = serializers.CharField()
