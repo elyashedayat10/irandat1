@@ -52,6 +52,8 @@ class UserMainSerializers(serializers.ModelSerializer):
             "phone_number",
             "first_name",
             "last_name",
+            "is_active",
+            "joined",
         )
 
 
@@ -64,6 +66,7 @@ class AdminSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "email",
+            "joined",
         )
         read_only_fields = ("id",)
 

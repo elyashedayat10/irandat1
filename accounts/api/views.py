@@ -1,5 +1,6 @@
 from random import randint
 
+from django.utils import timezone
 from django.contrib.auth import authenticate, get_user_model
 from django.shortcuts import get_object_or_404
 from rest_framework import status
@@ -289,6 +290,7 @@ class MakeAdminUserApiView(GenericAPIView):
         pk = kwargs.get("pk")
         user_obj = get_object_or_404(user, pk=pk)
         user_obj.is_admin = True
+        user_obj.promoted_date = timezone.now()
         user_obj.save()
         return Response(
             {"message": "user upgrade to admin user"}, status=status.HTTP_200_OK

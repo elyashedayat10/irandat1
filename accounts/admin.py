@@ -13,7 +13,7 @@ class UserAdmin(BaseAdmin):
     form = ChangeForm
     add_form = CreationForm
 
-    list_display = ("phone_number", "fcm_token")
+    list_display = ("phone_number",)
     list_filter = (
         "is_admin",
         "is_active",

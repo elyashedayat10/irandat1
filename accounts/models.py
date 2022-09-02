@@ -2,18 +2,22 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 
 from .managers import UserManager
+from django.utils import timezone
+
 
 # Create your models here.
 
 
 class User(AbstractBaseUser, PermissionsMixin):
     phone_number = models.CharField(max_length=11, unique=True)
-    is_admin = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
-    fcm_token = models.TextField(null=True, blank=True)
     first_name = models.CharField(max_length=125)
     last_name = models.CharField(max_length=125)
     email = models.CharField(max_length=125, null=True, blank=True)
+    joined = models.DateTimeField(auto_now_add=True)
+    promoted_date = models.DateTimeField(blank=True, null=True)
+
+    is_admin = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
 
     USERNAME_FIELD = "phone_number"
     REQUIRED_FIELDS = ["first_name", "last_name", "email"]
