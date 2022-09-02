@@ -335,3 +335,23 @@ class UpdateUserApiView(GenericAPIView):
             },
             status=status.HTTP_400_BAD_REQUEST,
         )
+
+
+class UserStatusApiView(GenericAPIView):
+    permission_classes = [
+        IsAdminUser,
+    ]
+
+    def get(self, request, *args, **kwargs):
+        pk = kwargs.get("pk")
+        user_obj = get_object_or_404(user, pk=pk)
+        active = False
+        if user_obj.is_active:
+            user_obj.is_active = False
+        else:
+            user_obj.is_active = True
+            active = True
+        user_obj.save()
+        return Response(
+            {"message": f"user status {active}"}, status=status.HTTP_200_OK
+        )
