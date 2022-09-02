@@ -67,6 +67,7 @@ class AdminSerializer(serializers.ModelSerializer):
             "last_name",
             "email",
             "joined",
+            "promoted_date",
         )
         read_only_fields = ("id",)
 
