@@ -31,7 +31,7 @@ class ChapterSerializer(serializers.ModelSerializer):
 
     def validate_order(self, value):
         chapter_obj = Chapter.objects.filter(order=value)
-        if chapter_obj.exist():
+        if chapter_obj.exists():
             raise serializers.ValidationError("this order already exists")
         return value
 
@@ -91,6 +91,6 @@ class LawSerializer(TaggitSerializer, serializers.ModelSerializer):
 
     def validate_order(self, value):
         law_obj = Law.objects.filter(order=value)
-        if law_obj.exist():
+        if law_obj.exists():
             raise serializers.ValidationError("this order already exists")
         return value
