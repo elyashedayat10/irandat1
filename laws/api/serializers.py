@@ -94,3 +94,4 @@ class LawSerializer(TaggitSerializer, serializers.ModelSerializer):
         if law_obj.exists():
             raise serializers.ValidationError("this order already exists")
         return value
+
