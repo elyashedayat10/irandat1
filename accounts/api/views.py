@@ -389,7 +389,7 @@ class UserDescriptionApiView(GenericAPIView):
             user_obj.description = serializer.validated_data['description']
             user_obj.save()
             return Response(
-                {"message": "user description updated"}
+                data={"message": "user description updated"}
             )
         return Response(
             data={"message": "invalid data submited"}, status=status.HTTP_400_BAD_REQUEST
