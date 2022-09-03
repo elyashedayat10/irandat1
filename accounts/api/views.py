@@ -19,7 +19,7 @@ from config.api.permissions import ActiveUserPermission
 from config.models import Notification
 
 from ..models import OtpCode
-from ..utils import send_otp
+from ..tasks import send_otp
 from .permissions import IsSuperUser
 from .serializers import (
     AdminSerializer,
@@ -59,7 +59,7 @@ class SendOtpApiView(GenericAPIView):
                 user_obj.is_active = False
                 user_obj.save()
                 OtpCode.objects.create(phone_number=phone_number, code=random_number)
-                send_otp(phone_number, random_number)
+                send_otp.delay(phone_number, random_number)
                 return Response(
                     data={
                         "message": "code sent",
