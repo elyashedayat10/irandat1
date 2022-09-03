@@ -382,15 +382,15 @@ class UserDescriptionApiView(GenericAPIView):
             user_obj.description = None
             user_obj.save()
             return Response(
-                {"message": "user description blanked"}, status=status.HTTP_200_OK
+                data={"message": "user description blanked"}, status=status.HTTP_200_OK
             )
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid(raise_exception=True):
             user_obj.description = serializer.validated_data['description']
             user_obj.save()
             return Response(
-                {"message": "user description updated"}, status=status.HTTP_200_OK
+                {"message": "user description updated"}
             )
         return Response(
-            {"message": "invalid data submited"}, status=status.HTTP_400_BAD_REQUEST
+            data={"message": "invalid data submited"}, status=status.HTTP_400_BAD_REQUEST
         )
