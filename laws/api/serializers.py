@@ -29,11 +29,11 @@ class ChapterSerializer(serializers.ModelSerializer):
     def get_articles(self, obj):
         return LegalArticleSerializer(obj.articles.all(), many=True).data
 
-    def validate_order(self, value):
-        chapter_obj = Chapter.objects.filter(order=value)
-        if chapter_obj.exists():
-            raise serializers.ValidationError("this order already exists")
-        return value
+    # def validate_order(self, value):
+    #     chapter_obj = Chapter.objects.filter(order=value)
+    #     if chapter_obj.exists():
+    #         raise serializers.ValidationError("this order already exists")
+    #     return value
 
 
 class ChapterPartialSerializer(serializers.ModelSerializer):
@@ -89,9 +89,9 @@ class LawSerializer(TaggitSerializer, serializers.ModelSerializer):
     def get_chapter(self, obj):
         return ChapterSerializer(obj.chapters.all(), many=True).data
 
-    def validate_order(self, value):
-        law_obj = Law.objects.filter(order=value)
-        if law_obj.exists():
-            raise serializers.ValidationError("this order already exists")
-        return value
+    # def validate_order(self, value):
+    #     law_obj = Law.objects.filter(order=value)
+    #     if law_obj.exists():
+    #         raise serializers.ValidationError("this order already exists")
+    #     return value
 
