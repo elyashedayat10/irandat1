@@ -10,6 +10,12 @@ class PhoneSerializer(serializers.Serializer):
     last_name = serializers.CharField(max_length=125)
     password = serializers.CharField(max_length=11)
 
+    def validate_password(self, value):
+        if 4 <= len(value) <= 8:
+            return value
+        else:
+            raise serializers.ValidationError("password at least must be 4 and eq than 8 ")
+
 
 class VerifySerializer(serializers.Serializer):
     phone_number = serializers.CharField(max_length=11)

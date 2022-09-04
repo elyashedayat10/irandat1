@@ -143,11 +143,11 @@ class SearchApiView(GenericAPIView):
             .filter(similarity__gt=0.1)
             .order_by("-similarity")
         )
-        # law_tags = (
-        #     Law.objects.annotate(similarity=TrigramSimilarity("tags", query_params))
-        #     .filter(similarity__gt=0.1)
-        #     .order_by("-similarity")
-        # )
+        law_tags = (
+            Law.objects.annotate(similarity=TrigramSimilarity("tags__name", query_params))
+            .filter(similarity__gt=0.1)
+            .order_by("-similarity")
+        )
         article_obj = (
             LegalArticle.objects.annotate(
                 similarity=TrigramSimilarity("description", query_params)
@@ -155,13 +155,27 @@ class SearchApiView(GenericAPIView):
             .filter(similarity__gt=0.1)
             .order_by("-similarity")
         )
-        # article_tags = (
-        #     LegalArticle.objects.annotate(
-        #         similarity=TrigramSimilarity("tags", query_params)
-        #     )
-        #     .filter(similarity__gt=0.1)
-        #     .order_by("-similarity")
-        # )
+        article_tags = (
+            LegalArticle.objects.annotate(
+                similarity=TrigramSimilarity("tags__name", query_params)
+            )
+            .filter(similarity__gt=0.1)
+            .order_by("-similarity")
+        )
+        type_result = (
+            LegalArticle.objects.annotate(
+                similarity=TrigramSimilarity("_type", query_params)
+            )
+            .filter(similarity__gt=0.1)
+            .order_by("-similarity")
+        )
+        type2_result = (
+            LegalArticle.objects.annotate(
+                similarity=TrigramSimilarity("_type2", query_params)
+            )
+            .filter(similarity__gt=0.1)
+            .order_by("-similarity")
+        )
         chapter_obj = (Chapter.objects.annotate(
             similarity=TrigramSimilarity("number", query_params)
         )
@@ -179,8 +193,10 @@ class SearchApiView(GenericAPIView):
             "law": LawSerializer(law_obj, many=True).data,
             "article": LegalArticleSerializer(article_obj, many=True).data,
             "chapter": ChapterSerializer(chapter_obj, many=True).data,
-            # "law_tags": LawSerializer(law_tags, many=True).data,
-            # "article_tags": LegalArticleSerializer(article_tags, many=True).data,
+            "law_tags": LawSerializer(law_tags, many=True).data,
+            "article_tags": LegalArticleSerializer(article_tags, many=True).data,
+            "type_1": LegalArticleSerializer(type_result, many=True).data,
+            "type2": LegalArticleSerializer(type2_result, many=True).data,
         }
         return Response(data=context, status=status.HTTP_200_OK)
 

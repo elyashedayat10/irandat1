@@ -32,11 +32,13 @@ class CommentCreateApiView(CreateAPIView):
     def perform_create(self, serializer):
         obj = serializer.save(user=self.request.user)
         Notification.objects.create(
-            text=f" دیدگاه جدید :{self.request.user.first_name} {self.request.user.last_name}",
+            text=f"دیدگاه جدید",
             additional_data={
                 "comment_id": obj.id,
                 "article_number": obj.legal_article.id,
                 "law_id": obj.legal_article.law.id,
+                "last_name": {self.request.user.last_name},
+                "first_name": {self.request.user.first_name}
             }
         )
         # subject = 'welcome to GFG world'
@@ -45,40 +47,37 @@ class CommentCreateApiView(CreateAPIView):
         # recipient_list = [user.email, ]
         # send_mail(subject, message, email_from, recipient_list)
 
+    class CommentUpdateApiView(UpdateAPIView):
+        queryset = Comment.objects.all()
+        serializer_class = CommentSerializer
+        permission_classes = [
+            OwnerPermission,
+            ActiveUserPermission,
+        ]
 
-class CommentUpdateApiView(UpdateAPIView):
-    queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
-    permission_classes = [
-        OwnerPermission,
-        ActiveUserPermission,
-    ]
+        def perform_update(self, serializer):
+            serializer.save(user=self.request.user)
 
-    def perform_update(self, serializer):
-        serializer.save(user=self.request.user)
+    class CommentDeleteApiView(DestroyAPIView):
+        queryset = Comment.objects.all()
+        serializer_class = CommentSerializer
+        permission_classes = [
+            OwnerPermission,
+            ActiveUserPermission,
+        ]
 
+        def delete(self, request, *args, **kwargs):
+            super().delete(request, *args, **kwargs)
+            return Response(
+                {
+                    "status": 200,
+                    "message": "obj deleted",
+                }
+            )
 
-class CommentDeleteApiView(DestroyAPIView):
-    queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
-    permission_classes = [
-        OwnerPermission,
-        ActiveUserPermission,
-    ]
-
-    def delete(self, request, *args, **kwargs):
-        super().delete(request, *args, **kwargs)
-        return Response(
-            {
-                "status": 200,
-                "message": "obj deleted",
-            }
-        )
-
-
-class CommentListApiView(ListAPIView):
-    permission_classes = [
-        IsAdminUser,
-    ]
-    queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
+    class CommentListApiView(ListAPIView):
+        permission_classes = [
+            IsAdminUser,
+        ]
+        queryset = Comment.objects.all()
+        serializer_class = CommentSerializer

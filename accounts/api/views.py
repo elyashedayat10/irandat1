@@ -19,7 +19,8 @@ from config.api.permissions import ActiveUserPermission
 from config.models import Notification
 
 from ..models import OtpCode
-from ..tasks import send_otp
+# from ..tasks import send_otp
+from ..utils import send_otp
 from .permissions import IsSuperUser
 from .serializers import (
     AdminSerializer,
@@ -59,7 +60,7 @@ class SendOtpApiView(GenericAPIView):
                 user_obj.is_active = False
                 user_obj.save()
                 OtpCode.objects.create(phone_number=phone_number, code=random_number)
-                send_otp.delay(phone_number, random_number)
+                send_otp(phone_number, random_number)
                 return Response(
                     data={
                         "message": "code sent",
@@ -137,6 +138,8 @@ class LoginApiView(GenericAPIView):
                     "admin": True if user_obj.is_admin else False,
                     "superuser": True if user_obj.is_superuser else False,
                     "id": user_obj.id,
+                    "first_name": user_obj.first_name,
+                    "last_name": user_obj.last_name,
                 }
                 return Response(data=context, status=status.HTTP_200_OK)
             elif user_obj is not None and not user_obj.is_active:
