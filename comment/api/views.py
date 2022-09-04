@@ -37,8 +37,8 @@ class CommentCreateApiView(CreateAPIView):
                 "comment_id": obj.id,
                 "article_number": obj.legal_article.id,
                 "law_id": obj.legal_article.law.id,
-                "last_name": {self.request.user.last_name},
-                "first_name": {self.request.user.first_name}
+                "last_name": self.request.user.last_name,
+                "first_name": self.request.user.first_name
             }
         )
         # subject = 'welcome to GFG world'
