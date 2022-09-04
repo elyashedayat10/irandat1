@@ -47,37 +47,40 @@ class CommentCreateApiView(CreateAPIView):
         # recipient_list = [user.email, ]
         # send_mail(subject, message, email_from, recipient_list)
 
-    class CommentUpdateApiView(UpdateAPIView):
-        queryset = Comment.objects.all()
-        serializer_class = CommentSerializer
-        permission_classes = [
-            OwnerPermission,
-            ActiveUserPermission,
-        ]
 
-        def perform_update(self, serializer):
-            serializer.save(user=self.request.user)
+class CommentUpdateApiView(UpdateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [
+        OwnerPermission,
+        ActiveUserPermission,
+    ]
 
-    class CommentDeleteApiView(DestroyAPIView):
-        queryset = Comment.objects.all()
-        serializer_class = CommentSerializer
-        permission_classes = [
-            OwnerPermission,
-            ActiveUserPermission,
-        ]
+    def perform_update(self, serializer):
+        serializer.save(user=self.request.user)
 
-        def delete(self, request, *args, **kwargs):
-            super().delete(request, *args, **kwargs)
-            return Response(
-                {
-                    "status": 200,
-                    "message": "obj deleted",
-                }
-            )
 
-    class CommentListApiView(ListAPIView):
-        permission_classes = [
-            IsAdminUser,
-        ]
-        queryset = Comment.objects.all()
-        serializer_class = CommentSerializer
+class CommentDeleteApiView(DestroyAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [
+        OwnerPermission,
+        ActiveUserPermission,
+    ]
+
+    def delete(self, request, *args, **kwargs):
+        super().delete(request, *args, **kwargs)
+        return Response(
+            {
+                "status": 200,
+                "message": "obj deleted",
+            }
+        )
+
+
+class CommentListApiView(ListAPIView):
+    permission_classes = [
+        IsAdminUser,
+    ]
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
