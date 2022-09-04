@@ -47,11 +47,21 @@ class CategoryUpdateApiView(UpdateAPIView):
         order_number = serializer.validated_data['order']
         current_number = self.get_object().order
         if order_number > current_number:
-            Category.objects.filter(order__gte=order_number).update(order=F('order') - 1)
+            if self.get_object().parent:
+                category_obj = Category.objects.filter(parent=self.get_object().parent)
+                category_obj.filter(order_number__lt=order_number).update(order=F('order') - 1)
+            else:
+                category_obj = Category.objects.filter(parent=None)
+                category_obj.filter(order_number__lt=order_number).update(order=F('order') - 1)
         elif order_number == current_number:
             pass
         else:
-            Category.objects.filter(order__gte=order_number).update(order=F('order') + 1)
+            if self.get_object().parent:
+                category_obj = Category.objects.filter(parent=self.get_object().parent)
+                category_obj.filter(order_number__lt=order_number).update(order=F('order') - 1)
+            else:
+                category_obj = Category.objects.filter(parent=None)
+                category_obj.filter(order_number__lt=order_number).update(order=F('order') + 1)
         serializer.save()
 
     def update(self, request, *args, **kwargs):
