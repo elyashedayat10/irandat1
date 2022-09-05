@@ -113,7 +113,7 @@ class LawUpdateApiView(UpdateAPIView):
         elif order_number == current_number:
             pass
         else:
-            Law.objects.filter(order__lte=order_number).update(order=F('order') - 1)
+            Law.objects.filter(order__gte=current_number).update(order=F('order') + 1)
         serializer.save()
 
 
