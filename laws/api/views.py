@@ -108,11 +108,11 @@ class LawUpdateApiView(UpdateAPIView):
     def perform_update(self, serializer):
         obj = serializer.save()
         order_number = serializer.validated_data['order']
-        current_number = self.get_object().order
-        if order_number > current_number:
+        current_number = Law.objects.get(id=obj.id)
+        if order_number > current_number.order:
             Law.objects.filter(order__gte=order_number).exclude(id=obj.id).update(order=F('order') + 1)
             print("ali")
-        elif order_number == current_number:
+        elif order_number == current_number.order:
             pass
             print("reza")
         else:
