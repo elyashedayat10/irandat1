@@ -82,6 +82,10 @@ class LawCreateApiView(CreateAPIView):
         context.update({"request": self.request})
         return context
 
+    def perform_create(self, serializer):
+        obj = serializer.save()
+        Law.objects.filter(order__gte=obj.order).update(order=F('order') + 1)
+
 
 class LawUpdateApiView(UpdateAPIView):
     queryset = Law.objects.all()
