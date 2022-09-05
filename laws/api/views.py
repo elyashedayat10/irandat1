@@ -113,7 +113,7 @@ class LawUpdateApiView(UpdateAPIView):
         elif order_number == current_number:
             pass
         else:
-            Law.objects.filter(order__lte=order_number).update(order=F('order') + 1)
+            Law.objects.filter(order__lte=order_number).update(order=F('order') - 1)
         serializer.save()
 
 
@@ -255,7 +255,7 @@ class ChapterUpdateApiView(UpdateAPIView):
             else:
                 print("ilghar")
                 category_obj = Chapter.objects.filter(parent=None)
-                category_obj.filter(order__lte=order_number).update(order=F('order') + 1)
+                category_obj.filter(order__lte=order_number).update(order=F('order') - 1)
         serializer.save()
 
 
