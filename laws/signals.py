@@ -1,15 +1,22 @@
-from django.db.models.signals import post_delete
+from django.db.models.signals import post_delete, pre_delete
 from django.dispatch import receiver
 from .models import Law, Chapter
 from django.db.models import F
 
 
-@receiver(post_delete, sender=Law)
-def update_law_order(sender, **kwargs):
-    print(kwargs['instance'].order)
-    Law.objects.filter(order__gt=kwargs['instance'].order).update(order=F('order') - 1)
-
-
-@receiver(post_delete, sender=Chapter)
+@receiver(pre_delete, sender=Chapter)
 def update_chapter_order(sender, **kwargs):
-    Chapter.objects.filter(order__gt=kwargs['instance'].order).update(order=F('order') - 1)
+    category_obj = Chapter.objects.get(id=kwargs['instance'].id)
+    if category_obj.parent:
+        Chapter.objects.filter(parent=category_obj.parent).update(order=F('order') - 1)
+    else:
+        Chapter.objects.filter(parent=None).update(order=F('order') - 1)
+
+
+@receiver(pre_delete, sender=Law)
+def update_chapter_order(sender, **kwargs):
+    category_obj = Law.objects.get(id=kwargs['instance'].id)
+    if category_obj.parent:
+        Law.objects.filter(parent=category_obj.parent).update(order=F('order') - 1)
+    else:
+        Law.objects.filter(parent=None).update(order=F('order') - 1)
