@@ -106,15 +106,15 @@ class LawUpdateApiView(UpdateAPIView):
         )
 
     def perform_update(self, serializer):
+        obj = serializer.save()
         order_number = serializer.validated_data['order']
         current_number = self.get_object().order
         if order_number > current_number:
-            Law.objects.filter(order__gte=order_number).exclude(id=self.get_object().id).update(order=F('order') + 1)
+            Law.objects.filter(order__gte=order_number).exclude(id=obj.id).update(order=F('order') + 1)
         elif order_number == current_number:
             pass
         else:
-            Law.objects.filter(order__gte=current_number).exclude(id=self.get_object().id).update(order=F('order') + 1)
-        serializer.save()
+            Law.objects.filter(order__gte=order_number).exclude(id=obj.id).update(order=F('order') + 1)
 
 
 class LawDeleteApiView(DestroyAPIView):
