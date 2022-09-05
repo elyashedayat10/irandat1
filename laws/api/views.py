@@ -114,7 +114,7 @@ class LawUpdateApiView(UpdateAPIView):
             print("reza")
         else:
             Law.objects.filter(order__gte=order_number).exclude(
-                id=current_number.id, order__lte=current_number
+                id=current_number.id, order__lte=current_number.order
             ).update(order=F('order') + 1)
             print("elyas")
         serializer.save()
