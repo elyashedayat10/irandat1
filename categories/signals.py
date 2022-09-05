@@ -11,4 +11,4 @@ def update_category_order(sender, **kwargs):
         Category.objects.filter(parent=category_obj.parent).filter(order__gt=kwargs['instance'].order).update(
             order=F('order') - 1)
     else:
-        Category.objects.filter(parent=None).filter(order__gt=kwargs['instance'].order).fupdate(order=F('order') - 1)
+        Category.objects.filter(parent=None).filter(order__gt=kwargs['instance'].order).update(order=F('order') - 1)
