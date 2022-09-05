@@ -84,7 +84,7 @@ class LawCreateApiView(CreateAPIView):
 
     def perform_create(self, serializer):
         obj = serializer.save()
-        Law.objects.filter(order__gte=obj.order).distinct().update(order=F('order') + 1)
+        Law.objects.filter(order__gte=obj.order).exclude(id=obj.id).update(order=F('order') + 1)
 
 
 class LawUpdateApiView(UpdateAPIView):
