@@ -113,7 +113,6 @@ class LawUpdateApiView(UpdateAPIView):
             Law.objects.filter(order__gte=order_number).exclude(id=obj.id).update(order=F('order') + 1)
             print("ali")
         elif order_number == current_number.order:
-            pass
             print("reza")
         else:
             Law.objects.filter(order__gte=order_number).exclude(id=obj.id).update(order=F('order') + 1)
