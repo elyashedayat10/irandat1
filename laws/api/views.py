@@ -155,46 +155,46 @@ class SearchApiView(GenericAPIView):
         query_params = request.query_params.get("q")
         law_obj = (
             Law.objects.annotate(similarity=TrigramSimilarity("title", query_params))
-            .filter(similarity__gt=0.1)
+            .filter(similarity__gt=0.2)
             .order_by("-similarity")
         )
         law_tags = (
             Law.objects.annotate(similarity=TrigramSimilarity("tags__name", query_params))
-            .filter(similarity__gt=0.1)
+            .filter(similarity__gt=0.2)
             .order_by("-similarity")
         )
         article_obj = (
             LegalArticle.objects.annotate(
                 similarity=TrigramSimilarity("description", query_params)
             )
-            .filter(similarity__gt=0.1)
+            .filter(similarity__gt=0.2)
             .order_by("-similarity")
         )
         article_tags = (
             LegalArticle.objects.annotate(
                 similarity=TrigramSimilarity("tags__name", query_params)
             )
-            .filter(similarity__gt=0.1)
+            .filter(similarity__gt=0.2)
             .order_by("-similarity")
         )
         type_result = (
             LegalArticle.objects.annotate(
                 similarity=TrigramSimilarity("_type", query_params)
             )
-            .filter(similarity__gt=0.1)
+            .filter(similarity__gt=0.2)
             .order_by("-similarity")
         )
         type2_result = (
             LegalArticle.objects.annotate(
                 similarity=TrigramSimilarity("_type2", query_params)
             )
-            .filter(similarity__gt=0.1)
+            .filter(similarity__gt=0.2)
             .order_by("-similarity")
         )
         chapter_obj = (Chapter.objects.annotate(
             similarity=TrigramSimilarity("number", query_params)
         )
-                       .filter(similarity__gt=0.1)
+                       .filter(similarity__gt=0.2)
                        .order_by("-similarity")
                        )
         # agent = request.META["HTTP_USER_AGENT"]
