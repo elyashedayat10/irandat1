@@ -43,6 +43,8 @@ class CategoryUpdateApiView(UpdateAPIView):
         IsAdminUser,
     ]
 
+
+
     def perform_update(self, serializer):
         order_number = serializer.validated_data['order']
         current_number = self.get_object().order
