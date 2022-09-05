@@ -8,15 +8,12 @@ from django.db.models import F
 def update_chapter_order(sender, **kwargs):
     category_obj = Chapter.objects.get(id=kwargs['instance'].id)
     if category_obj.parent:
-        Chapter.objects.filter(parent=category_obj.parent).update(order=F('order') - 1)
+        Chapter.objects.filter(parent=category_obj.parent).filter(order__gt=kwargs['instance'].order).update(
+            order=F('order') - 1)
     else:
-        Chapter.objects.filter(parent=None).update(order=F('order') - 1)
+        Chapter.objects.filter(parent=None).filter(order__gt=kwargs['instance'].order).update(order=F('order') - 1)
 
 
 @receiver(pre_delete, sender=Law)
-def update_chapter_order(sender, **kwargs):
-    category_obj = Law.objects.get(id=kwargs['instance'].id)
-    if category_obj.parent:
-        Law.objects.filter(parent=category_obj.parent).update(order=F('order') - 1)
-    else:
-        Law.objects.filter(parent=None).update(order=F('order') - 1)
+def update_law_order(sender, **kwargs):
+    Law.objects.filter(order__gt=kwargs['instance'].order).update(order=F('order') - 1)
