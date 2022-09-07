@@ -35,6 +35,15 @@ class CategoryCreateAPIView(CreateAPIView):
         response = super().create(request, *args, **kwargs)
         return Response({"message": "item created", "data": response.data})
 
+    def perform_create(self, serializer):
+        obj = serializer.save()
+        if obj.parent:
+            Category.objects.filter(parent=obj.parent, order__gte=obj.order).exclude(id=obj.id).update(
+                order=F('order') + 1)
+        else:
+            Category.objects.filter(parent=None, order__gte=obj.order).exclude(id=obj.id).update(
+                order=F('order') + 1)
+
 
 class CategoryUpdateApiView(UpdateAPIView):
     serializer_class = CategorySerializer
@@ -43,32 +52,30 @@ class CategoryUpdateApiView(UpdateAPIView):
         IsAdminUser,
     ]
 
-
-
     def perform_update(self, serializer):
         order_number = serializer.validated_data['order']
-        current_number = self.get_object().order
-        if order_number > current_number:
-            print("ali")
-            if self.get_object().parent:
-                category_obj = Category.objects.filter(parent=self.get_object().parent)
-                category_obj.filter(order__gte=order_number).update(order=F('order') + 1)
+        current_number = Category.objects.get(id=self.get_object().id)
+        if order_number > current_number.order:
+            if current_number.parent:
+                Category.objects.filter(parent=current_number.parent, order__gte=order_number).exclude(
+                    id=current_number.id).update(
+                    order=F('order') + 1)
             else:
-                category_obj = Category.objects.filter(parent=None)
-                print(category_obj)
-                category_obj.filter(order__gte=order_number).update(order=F('order') + 1)
-        elif order_number == current_number:
+                Category.objects.filter(parent=None, order__gte=order_number).exclude(id=current_number.id).update(
+                    order=F('order') + 1)
+        elif order_number == current_number.order:
             pass
         else:
-            print("reza")
-            if self.get_object().parent:
-                category_obj = Category.objects.filter(parent=self.get_object().parent)
-                category_obj.filter(order__lte=order_number).update(order=F('order') - 1)
-                print("elyas")
+            if current_number.parent:
+                Category.objects.filter(parent=current_number.parent, order__gte=order_number).exclude(
+                    id=current_number.id, order__lte=current_number.order
+                ).update(order=F('order') + 1)
             else:
-                print("ilghar")
-                category_obj = Category.objects.filter(parent=None)
-                category_obj.filter(order__lte=order_number).update(order=F('order') + 1)
+
+                Category.objects.filter(parent=None, order__gte=order_number).exclude(
+                    id=current_number.id, order__lte=current_number.order
+                ).update(order=F('order') + 1)
+
         serializer.save()
 
     def update(self, request, *args, **kwargs):

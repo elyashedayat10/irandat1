@@ -111,12 +111,11 @@ class LawUpdateApiView(UpdateAPIView):
         if order_number > current_number.order:
             Law.objects.filter(order__gte=order_number).exclude(id=current_number.id).update(order=F('order') + 1)
         elif order_number == current_number.order:
-            print("reza")
+            pass
         else:
             Law.objects.filter(order__gte=order_number).exclude(
                 id=current_number.id, order__lte=current_number.order
             ).update(order=F('order') + 1)
-            print("elyas")
         serializer.save()
 
 
@@ -221,6 +220,15 @@ class ChapterCreateApiView(CreateAPIView):
             data={"status": 201, "message": "chapter created", "data": request.data}
         )
 
+    def perform_create(self, serializer):
+        obj = serializer.save()
+        if obj.parent:
+            Chapter.objects.filter(parent=obj.parent, order__gte=obj.order).exclude(id=obj.id).update(
+                order=F('order') + 1)
+        else:
+            Chapter.objects.filter(parent=None, order__gte=obj.order).exclude(id=obj.id).update(
+                order=F('order') + 1)
+
 
 class ChapterUpdateApiView(UpdateAPIView):
     serializer_class = ChapterSerializer
@@ -237,28 +245,28 @@ class ChapterUpdateApiView(UpdateAPIView):
 
     def perform_update(self, serializer):
         order_number = serializer.validated_data['order']
-        current_number = self.get_object().order
-        if order_number > current_number:
-            print("ali")
-            if self.get_object().parent:
-                category_obj = Chapter.objects.filter(parent=self.get_object().parent)
-                category_obj.filter(order__gte=order_number).update(order=F('order') + 1)
+        current_number = Category.objects.get(id=self.get_object().id)
+        if order_number > current_number.order:
+            if current_number.parent:
+                Chapter.objects.filter(parent=current_number.parent, order__gte=order_number).exclude(
+                    id=current_number.id).update(
+                    order=F('order') + 1)
             else:
-                category_obj = Chapter.objects.filter(parent=None)
-                print(category_obj)
-                category_obj.filter(order__gte=order_number).update(order=F('order') + 1)
-        elif order_number == current_number:
+                Chapter.objects.filter(parent=None, order__gte=order_number).exclude(id=current_number.id).update(
+                    order=F('order') + 1)
+        elif order_number == current_number.order:
             pass
         else:
-            print("reza")
-            if self.get_object().parent:
-                category_obj = Chapter.objects.filter(parent=self.get_object().parent)
-                category_obj.filter(order__lte=order_number).update(order=F('order') - 1)
-                print("elyas")
+            if current_number.parent:
+                Chapter.objects.filter(parent=current_number.parent, order__gte=order_number).exclude(
+                    id=current_number.id, order__lte=current_number.order
+                ).update(order=F('order') + 1)
             else:
-                print("ilghar")
-                category_obj = Chapter.objects.filter(parent=None)
-                category_obj.filter(order__lte=order_number).update(order=F('order') - 1)
+
+                Chapter.objects.filter(parent=None, order__gte=order_number).exclude(
+                    id=current_number.id, order__lte=current_number.order
+                ).update(order=F('order') + 1)
+
         serializer.save()
 
 
