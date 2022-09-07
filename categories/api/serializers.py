@@ -20,8 +20,3 @@ class CategorySerializer(serializers.ModelSerializer):
     def get_children(self, obj):
         return CategorySerializer(obj.get_children(), many=True).data
 
-    def validate_order(self, value):
-        category_obj = Category.objects.filter(order=value)
-        if category_obj.exists():
-            raise serializers.ValidationError("this order already exists")
-        return value
