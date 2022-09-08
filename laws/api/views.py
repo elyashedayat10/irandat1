@@ -252,7 +252,7 @@ class ChapterUpdateApiView(UpdateAPIView):
         if order_number > current_number.order:
             if current_number.parent:
                 Chapter.objects.filter(parent=current_number.parent,
-                                       order__range=(order_number, current_number.order + 1)).update(
+                                       order__range=(order_number-1, current_number.order + 2)).update(
                     order=F('order') - 1)
                 # correct
                 # Chapter.objects.filter(parent=current_number.parent, order__gte=order_number).exclude(
@@ -265,7 +265,7 @@ class ChapterUpdateApiView(UpdateAPIView):
                 print("reza")
             else:
                 Chapter.objects.filter(parent=None,
-                                       order__range=(order_number, current_number.order + 1)).update(
+                                       order__range=(order_number-1, current_number.order +2)).update(
                     order=F('order') - 1)
                 # Chapter.objects.filter(parent=None, order__gt=order_number).exclude(id=current_number.id).update(
                 #     order=F('order') + 1)
