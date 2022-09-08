@@ -47,10 +47,12 @@ class Chapter(MPTTModel):
     order = models.IntegerField()
 
     class MPTTMeta:
-        order_insertion_by = ["order"]
+        order_insertion_by = ["-order"]
 
     def __str__(self):
         return f"{self.number} from {self.law}"
 
     def article_count(self):
         return self.articles.all()
+
+
