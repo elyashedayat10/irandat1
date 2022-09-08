@@ -245,7 +245,7 @@ class ChapterUpdateApiView(UpdateAPIView):
 
     def perform_update(self, serializer):
         order_number = serializer.validated_data['order']
-        current_number = Category.objects.get(id=self.get_object().id)
+        current_number = Chapter.objects.get(id=self.get_object().id)
         if order_number > current_number.order:
             if current_number.parent:
                 Chapter.objects.filter(parent=current_number.parent, order__gt=order_number).exclude(
