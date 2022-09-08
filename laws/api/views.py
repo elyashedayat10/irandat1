@@ -223,10 +223,10 @@ class ChapterCreateApiView(CreateAPIView):
     def perform_create(self, serializer):
         obj = serializer.save()
         if obj.parent:
-            Chapter.objects.filter(parent=obj.parent, order__gte=obj.order).exclude(id=obj.id).update(
+            Chapter.objects.filter(law=obj.law, parent=obj.parent, order__gte=obj.order).exclude(id=obj.id).update(
                 order=F('order') + 1)
         else:
-            Chapter.objects.filter(parent=None, order__gte=obj.order).exclude(id=obj.id).update(
+            Chapter.objects.filter(law=obj.law, parent=None, order__gte=obj.order).exclude(id=obj.id).update(
                 order=F('order') + 1)
 
 
