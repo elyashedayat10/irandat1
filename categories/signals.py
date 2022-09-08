@@ -6,9 +6,18 @@ from .models import Category
 
 @receiver(pre_delete, sender=Category)
 def update_category_order(sender, **kwargs):
-    category_obj = Category.objects.get(id=kwargs['instance'].id)
+    test = category_obj = Category.objects.get(id=kwargs['instance'].id)
+    print(
+        "eluas"
+    )
+    print(test)
     if category_obj.parent:
-        Category.objects.filter(parent=category_obj.parent).filter(order__gt=kwargs['instance'].order).update(
+        test = Category.objects.filter(parent=category_obj.parent).filter(order__gt=kwargs['instance'].order).update(
             order=F('order') - 1)
+        print("ilghar")
+        print(test)
     else:
-        Category.objects.filter(parent=None).filter(order__gt=kwargs['instance'].order).update(order=F('order') - 1)
+        test = Category.objects.filter(parent=None).filter(order__gt=kwargs['instance'].order).update(
+            order=F('order') - 1)
+        print("reza")
+        print(test)
