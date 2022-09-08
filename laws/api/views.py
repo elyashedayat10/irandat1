@@ -251,16 +251,18 @@ class ChapterUpdateApiView(UpdateAPIView):
                 Chapter.objects.filter(parent=current_number.parent, order__gte=order_number).exclude(
                     id=current_number.id).update(
                     order=F('order') + 1)
-                Chapter.objects.filter(parent=current_number.parent, order__lte=order_number,
-                                       order__gt=current_number.order).exclude(
+                Chapter.objects.filter(parent=current_number.parent, order__lt=order_number,
+                                       order__gte=current_number.order).exclude(
                     id=current_number.id).update(
                     order=F('order') - 1)
+                print("reza")
             else:
                 Chapter.objects.filter(parent=None, order__gt=order_number).exclude(id=current_number.id).update(
                     order=F('order') + 1)
                 Chapter.objects.filter(parent=None, order__lte=order_number, order__gt=current_number.order).exclude(
                     id=current_number.id).update(
                     order=F('order') - 1)
+                print("abbas")
         elif order_number == current_number.order:
             pass
         else:
