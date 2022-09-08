@@ -6,11 +6,10 @@ from .models import Category
 
 @receiver(pre_delete, sender=Category)
 def update_category_order(sender, **kwargs):
-    test = category_obj = Category.objects.get(id=kwargs['instance'].id)
+    category_obj = Category.objects.get(id=kwargs['instance'].id)
     print(
         "eluas"
     )
-    print(test)
     if category_obj.parent:
         test = Category.objects.filter(parent=category_obj.parent).filter(order__gt=kwargs['instance'].order).update(
             order=F('order') - 1)
