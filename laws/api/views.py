@@ -292,7 +292,7 @@ class LawChapterListApiView(ListAPIView):
 
     def get_queryset(self):
         pk = self.kwargs.get("pk")
-        chapter_list = Chapter.objects.filter(law_id=pk, parent=None).order_by("order")
+        chapter_list = Chapter.objects.filter(law_id=pk, parent=None).order_by("-order")
         return chapter_list
 
     def list(self, request, *args, **kwargs):
