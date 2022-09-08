@@ -272,6 +272,7 @@ class ChapterUpdateApiView(UpdateAPIView):
                                        order__gt=current_number.order).exclude(
                     id=current_number.id
                 ).update(order=F('order') - 1)
+                print("ilghar")
             else:
                 #
                 # Chapter.objects.filter(parent=None, order__gte=order_number).exclude(
@@ -281,6 +282,7 @@ class ChapterUpdateApiView(UpdateAPIView):
                 Chapter.objects.filter(parent=None, order__lte=order_number, order__gt=current_number.order).exclude(
                     id=current_number.id
                 ).update(order=F('order') - 1)
+                print("elyas")
         serializer.save()
 
 
