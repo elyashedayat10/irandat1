@@ -188,13 +188,13 @@ class SearchApiView(GenericAPIView):
                        .filter(similarity__gt=0.2)
                        .order_by("-similarity")
                        )
-        # agent = request.META["HTTP_USER_AGENT"]
-        # operating_system = httpagentparser.detect(agent)['platform']["name"]
-        # for article in article_obj:
-        #     ArticleHit.objects.create(article=article, operating_system=operating_system,
-        #                               previous_page=request.META.get('HTTP_REFERER'),
-        #                               location=""
-        #                               )
+        agent = request.META["HTTP_USER_AGENT"]
+        operating_system = httpagentparser.detect(agent)['platform']["name"]
+        for article in article_obj:
+            ArticleHit.objects.create(article=article, operating_system=operating_system,
+                                      previous_page=request.META.get('HTTP_REFERER'),
+                                      location=""
+                                      )
         context = {
             "law": LawSerializer(law_obj, many=True).data,
             "article": LegalArticleSerializer(article_obj, many=True).data,
