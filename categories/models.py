@@ -21,7 +21,7 @@ class Category(MPTTModel):
     order = models.PositiveIntegerField(null=True, blank=True)
 
     class MPTTMeta:
-        order_insertion_by = ["order"]
+        order_insertion_by = ['id']
 
     def __str__(self):
         return self.title
