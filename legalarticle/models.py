@@ -20,7 +20,7 @@ class LegalArticle(TimeStampedModel):
     law = models.ForeignKey(
         "laws.Law", on_delete=models.CASCADE, related_name="articles"
     )
-    number = models.PositiveIntegerField()
+    number = models.PositiveIntegerField(blank=True, null=True)
     chapter = models.ForeignKey(
         Chapter,
         on_delete=models.CASCADE,
