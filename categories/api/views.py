@@ -58,7 +58,7 @@ class CategoryUpdateApiView(UpdateAPIView):
         if order_number > current_number.order:
             if current_number.parent:
                 Category.objects.filter(parent=current_number.parent,
-                                        order__range=(order_number, current_number.order + 1)).update(
+                                       order__range=(order_number - 1, current_number.order + 2)).update(
                     order=F('order') - 1)
                 # correct
                 # Chapter.objects.filter(parent=current_number.parent, order__gte=order_number).exclude(
@@ -71,7 +71,7 @@ class CategoryUpdateApiView(UpdateAPIView):
                 print("reza")
             else:
                 Category.objects.filter(parent=None,
-                                        order__range=(order_number, current_number.order + 1)).update(
+                                       order__range=(order_number - 1, current_number.order + 2)).update(
                     order=F('order') - 1)
                 # Chapter.objects.filter(parent=None, order__gt=order_number).exclude(id=current_number.id).update(
                 #     order=F('order') + 1)
@@ -86,7 +86,7 @@ class CategoryUpdateApiView(UpdateAPIView):
         else:
             if current_number.parent:
                 Category.objects.filter(parent=current_number.parent,
-                                        order__range=(order_number, current_number.order - 1)).update(
+                                       order__range=(order_number, current_number.order - 1)).update(
                     order=F('order') + 1)
                 # Chapter.objects.filter(parent=current_number.parent, order__lte=order_number,
                 #                        order__gt=current_number.order).exclude(
@@ -99,7 +99,7 @@ class CategoryUpdateApiView(UpdateAPIView):
                 #     id=current_number.id, order__lt=current_number.order
                 # ).update(order=F('order') + 1)
                 Category.objects.filter(parent=None,
-                                        order__range=(order_number, current_number.order - 1)).update(
+                                       order__range=(order_number, current_number.order - 1)).update(
                     order=F('order') + 1)
 
                 # Chapter.objects.filter(parent=None, order__lte=order_number, order__gt=current_number.order).exclude(
