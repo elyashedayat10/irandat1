@@ -14,6 +14,8 @@ class Law(TimeStampedModel):
         "categories.Category",
         on_delete=models.CASCADE,
         related_name="laws",
+        null=True,
+        blank=True
     )
     approved = models.DateField()
     published = models.DateField()
@@ -47,11 +49,8 @@ class Chapter(MPTTModel):
     class MPTTMeta:
         order_insertion_by = ['order']
 
-
     def __str__(self):
         return f"{self.number} from {self.law}"
 
     def article_count(self):
         return self.articles.all()
-
-

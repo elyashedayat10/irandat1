@@ -109,7 +109,7 @@ class LawUpdateApiView(UpdateAPIView):
 
     def perform_update(self, serializer):
         order_number = serializer.validated_data['order']
-        current_number = Chapter.objects.get(id=self.get_object().id)
+        current_number = Law.objects.get(id=self.get_object().id)
         if order_number > current_number.order:
             Law.objects.filter(category=current_number.category,
                                order__range=(order_number - 1, current_number.order + 2)).update(
