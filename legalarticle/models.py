@@ -7,7 +7,7 @@ from taggit.managers import TaggableManager
 from laws.models import Chapter, Law
 from django.contrib.contenttypes.fields import GenericRelation
 
-# from comment.models import Comment
+from comment.models import Comment
 
 user = settings.AUTH_USER_MODEL
 
@@ -32,7 +32,7 @@ class LegalArticle(TimeStampedModel):
         blank=True,
         null=True,
     )
-    # comments = GenericRelation(Comment)
+    comments = GenericRelation(Comment)
 
     def __str__(self):
         return f"ماده شماره {self.number} از قانون {self.law}"
