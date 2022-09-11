@@ -97,7 +97,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "postgres",
         "USER": "postgres",
-        "PASSWORD": "sCWpkbWQhi7P2morupzwhRKbBLhe4AHd",
+        "PASSWORD": "Cc2n960VwVHCQK7bGJvgStOBCHNPEvy5",
         "HOST": "irandotdb.irandat.svc",
         "PORT": "5432",  # 5432 by default
     }
