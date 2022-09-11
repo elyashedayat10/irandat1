@@ -9,7 +9,7 @@ from comment.api.serializers import CommentSerializer
 
 
 class LegalArticleSerializer(TaggitSerializer, serializers.ModelSerializer):
-    comments = serializers.SerializerMethodField()
+    # comments = serializers.SerializerMethodField()
     notes = serializers.SerializerMethodField()
     # liked = serializers.SerializerMethodField()
     like_count = serializers.SerializerMethodField()
@@ -25,7 +25,7 @@ class LegalArticleSerializer(TaggitSerializer, serializers.ModelSerializer):
             "law",
             "number",
             "chapter",
-            "comments",
+            # "comments",
             "notes",
             "_type",
             "_type2",
@@ -64,9 +64,9 @@ class LegalArticleSerializer(TaggitSerializer, serializers.ModelSerializer):
     def get_dislike_count(self, obj):
         return obj.dislike.count()
 
-    def get_comments(self, obj):
-        comments_qs = Comment.objects.filter_parents_by_object(obj)
-        return CommentSerializer(comments_qs, many=True).data
+    # def get_comments(self, obj):
+    #     comments_qs = Comment.objects.filter_parents_by_object(obj)
+    #     return CommentSerializer(comments_qs, many=True).data
 
 
 class LegalArticleDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
