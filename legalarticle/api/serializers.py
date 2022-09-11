@@ -1,10 +1,11 @@
 from rest_framework import serializers
 
-from comment.api.serializers import CommentSerializer
 from notes.api.serializers import NoteSerializers
 
 from ..models import ArticleHit, Dislike, Favorite, LegalArticle
 from taggit.serializers import TaggitSerializer, TagListSerializerField
+from comment.models import Comment
+from comment.api.serializers import CommentSerializer
 
 
 class LegalArticleSerializer(TaggitSerializer, serializers.ModelSerializer):
@@ -62,6 +63,10 @@ class LegalArticleSerializer(TaggitSerializer, serializers.ModelSerializer):
 
     def get_dislike_count(self, obj):
         return obj.dislike.count()
+
+    def get_comments(self, obj):
+        comments_qs = Comment.objects.filter_parents_by_object(obj)
+        return CommentSerializer(comments_qs, many=True).data
 
 
 class LegalArticleDetailSerializer(TaggitSerializer, serializers.ModelSerializer):

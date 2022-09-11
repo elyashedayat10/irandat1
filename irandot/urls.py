@@ -13,6 +13,7 @@ urlpatterns = [
     path("comment/", include("comment.urls", namespace="comment")),
     path("ticcket/", include("tickets.urls", namespace="ticket")),
     path("note/", include("notes.urls", namespace="notes")),
+    path('api/', include('comment.api.urls')),  # only required for API Framework
 ]
 if settings.DEBUG:
     urlpatterns = urlpatterns + static(

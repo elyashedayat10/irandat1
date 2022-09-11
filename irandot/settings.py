@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     "accounts.apps.AccountsConfig",
     "laws.apps.LawsConfig",
     "legalarticle.apps.LegalarticleConfig",
-    "comment.apps.CommentConfig",
     "tickets.apps.TicketsConfig",
     "notes.apps.NotesConfig",
     # third
@@ -53,6 +52,8 @@ INSTALLED_APPS = [
     "taggit_serializer",
     "rest_framework.authtoken",
     "corsheaders",
+    "comment",
+
 ]
 
 MIDDLEWARE = [
@@ -161,3 +162,12 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "https://irandat.darkube.app",
 ]
+
+LOGIN_URL = 'accounts:login'  # or actual url
+
+COMMENT_FLAGS_ALLOWED = 3
+COMMENT_USE_GRAVATAR = True
+COMMENT_ALLOW_BLOCKING_USERS = True
+PROFILE_APP_NAME = 'accounts'
+PROFILE_MODEL_NAME = 'User'
+COMMENT_PROFILE_API_FIELDS = ('first_name', 'last_name', 'email')
