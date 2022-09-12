@@ -17,6 +17,10 @@ from .views import (
     VerifyApiView,
     UserStatusApiView,
     UserDescriptionApiView,
+    CreateGroupApiView,
+    GroupDeleteApiView,
+    GroupUpdateApiView,
+    GroupListApiView,
 )
 
 urlpatterns = [
@@ -36,4 +40,8 @@ urlpatterns = [
     path("update_user/", UpdateUserApiView.as_view()),
     path("user_status/<int:pk>/", UserStatusApiView.as_view()),
     path("user_description/<int:pk>/", UserDescriptionApiView.as_view()),
+    path('group_create/', CreateGroupApiView.as_view()),
+    path('group_list/', GroupListApiView.as_view()),
+    path('group_update/<int:pk>/', GroupUpdateApiView.as_view()),
+    path('group_delete/<int:pk>/', GroupDeleteApiView.as_view()),
 ]

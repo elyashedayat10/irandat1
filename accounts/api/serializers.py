@@ -1,3 +1,4 @@
+from django.contrib.auth.models import Group
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
@@ -97,3 +98,12 @@ class UpdateUserSerializers(serializers.ModelSerializer):
 
 class DescriptionSerializer(serializers.Serializer):
     description = serializers.CharField()
+
+
+class GroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Group
+        fields = ('id', 'name')
+        extra_kwargs = {
+            'id': {'read_only': True}
+        }
