@@ -409,19 +409,15 @@ class CreateGroupApiView(CreateAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
-    def get_renderer_context(self):
-        context = super().get_renderer_context()
-        context['message'] = 'group created '
-        return context
 
-    # def create(self, request, *args, **kwargs):
-    # response = super().create(request, *args, **kwargs)
-    # return Response(
-    #     data={
-    #         "data": response.data,
-    #         "message": "group created "
-    #     }, status=status.HTTP_201_CREATED
-    # )
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        return Response(
+            data={
+                "data": response.data,
+                "message": "group created "
+            }, status=status.HTTP_201_CREATED
+        )
 
 
 class GroupDeleteApiView(DestroyAPIView):
@@ -429,10 +425,15 @@ class GroupDeleteApiView(DestroyAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
-    def get_renderer_context(self):
-        context = super().get_renderer_context()
-        context['message'] = 'group deleted '
-        return context
+    def delete(self, request, *args, **kwargs):
+        super().delete(request, *args, **kwargs)
+        return Response(
+            data={
+                "message": "group deleted "
+            }, status=status.HTTP_200_OK
+        )
+
+
 
 
 class GroupListApiView(ListAPIView):
@@ -440,10 +441,13 @@ class GroupListApiView(ListAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
-    def get_renderer_context(self):
-        context = super().get_renderer_context()
-        context['message'] = 'groups list '
-        return context
+    def list(self, request, *args, **kwargs):
+        super().list(request, *args, **kwargs)
+        return Response(
+            data={
+                "message": "groups list "
+            }, status=status.HTTP_200_OK
+        )
 
 
 class GroupUpdateApiView(UpdateAPIView):
@@ -451,15 +455,14 @@ class GroupUpdateApiView(UpdateAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
-    def get_renderer_context(self):
-        context = super().get_renderer_context()
-        context['message'] = 'group updated '
-        return context
+    def update(self, request, *args, **kwargs):
+        super().update(request, *args, **kwargs)
+        return Response(
+            data={
+                "message": "group deleted "
+            }, status=status.HTTP_200_OK
+        )
 
-# def delete(self, request, *args, **kwargs):
-#     super().delete(request, *args, **kwargs)
-#     return Response(
-#         data={
-#             "message": "group deleted "
-#         }, status=status.HTTP_200_OK
-#     )
+
+
+
