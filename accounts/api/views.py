@@ -409,7 +409,6 @@ class CreateGroupApiView(CreateAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
-
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
         return Response(
@@ -434,17 +433,16 @@ class GroupDeleteApiView(DestroyAPIView):
         )
 
 
-
-
 class GroupListApiView(ListAPIView):
     permission_classes = [IsSuperUser, ]
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
     def list(self, request, *args, **kwargs):
-        super().list(request, *args, **kwargs)
+        response = super().list(request, *args, **kwargs)
         return Response(
             data={
+                "data": response.data,
                 "message": "groups list "
             }, status=status.HTTP_200_OK
         )
@@ -456,13 +454,10 @@ class GroupUpdateApiView(UpdateAPIView):
     serializer_class = GroupSerializer
 
     def update(self, request, *args, **kwargs):
-        super().update(request, *args, **kwargs)
+        response = super().update(request, *args, **kwargs)
         return Response(
             data={
+                "data": response.data,
                 "message": "group deleted "
             }, status=status.HTTP_200_OK
         )
-
-
-
-
