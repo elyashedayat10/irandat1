@@ -34,6 +34,13 @@ class LegalArticle(TimeStampedModel):
     )
     comments = GenericRelation(Comment)
 
+    class Meta:
+        default_permissions=(
+            'افزودن ماده',
+            'به روزرسانی ماده',
+            'حذف ماده',
+        )
+
     def __str__(self):
         return f"ماده شماره {self.number} از قانون {self.law}"
 
