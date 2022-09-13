@@ -29,7 +29,7 @@ class UserAdmin(BaseAdmin):
     fieldsets = (
         (
             "Main",
-            {"fields": ("phone_number", "fcm_token")},
+            {"fields": ("phone_number", )},
         ),
         (
             "Permissions",
