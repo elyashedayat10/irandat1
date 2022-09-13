@@ -102,6 +102,16 @@ DATABASES = {
         "PORT": "5432",  # 5432 by default
     }
 }
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [
+    BASE_DIR / "assets",
+]
+
+STATIC_ROOT = BASE_DIR / "static_cdn" / "static"
+
+MEDIA_URL = "/media/"
+
+MEDIA_ROOT = BASE_DIR / "static_cdn" / "media"
 #
 # DATABASES = {
 #     "default": {

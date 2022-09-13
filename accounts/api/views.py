@@ -461,3 +461,25 @@ class GroupUpdateApiView(UpdateAPIView):
                 "message": "group deleted "
             }, status=status.HTTP_200_OK
         )
+
+
+class AddUserToGroupApiView(GenericAPIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            user_obj = get_object_or_404(user, id=kwargs.get('user_id'))
+            group_obj = Group.objects.get(id=kwargs.get('group_id'))
+            group_obj.user_set.add(user_obj)
+            return Response(data={'message': "user successfully added to group"}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(data={'message': e}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class RemoveUserToGroupApiView(GenericAPIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            user_obj = get_object_or_404(user, id=kwargs.get('user_id'))
+            group_obj = Group.objects.get(id=kwargs.get('group_id'))
+            group_obj.user_set.remove(user_obj)
+            return Response(data={'message': "user successfully removed from  group"}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(data={'message': e}, status=status.HTTP_400_BAD_REQUEST)
